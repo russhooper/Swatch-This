@@ -1,0 +1,6 @@
+framework module Pods_Swatch_ThisTests {
+  umbrella header "Pods-Swatch ThisTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

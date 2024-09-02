@@ -1,0 +1,6 @@
+framework module Pods_Swatch_This {
+  umbrella header "Pods-Swatch This-umbrella.h"
+
+  export *
+  module * { export * }
+}
