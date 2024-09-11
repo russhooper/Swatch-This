@@ -274,7 +274,12 @@ struct Palette {
         let pack: Int
 
 
-        init(hex: UInt32, name: String, company: String, group: String, website: String, pack: Int) {
+        init(hex: UInt32,
+             name: String,
+             company: String,
+             group: String,
+             website: String,
+             pack: Int) {
             
             self.hex = hex
             self.name = name

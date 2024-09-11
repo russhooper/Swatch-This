@@ -38,12 +38,12 @@ final class SettingsViewModel: ObservableObject {
         self.authUser = try await AuthenticationManager.shared.linkGoogle(tokens: tokens)
     }
     
-    /*
+    
     func linkAppleAccount() async throws {
         let helper = SignInAppleHelper()
         let tokens = try await helper.startSignInWithAppleFlow()
         self.authUser = try await AuthenticationManager.shared.linkApple(tokens: tokens)
     }
-    */
+    
     
 }

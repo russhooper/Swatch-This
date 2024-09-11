@@ -24,7 +24,6 @@ struct AuthDataResultModel {
 }
 
 enum AuthProviderOption: String {
-    case email = "password"
     case google = "google.com"
     case apple = "apple.com"
 }
@@ -79,51 +78,10 @@ final class AuthenticationManager {
 }
 
 
-
-// MARK: SIGN IN EMAIL
-
-extension AuthenticationManager {
-    
-    @discardableResult // we know there's a result returned, but we might not always use it, so it's ok if we want to discard it
-    func createUser(email: String, password: String) async throws -> AuthDataResultModel {
-        let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
-        return AuthDataResultModel(user: authDataResult.user)
-    }
-    
-    @discardableResult
-    func signInUser(email: String, password: String) async throws -> AuthDataResultModel {
-        let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
-        return AuthDataResultModel(user: authDataResult.user)
-    }
-    
-    func resetPassword(email: String) async throws {
-        try await Auth.auth().sendPasswordReset(withEmail: email)
-    }
-    
-    func updatePassword(password: String) async throws {
-        guard let user = Auth.auth().currentUser else {
-            throw URLError(.badServerResponse)
-        }
-        
-        try await user.updatePassword(to: password)
-    }
-    
-    func updateEmail(email: String) async throws {
-        guard let user = Auth.auth().currentUser else {
-            throw URLError(.badServerResponse)
-        }
-        
-        try await user.sendEmailVerification(beforeUpdatingEmail: email)
-    }
-    
-}
-
-
-
 // MARK: SIGN IN SSO
 
 extension AuthenticationManager {
-    /*
+    
     @discardableResult
     func signInWithGoogle(tokens: GoogleSignInResultModel) async throws -> AuthDataResultModel {
         
@@ -138,7 +96,7 @@ extension AuthenticationManager {
         
         return try await signIn(credential: credential)
     }
-    */
+    
     func signIn(credential: AuthCredential) async throws -> AuthDataResultModel {
         
         let authDataResult = try await Auth.auth().signIn(with: credential)
@@ -158,24 +116,18 @@ extension AuthenticationManager {
         return AuthDataResultModel(user: authDataResult.user)
     }
     
-    func linkEmail(email: String, password: String) async throws -> AuthDataResultModel {
-        let credential = EmailAuthProvider.credential(withEmail: email, link: password)
-        
-        return try await linkCredential(credential: credential)
-    }
-    
     func linkGoogle(tokens: GoogleSignInResultModel) async throws -> AuthDataResultModel {
         let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
 
         return try await linkCredential(credential: credential)
     }
-    /*
+    
     func linkApple(tokens: SignInWithAppleResult) async throws -> AuthDataResultModel {
         let credential = OAuthProvider.credential(withProviderID: AuthProviderOption.apple.rawValue, idToken: tokens.token, rawNonce: tokens.nonce)
 
         return try await linkCredential(credential: credential)
     }
-    */
+    
     private func linkCredential(credential: AuthCredential) async throws -> AuthDataResultModel {
         
         guard let user = Auth.auth().currentUser else {

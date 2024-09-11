@@ -39,9 +39,11 @@ struct SwitcherView: View {
     var turnData: TurnData = TurnData()
     @State var gameBrain = GameBrain()
     
-    @State private var showingTurnAlert = false
-    @State private var showingUpdateAlert = false
-    @State private var showingGameCenterAlert = false
+    @State private var showingTurnAlert: Bool = false
+    @State private var showingUpdateAlert: Bool = false
+    @State private var showingGameCenterAlert: Bool = false
+    @State private var showSignInView: Bool = false
+
     
     @State var alertId: AlertId?
     
@@ -83,6 +85,7 @@ struct SwitcherView: View {
                 
                 MenuView(gameData: self.resetGameData())
                 
+                
              //       AnimationPlayground5()
               //  GameEndView(gameData: self.gameData, turnData: self.turnData, selection: nil)
                 
@@ -100,7 +103,9 @@ struct SwitcherView: View {
             else if self.viewRouter.currentPage == "loading" {
                 
                 // show a loading screen while the Game Center view and the data are being loaded
-                LoadingView()
+              //  LoadingView()
+                
+                MatchesView()
                 
             }
             
@@ -133,6 +138,19 @@ struct SwitcherView: View {
         .onReceive(gameCenterAlert) { output in
             //   self.showingGameCenterAlert = true
             self.alertId = AlertId(id: .typeGameCenter)
+        }
+        .onAppear {
+            let authUser = try? AuthenticationManager.shared.getAuthenticatedUser() // optional try (question mark) because we don't care what the error is if it fails, the authUser is just nil
+            self.showSignInView = authUser == nil
+            print("authUser: \(String(describing: authUser?.uid))")
+
+            print("showSignInView: \(showSignInView)")
+        }
+        .fullScreenCover(isPresented: $showSignInView) {
+            NavigationStack {
+                AuthenticationView(showSignInView: $showSignInView)
+
+            }
         }
         
     }

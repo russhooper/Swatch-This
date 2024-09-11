@@ -11,7 +11,7 @@ import Foundation
 
 @MainActor
 final class AuthenticationViewModel: ObservableObject {
-    /*
+    
     let signInAppleHelper = SignInAppleHelper()
     
     func signInGoogle() async throws {
@@ -30,7 +30,7 @@ final class AuthenticationViewModel: ObservableObject {
         let user = DBUser(auth: authDataResult)
         try await UserManager.shared.createNewUser(user: user)
     }
-    */
+    
     func signInAnonymous() async throws {
         let authDataResult = try await AuthenticationManager.shared.signInAnonymous()
         let user = DBUser(auth: authDataResult)

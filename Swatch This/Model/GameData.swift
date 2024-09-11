@@ -57,7 +57,7 @@ final class GameData: ObservableObject, Codable {
         "Submitted color" : "Player X"
     ]
     
-    
+    // array (rounds) of arrays (players) of dictionaries (created name, guessed name)
     var playersByRound = [
 
         // round 0

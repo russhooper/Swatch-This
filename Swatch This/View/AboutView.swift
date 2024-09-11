@@ -45,7 +45,7 @@ struct AboutView: View {
         
         "Special thanks to:",
         "",
-        "Paul",
+        "Paul Hudson",
         "Charley",
         "Lisa",
         "Mitch",

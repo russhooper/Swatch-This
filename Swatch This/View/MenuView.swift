@@ -55,7 +55,10 @@ struct MenuView: View {
     @State var showingAbout = false
     @State var showingColors = false
     @State var showingHowTo = false
+    @State var showingSettings = false
     
+    @State private var showSignInView: Bool = false
+
     
     var gameData: GameData
     @EnvironmentObject var viewRouter: ViewRouter
@@ -66,7 +69,7 @@ struct MenuView: View {
     @State private var isShowingGameCenter = false { didSet {
         PopupControllerMessage
             .GameCenter
-            .postNotification() }}
+        .postNotification() }}
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
@@ -76,7 +79,7 @@ struct MenuView: View {
     @State var rotation2: Double = 0.0
     
     @State private var paintOffsetX: CGFloat = 0
-
+    
     
     
     var body: some View {
@@ -169,72 +172,12 @@ struct MenuView: View {
                 
                 ZStack {
                     
-                    
-                    
-                    
-                    
-                    ZStack {
-                        
-                        
-                        
-                        SwatchStackView(color: self.blushColor,
-                                        swatchHeight: swatchHeight,
-                                        text: "",
-                                        textField: nil,
-                                        subtext: "",
-                                        fontSize: 10,
-                                        inGame: false,
-                                        turnNumber: 0)
-                            .offset(x: 13, y: -29)
-                            .rotationEffect(.degrees(self.rotation1))
-                            .onAppear {
-                              //  let baseAnimation = Animation.easeInOut(duration: 1)
-                                let baseAnimation = Animation.spring()
-
-                                
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                    return withAnimation(baseAnimation) {
-                                        self.rotation1 = 14.0
-                                    }
-                                }
-                            }
-                        
-                        SwatchStackView(color: self.darkGreenColor,
-                                        swatchHeight: swatchHeight,
-                                        text: "",
-                                        textField: nil,
-                                        subtext: "",
-                                        fontSize: 10,
-                                        inGame: false,
-                                        turnNumber: 0)
-                            .offset(x: -10, y: -23)
-                            .rotationEffect(.degrees(self.rotation2))
-                            .onAppear {
-                             //   let baseAnimation = Animation.easeInOut(duration: 1)
-                                let baseAnimation = Animation.spring()
-
-                                
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                    return withAnimation(baseAnimation) {
-                                        self.rotation2 = -9.0
-                                    }
-                                }
-                            }
-                        SwatchStackView(color: self.tangerineColor,
-                                        swatchHeight: swatchHeight,
-                                        text: "Swatch This",
-                                        textField: nil,
-                                        subtext: "a game about \(colorLocalized)",
-                                        fontSize: 10,
-                                        inGame: false,
-                                        turnNumber: 0)
-                        
-                        
-                    }.offset(x: geometry.size.width*CGFloat(self.stackOffset))
+                    menuSwatchStack(swatchHeight: swatchHeight)
+                        .offset(x: geometry.size.width*CGFloat(self.stackOffset))
                     // .animation(Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: 0.5))
-                  //  .animation(Animation.easeOut)
-                    .animation(.spring())
-
+                    //  .animation(Animation.easeOut)
+                        .animation(.spring())
+                    
                     
                     
                     ZStack {
@@ -249,8 +192,8 @@ struct MenuView: View {
                                             fontSize: 10,
                                             inGame: false,
                                             turnNumber: 0)
-                                .offset(x: 0, y: tileHeight1 * -0.1 * geoHeight/geoWidth - 30)
-                                .rotationEffect(.degrees(-2))
+                            .offset(x: 0, y: tileHeight1 * -0.1 * geoHeight/geoWidth - 30)
+                            .rotationEffect(.degrees(-2))
                             
                             
                             SwatchStackView(color: self.tangerineColor,
@@ -261,8 +204,8 @@ struct MenuView: View {
                                             fontSize: 10,
                                             inGame: false,
                                             turnNumber: 0)
-                                .offset(x: 0, y: tileHeight1 * -0.1 * geoHeight/geoWidth)
-                                .rotationEffect(.degrees(2))
+                            .offset(x: 0, y: tileHeight1 * -0.1 * geoHeight/geoWidth)
+                            .rotationEffect(.degrees(2))
                             
                         } else {
                             SwatchStackView(color: self.blushColor,
@@ -273,8 +216,8 @@ struct MenuView: View {
                                             fontSize: 10,
                                             inGame: false,
                                             turnNumber: 0)
-                                .offset(x: -20, y: -55 * localOffsetMultiplier)
-                                .rotationEffect(.degrees(-11))
+                            .offset(x: -20, y: -55 * localOffsetMultiplier)
+                            .rotationEffect(.degrees(-11))
                             
                             SwatchStackView(color: self.tangerineColor,
                                             swatchHeight: swatchHeight,
@@ -284,8 +227,8 @@ struct MenuView: View {
                                             fontSize: 10,
                                             inGame: false,
                                             turnNumber: 0)
-                                .offset(x: 20, y: -43 * localOffsetMultiplier)
-                                .rotationEffect(.degrees(14))
+                            .offset(x: 20, y: -43 * localOffsetMultiplier)
+                            .rotationEffect(.degrees(14))
                             
                         }
                         
@@ -330,9 +273,9 @@ struct MenuView: View {
                                     
                                     Text("Players enter \(colorLocalized) names and then pass this device to the next player")
                                         .font(.body)
-                                        //  .frame(width: textWidth, alignment: .center)
-                                        //  .frame(minHeight: 60)
-                                        
+                                    //  .frame(width: textWidth, alignment: .center)
+                                    //  .frame(minHeight: 60)
+                                    
                                         .padding()
                                     
                                     /*
@@ -350,7 +293,7 @@ struct MenuView: View {
                                         GKAccessPoint.shared.isActive = false
                                         
                                         self.viewRouter.currentPage = "tabletop"
-                                            
+                                        
                                         
                                     }) {
                                         Text("Pen & Paper")
@@ -362,16 +305,16 @@ struct MenuView: View {
                                     
                                     Text("Players write their \(colorLocalized) names on paper and submit them to a round leader")
                                         .font(.body)
-                                        //   .frame(minWidth: 10, idealWidth: textWidth, maxWidth: textWidth, minHeight: 60, idealHeight: 80, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                                        //  .frame(width: textWidth, alignment: .center)
-                                        //  .frame(minHeight: 75)
+                                    //   .frame(minWidth: 10, idealWidth: textWidth, maxWidth: textWidth, minHeight: 60, idealHeight: 80, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                    //  .frame(width: textWidth, alignment: .center)
+                                    //  .frame(minHeight: 75)
                                         .padding()
                                     
                                     
-                                        
+                                    
                                     Spacer()
-                                 
-                                   
+                                    
+                                    
                                     
                                     
                                     Button(action: {
@@ -385,7 +328,7 @@ struct MenuView: View {
                                         
                                     }) {
                                         
-                                            
+                                        
                                         if  geoHeight > 700 {
                                             Text("Cancel")
                                                 .font(.body)
@@ -396,7 +339,7 @@ struct MenuView: View {
                                                 .font(.body)
                                                 .bold()
                                         }
-                                            
+                                        
                                         
                                         //   .padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
                                         
@@ -414,7 +357,7 @@ struct MenuView: View {
                     //     .animation(Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: 0.5))
                     // .animation(Animation.easeOut)
                     .animation(.spring())
-
+                    
                     
                     ZStack {
                         
@@ -429,8 +372,8 @@ struct MenuView: View {
                                             fontSize: 10,
                                             inGame: false,
                                             turnNumber: 0)
-                                .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
-                                .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
+                            .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
+                            .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
                         }
                         
                         if (self.numberOfPlayers > 6) {
@@ -443,8 +386,8 @@ struct MenuView: View {
                                             fontSize: 10,
                                             inGame: false,
                                             turnNumber: 0)
-                                .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
-                                .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
+                            .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
+                            .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
                         }
                         
                         if (self.numberOfPlayers > 5) {
@@ -457,8 +400,8 @@ struct MenuView: View {
                                             fontSize: 10,
                                             inGame: false,
                                             turnNumber: 0)
-                                .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
-                                .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
+                            .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
+                            .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
                         }
                         
                         if (self.numberOfPlayers > 4) {
@@ -471,8 +414,8 @@ struct MenuView: View {
                                             fontSize: 10,
                                             inGame: false,
                                             turnNumber: 0)
-                                .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
-                                .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
+                            .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
+                            .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
                         }
                         
                         if (self.numberOfPlayers > 3) {
@@ -485,8 +428,8 @@ struct MenuView: View {
                                             fontSize: 10,
                                             inGame: false,
                                             turnNumber: 0)
-                                .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
-                                .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
+                            .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
+                            .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
                         }
                         
                         if (self.numberOfPlayers > 2) {
@@ -499,8 +442,8 @@ struct MenuView: View {
                                             fontSize: 10,
                                             inGame: false,
                                             turnNumber: 0)
-                                .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
-                                .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
+                            .offset(x: CGFloat.random(in: -25 ..< 25), y: CGFloat.random(in: -60 ..< 35))
+                            .rotationEffect(.degrees(Double.random(in: -18 ..< 18)))
                         }
                         
                         
@@ -512,8 +455,8 @@ struct MenuView: View {
                                         fontSize: 10,
                                         inGame: false,
                                         turnNumber: 0)
-                            .offset(x: CGFloat.random(in: 15 ..< 19), y: CGFloat.random(in: -40 ..<  -30))
-                            .rotationEffect(.degrees(Double.random(in: 10 ..< 14)))
+                        .offset(x: CGFloat.random(in: 15 ..< 19), y: CGFloat.random(in: -40 ..<  -30))
+                        .rotationEffect(.degrees(Double.random(in: 10 ..< 14)))
                         
                         
                         SwatchStackView(color: self.darkGreenColor,
@@ -524,8 +467,8 @@ struct MenuView: View {
                                         fontSize: 10,
                                         inGame: false,
                                         turnNumber: 0)
-                            .offset(x: CGFloat.random(in: -16 ..< -12), y: CGFloat.random(in: -50 ..< -40))
-                            .rotationEffect(.degrees(Double.random(in: -15 ..< -11)))
+                        .offset(x: CGFloat.random(in: -16 ..< -12), y: CGFloat.random(in: -50 ..< -40))
+                        .rotationEffect(.degrees(Double.random(in: -15 ..< -11)))
                         
                         
                         
@@ -563,11 +506,11 @@ struct MenuView: View {
                                         }
                                         
                                     }) {
-                                    
-                                    Text("–")
-                                        .font(.system(size: 40))
-                                        .bold()
-                                        .padding()
+                                        
+                                        Text("–")
+                                            .font(.system(size: 40))
+                                            .bold()
+                                            .padding()
                                     }
                                     .disabled(self.numberOfPlayers <= 2)
                                     
@@ -579,10 +522,10 @@ struct MenuView: View {
                                         }
                                         
                                     }) {
-                                    Text("+")
-                                        .font(.system(size: 40))
-                                        .bold()
-                                        .padding()
+                                        Text("+")
+                                            .font(.system(size: 40))
+                                            .bold()
+                                            .padding()
                                     }
                                     .disabled(self.numberOfPlayers >= 8)
                                     
@@ -642,9 +585,9 @@ struct MenuView: View {
                         
                     }.offset(x: geometry.size.width*CGFloat(self.local2Offset))
                     //  .animation(Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: 0.5))
-                  //  .animation(Animation.easeOut)
-                    .animation(.spring())
-
+                    //  .animation(Animation.easeOut)
+                        .animation(.spring())
+                    
                     
                 }
                 .offset(y: 20)
@@ -655,28 +598,39 @@ struct MenuView: View {
                     
                     
                     Image("Paint Stripe")
-                        //  .resizable()
-                        //  .scaledToFit()
+                    //  .resizable()
+                    //  .scaledToFit()
                         .frame(width: geometry.size.width, height: 250, alignment: .center)
                         .offset(y: 3)
                     
-                                        
+                    
                     
                     VStack(spacing: 20) {
                         
                         Button(action: {
                             
                             self.mildHaptics()
-                            
+                                                        
                             if self.gameCenter.enabled {
                                 
                                 GKAccessPoint.shared.isActive = false
                                 self.viewRouter.onlineGame = true
+                                
+                                /*
                                 self.isShowingGameCenter.toggle()
                                 self.viewRouter.playerCount = self.numberOfPlayers
+                                */
+                                
                                 self.viewRouter.currentPage = "loading"
+
                                 
                             } else {
+                                
+                                /*
+                                let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
+                                self.showSignInView = authUser == nil
+                                AuthenticationView(showSignInView: $showSignInView)
+                                */
                                 
                                 NotificationCenter.default.post(name: .gameCenterAlert, object: nil)
                                 
@@ -697,7 +651,7 @@ struct MenuView: View {
                         //    }
                         
                         
-                        
+
                         Button(action: {
                             
                             self.mildHaptics()
@@ -770,6 +724,30 @@ struct MenuView: View {
                                 self.mildHaptics()
                                 GKAccessPoint.shared.isActive = false
                                 
+                                self.showingSettings.toggle()
+                            }) {
+                                Text("Settings")
+                                    .font(.system(size: 23))
+                                
+                            }
+                            .sheet(isPresented: self.$showingSettings) {
+                                SettingsView(showSignInView: $showSignInView)
+                            }
+                            
+                            
+                            
+                            Text("/")
+                                .font(.system(size: 23))
+                                .fontWeight(.bold)
+                                .foregroundColor(Color(brightTealColor))
+                            
+                            
+                            
+                            Button(action: {
+                                
+                                self.mildHaptics()
+                                GKAccessPoint.shared.isActive = false
+                                
                                 self.showingAbout.toggle()
                             }) {
                                 Text("About")
@@ -785,31 +763,31 @@ struct MenuView: View {
                         
                         
                         
-                       
-                            
+                        
+                        
                         
                         
                         
                     }.onAppear() {
                         
                         GameKitHelper.sharedInstance
-                        .authenticateLocalPlayer()
-                                                
+                            .authenticateLocalPlayer()
+                        
                     }
                     
                     /*
-                    Image("Paint Stripe Reveal")
-                        .frame(width: geometry.size.width, height: 250, alignment: .center)
-                        .offset(x: self.paintOffsetX, y: 3)
-                        .animation(.linear(duration: 0.5))
-                        .onAppear {
-                            let baseAnimation = Animation.linear(duration: 5.5)
-                            
-                            return withAnimation(baseAnimation) {
-                                self.paintOffsetX = 1700
-                            }
-                        }
-                 */
+                     Image("Paint Stripe Reveal")
+                     .frame(width: geometry.size.width, height: 250, alignment: .center)
+                     .offset(x: self.paintOffsetX, y: 3)
+                     .animation(.linear(duration: 0.5))
+                     .onAppear {
+                     let baseAnimation = Animation.linear(duration: 5.5)
+                     
+                     return withAnimation(baseAnimation) {
+                     self.paintOffsetX = 1700
+                     }
+                     }
+                     */
                     
                 }
                 
@@ -825,8 +803,6 @@ struct MenuView: View {
         }
         
     }
-    
-    
     
     
     
@@ -923,6 +899,72 @@ struct MenuView: View {
     
     
     
+}
+
+
+extension MenuView {
+    
+    private func menuSwatchStack(swatchHeight: CGFloat) -> some View {
+        
+        ZStack {
+            
+            SwatchStackView(color: self.blushColor,
+                            swatchHeight: swatchHeight,
+                            text: "",
+                            textField: nil,
+                            subtext: "",
+                            fontSize: 10,
+                            inGame: false,
+                            turnNumber: 0)
+            .offset(x: 13, y: -29)
+            .rotationEffect(.degrees(self.rotation1))
+            .onAppear {
+                //  let baseAnimation = Animation.easeInOut(duration: 1)
+                let baseAnimation = Animation.spring()
+                
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    return withAnimation(baseAnimation) {
+                        self.rotation1 = 14.0
+                    }
+                }
+            }
+            
+            SwatchStackView(color: self.darkGreenColor,
+                            swatchHeight: swatchHeight,
+                            text: "",
+                            textField: nil,
+                            subtext: "",
+                            fontSize: 10,
+                            inGame: false,
+                            turnNumber: 0)
+            .offset(x: -10, y: -23)
+            .rotationEffect(.degrees(self.rotation2))
+            .onAppear {
+                //   let baseAnimation = Animation.easeInOut(duration: 1)
+                let baseAnimation = Animation.spring()
+                
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    return withAnimation(baseAnimation) {
+                        self.rotation2 = -9.0
+                    }
+                }
+            }
+            SwatchStackView(color: self.tangerineColor,
+                            swatchHeight: swatchHeight,
+                            text: "Swatch This",
+                            textField: nil,
+                            subtext: "a game about \(colorLocalized)",
+                            fontSize: 10,
+                            inGame: false,
+                            turnNumber: 0)
+            
+            
+        }
+        
+        
+    }
 }
 
 

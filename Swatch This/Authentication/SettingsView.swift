@@ -11,7 +11,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @StateObject private var viewModel = SettingsViewModel()
+    @StateObject private var settingsViewModel = SettingsViewModel()
     @Binding var showSignInView: Bool
     
     var body: some View {
@@ -19,7 +19,7 @@ struct SettingsView: View {
             Button("Log out") {
                 Task {
                     do {
-                        try viewModel.signOut()
+                        try settingsViewModel.signOut()
                         showSignInView = true
                     } catch {
                         print(error)
@@ -31,7 +31,7 @@ struct SettingsView: View {
             Button(role: .destructive) {
                 Task {
                     do {
-                        try await viewModel.deleteAccount()
+                        try await settingsViewModel.deleteAccount()
                         // need to ask for conformation and re-authorize user to delete. Would also need to delete them from the Firestore database
                         showSignInView = true
                     } catch {
@@ -43,26 +43,22 @@ struct SettingsView: View {
                 Text("Delete account")
             }
             
-            if viewModel.authProviders.contains(.email) {
-                emailSection
-            }
-            
-            if viewModel.authUser?.isAnonymous == true {
+            if settingsViewModel.authUser?.isAnonymous == true {
                 anonymousSection
             }
         }
         .onAppear {
-            viewModel.loadAuthProviders()
-            viewModel.loadAuthUser()
+            settingsViewModel.loadAuthProviders()
+            settingsViewModel.loadAuthUser()
         }
         .navigationBarTitle("Settings")
     }
 }
 
 #Preview {
-    NavigationStack {
-        SettingsView(showSignInView: .constant(false))
-    }
+  //  NavigationStack {
+        SettingsView(showSignInView: .constant(true))
+  //  }
 }
 
 
@@ -77,40 +73,6 @@ struct SettingsView: View {
 
 extension SettingsView {
     
-    private var emailSection: some View {
-        
-        Section {
-            
-            Button("Reset password") {
-                Task {
-                    do {
-                        print("Password reset")
-                    }
-                }
-            }
-            
-            Button("Update password") {
-                Task {
-                    do {
-                        print("Password updated")
-                    }
-                }
-            }
-            
-            Button("Update email") {
-                Task {
-                    do {
-                        print("Email updated")
-                    }
-                }
-            }
-        } header: {
-            Text("Email functions")
-        }
-        
-        
-    }
-    
     private var anonymousSection: some View {
         
         Section {
@@ -118,7 +80,7 @@ extension SettingsView {
             Button("Link Google account") {
                 Task {
                     do {
-                        try await viewModel.linkGoogleAccount()
+                        try await settingsViewModel.linkGoogleAccount()
                         print("Google linked")
                     } catch {
                         print(error)
@@ -130,7 +92,7 @@ extension SettingsView {
             Button("Link Apple account") {
                 Task {
                     do {
-                     //   try await viewModel.linkAppleAccount()
+                        try await settingsViewModel.linkAppleAccount()
                         print("Apple linked")
                     } catch {
                         print(error)

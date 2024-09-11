@@ -8,7 +8,6 @@
 
 import Foundation
 import FirebaseFirestore
-//import FirebaseFirestoreSwift
 import Combine
 
 struct Movie: Codable {  // we'll store this movie struct within DBUser > Preferences
@@ -60,26 +59,6 @@ struct DBUser: Codable {
         self.favoriteMovie = favoriteMovie
     }
     
-    /* // superceded by mutating func, which is cleaner and doesn't expose the inner workings of the DBUser to other files
-     func togglePremiumStatus() -> DBUser {
-     let currentPremiumStatus = isPremium ?? false
-     return DBUser(
-     userID: userID,
-     isAnonymous: isAnonymous,
-     email: email,
-     photoURL: photoURL,
-     dateCreated: dateCreated,
-     isPremium: !currentPremiumStatus)
-     }
-     */
-    
-    /* // superceded by updateUserPremiumStatus, which is safer
-     mutating func togglePremiumStatus() {
-     let currentPremiumStatus = isPremium ?? false
-     isPremium = !currentPremiumStatus
-     }
-     */
-    
 }
 
 final class UserManager {
@@ -87,8 +66,8 @@ final class UserManager {
     static let shared = UserManager()
     private init() { }
     
-    private let userCollection: CollectionReference = Firestore.firestore().collection("users")
-    
+    private let userCollection: CollectionReference = Firestore.firestore().collection("Users")
+
     private func userDocument(userID: String) -> DocumentReference {
         userCollection.document(userID)
     }
@@ -99,27 +78,29 @@ final class UserManager {
         return collectionRef
     }
     
+    private func userMatchesCollection(userID: String) -> CollectionReference {
+        let collectionRef = userDocument(userID: userID).collection("UserMatches")
+        print("collectionRef: \(collectionRef)")
+        return collectionRef
+    }
+    
     private func userFavoriteProductDocument(userID: String, favoriteProductID: String) -> DocumentReference {
         let favDoc = userFavoriteProductCollection(userID: userID).document(favoriteProductID)
       //  print("favDoc: \(favDoc)")
         return favDoc
     }
     
-    /* // no longer need encoder/decoder as I'm just using camelCase in database
-     private let encoder: Firestore.Encoder = {
-     let encoder = Firestore.Encoder()
-     encoder.keyEncodingStrategy = .convertToSnakeCase
-     return encoder
-     }()
-     
-     private let decoder: Firestore.Decoder = {
-     let decoder = Firestore.Decoder()
-     decoder.keyDecodingStrategy = .convertFromSnakeCase
-     return decoder
-     }()
-     */
+    private func userMatchDocument(userID: String, matchID: String) -> DocumentReference {
+        let matchDoc = userMatchesCollection(userID: userID).document(matchID)
+        print("matchDoc: \(matchDoc)")
+        return matchDoc
+    }
+    
     
     private var userFavoriteProductsListener: ListenerRegistration? = nil
+    
+    private var userMatchesListener: ListenerRegistration? = nil
+
     
     
     
@@ -127,55 +108,12 @@ final class UserManager {
         try userDocument(userID: user.userID).setData(from: user, merge: false)
     }
     
-    // previous function is a much cleaner way of doing this
-    //    func createNewUser(auth: AuthDataResultModel) async throws {
-    //        var userData: [String : Any] = [
-    //            "user_id" : auth.uid,
-    //            "is_anonymous" : auth.isAnonymous,
-    //            "date_created" : Timestamp(),
-    //        ]
-    //
-    //        if let email = auth.email {
-    //            userData["email"] = email
-    //        }
-    //
-    //        if let photoURL = auth.photoUrl {
-    //            userData["photo_url"] = photoURL
-    //        }
-    //
-    //        try await userDocument(userID: auth.uid).setData(userData, merge: false)
-    //
-    //    }
     
     func getUser(userID: String) async throws -> DBUser {
         print("userID: \(userID)")
         return try await userDocument(userID: userID).getDocument(as: DBUser.self)
     }
     
-    //    // previous function is a much cleaner way of doing this
-    //    func getUser(userID: String) async throws -> DBUser {
-    //        let snapshot = try await userDocument(userID: userID).getDocument()
-    //
-    //        guard let data = snapshot.data(), let userID = data["user_id"] as? String else {
-    //            throw URLError(.badServerResponse)
-    //        }
-    //
-    //        let isAnonymous = data["is_anonymous"] as? Bool
-    //        let email = data["email"] as? String
-    //        let photoURL = data["photo_url"] as? String
-    //        let dateCreated = data["date_created"] as? Date
-    //
-    //        return DBUser(userID: userID, isAnonymous: isAnonymous, email: email, photoURL: photoURL, dateCreated: dateCreated)
-    //
-    //    }
-    
-    
-    /*
-     // this is dangerous because it updates all fields in the database for this user, not just premiumStatus
-     func updateUserPremiumStatus(user: DBUser) async throws {
-     try userDocument(userID: user.userID).setData(from: user, merge: true)
-     }
-     */
     
     func updateUserPremiumStatus(userID: String, isPremium: Bool) async throws {
         let data: [String:Any] = [
@@ -184,6 +122,10 @@ final class UserManager {
         
         try await userDocument(userID: userID).updateData(data)
     }
+    
+    
+    
+    ////
     
     func addUserPreference(userID: String, preference: String) async throws {
         let data: [String:Any] = [
@@ -243,87 +185,53 @@ final class UserManager {
         try await userFavoriteProductDocument(userID: userID, favoriteProductID: favoriteProductID).delete()
     }
     
-    /*
-    func getAllUserFavoriteProducts(userID: String) async throws -> [UserFavoriteProduct] {
-        print("userID: \(userID)")
-        
-        
-        // Get the Firestore reference
-        let db = Firestore.firestore()
-        
-        /*
-        // Reference the document in Firestore
-        let favoriteProductID = "3Sy5hNn93EfI1tt2Ijhd"  // Replace with your actual favorite product ID
-        let favoriteProductDocRef = db.collection("users").document(userID).collection("favoriteProducts").document(favoriteProductID)
-
-        // Fetch the document
-        favoriteProductDocRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                let data = document.data()
-                print("Favorite Product Data: \(String(describing: data))")
-            } else {
-                print("Document does not exist or error: \(String(describing: error))")
-            }
-        }
-        */
-       
-        let collection = userFavoriteProductCollection(userID: userID)
-        print("collection: \(String(describing: collection))")
-
-        // Reference the collection in Firestore
-     //   let favoriteProductsCollectionRef = db.collection("users").document(userID).collection("favoriteProducts")
-        let favoriteProductsCollectionRef = collection
-
-        var favoriteProducts: [UserFavoriteProduct] = []
-
-        
-        // Fetch all documents in the collection
-        favoriteProductsCollectionRef.getDocuments { (querySnapshot, error) in
-            if let error = error {
-                print("Error getting documents: \(error)")
-            } else {
-                for document in querySnapshot!.documents {
-                    
-                    print("Favorite document: \(document)")
-
-                    
-                    let product: UserFavoriteProduct = UserFavoriteProduct(id: "abc", productID: 1, dateCreated: Date())
-                    
-                    
-                    // Append each document ID to the array
-                    favoriteProducts.append(product)
-                    // If you need the document data:
-                   //  let data = document.data()
-                   //  print("Favorite Product Data 2: \(data)")
-                }
-                print("Favorite Products: \(favoriteProducts)")
-                return favoriteProducts
-            }
-        }
-        
-        
-        
-        
-        let favDocs = try await collection.getDocuments(as: UserFavoriteProduct.self)
-        
-        
-        /*
-        guard let collectionTest = try? await userFavoriteProductCollection(userID: userID).getDocuments(as: UserFavoriteProduct.self) else {
-            throw URLError(.badURL)
-        }
-        */
-     //   print("favDocs: \(favDocs)")
+    /////
     
-    }
-    */
+    
     
     func getAllUserFavoriteProducts(userID: String) async throws -> [UserFavoriteProduct] {
         try await userFavoriteProductCollection(userID: userID).getDocuments(as: UserFavoriteProduct.self)
     }
     
+    func getAllUserMatches(userID: String) async throws -> [UserMatch] {
+        try await userMatchesCollection(userID: userID).getDocuments(as: UserMatch.self)
+    }
+    
     func removeListenerForAllUserFavoriteProducts() {
         self.userFavoriteProductsListener?.remove()
     }
+    
+    func removeListenerForAllUserMatches() {
+        self.userMatchesListener?.remove()
+    }
+
+    /*
+    private func getAllActiveUserMatches(userID: String) -> Query {
+        userMatchesCollection(userID: userID).whereField(UserMatch.CodingKeys.isCompleted.rawValue, isEqualTo: true)
+    }
+    
+    func getAllUserMatches(active isActive: Bool?,
+                        lastDocument: DocumentSnapshot?)
+    async throws -> (
+        matches: [UserMatch],
+        lastDocument: DocumentSnapshot?
+    ) {
+        
+        var query: Query = getAllMatchesQuery()
+        
+        if let isActive {
+            query = getAllUserMatches(active: isActive, lastDocument: <#T##DocumentSnapshot?#>)(descending: descending, category: category)
+        } else {
+            query = getAllProductsForCategoryQuery(category: category)
+        }
+        
+        return try await query
+            .startOptionally(afterDocument: lastDocument)
+            .getDocumentsWithSnapshot(as: Product.self)
+        
+    }
+    */
+   
     
     
     func addListenerForAllUserFavoriteProducts(userID: String, completion: @escaping (_ products: [UserFavoriteProduct]) -> Void) {
@@ -358,36 +266,60 @@ final class UserManager {
     }
     
     /*
-    func addListenerForAllUserFavoriteProducts(userID: String) -> AnyPublisher<[UserFavoriteProduct], Error> {
+    func addListenerForAllUserMatches(userID: String, completion: @escaping (_ products: [UserMatch]) -> Void) {
                 
-        let publisher = PassthroughSubject<[UserFavoriteProduct], Error>()
-        
-        self.userFavoriteProductsListener = userFavoriteProductCollection(userID: userID).addSnapshotListener { querySnapshot, error in
+        self.userMatchesListener = userMatchesCollection(userID: userID).addSnapshotListener { querySnapshot, error in
             
             guard let documents = querySnapshot?.documents else {
                 print("no documents")
                 return
             }
             
-            let products: [UserFavoriteProduct] = documents.compactMap { documentSnapshot in
-                return try? documentSnapshot.data(as: UserFavoriteProduct.self)
+            let matches: [UserMatch] = documents.compactMap { documentSnapshot in
+                return try? documentSnapshot.data(as: UserMatch.self)
             }
-            publisher.send(products)
+            completion(matches)
+            
+            querySnapshot?.documentChanges.forEach { diff in
+                if (diff.type == .added) {
+                    print("New products: \(diff.document.data())")
+                }
+                if (diff.type == .modified) {
+                    print("Modified products: \(diff.document.data())")
+                }
+                if (diff.type == .removed) {
+                    print("Removed products: \(diff.document.data())")
+                }
+                
+                
+            }
         }
         
-        return publisher.eraseToAnyPublisher()
     }
     */
-    
     
     func addListenerForAllUserFavoriteProducts(userID: String) -> AnyPublisher<[UserFavoriteProduct], Error> {
                 
         let (publisher, listener) = userFavoriteProductCollection(userID: userID)
             .addSnapshotListener(as: UserFavoriteProduct.self)
-        
+
+
         self.userFavoriteProductsListener = listener
         return publisher
     }
+        
+    func addListenerForAllUserMatches(userID: String, isCompleted: Bool) -> AnyPublisher<[UserMatch], Error> {
+                
+        let (publisher, listener) = userMatchesCollection(userID: userID)
+            .whereField(UserMatch.CodingKeys.isCompleted.rawValue, isEqualTo: isCompleted)
+            .order(by: UserMatch.CodingKeys.dateCreated.rawValue, descending: true)
+            .addSnapshotListener(as: UserMatch.self)
+        
+        self.userMatchesListener = listener
+        return publisher
+    }
+    
+    
     
 }
 
@@ -396,3 +328,25 @@ struct UserFavoriteProduct: Codable {
     let productID: Int
     let dateCreated: Date
 }
+
+// the UserMatch is a list of matche IDs that the user is or was part of
+// these are all case sensitive
+struct UserMatch: Identifiable, Codable, Equatable {
+    let id: String
+    let matchID: String
+    let isCompleted: Bool
+    let dateCreated: Date
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case matchID
+        case isCompleted
+        case dateCreated
+    }
+    
+    static func ==(lhs: UserMatch, rhs: UserMatch) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+}
+

@@ -72,6 +72,7 @@ extension Query {
             }
             
             let products: [T] = documents.compactMap { documentSnapshot in
+                print("documents found")
                 return try? documentSnapshot.data(as: T.self)
             }
             publisher.send(products)

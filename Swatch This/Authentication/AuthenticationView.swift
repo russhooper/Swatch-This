@@ -42,7 +42,7 @@ struct AuthenticationView: View {
                     .cornerRadius(10)
             })
             
-            /*
+            
             GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
                 Task {
                     do {
@@ -53,8 +53,8 @@ struct AuthenticationView: View {
                     }
                 }
             }
-            */
-            /*
+            
+            
             // Apple sign in button
             Button(action: {
                 Task {
@@ -73,7 +73,7 @@ struct AuthenticationView: View {
                     .allowsHitTesting(false) // set SignIn button to basically just be the image inside of the SwiftUI button
             })
             .frame(height: 55)
-            */
+            
             Spacer()
         }
         .padding()
@@ -82,10 +82,11 @@ struct AuthenticationView: View {
 }
 
 
-//#Preview {
-//   AuthenticationView()
-// }
+#Preview {
+   AuthenticationView(showSignInView: .constant(false))
+ }
 
+/*
 struct AuthenticationView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
@@ -93,3 +94,4 @@ struct AuthenticationView_Previews: PreviewProvider {
         }
     }
 }
+*/
