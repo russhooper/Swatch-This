@@ -16,6 +16,9 @@ final class MatchesViewModel: ObservableObject {
     @Published private(set) var userActiveMatches: [UserMatch] = []
     @Published private(set) var userCompletedMatches: [UserMatch] = []
 
+    @Published private(set) var match: [UserMatch] = []
+
+    
     private var cancellables = Set<AnyCancellable>()
     
     func addListenerForActiveMatches() {
@@ -49,17 +52,16 @@ final class MatchesViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    
-    func removeFromFavorites(favoriteProductID: String) {
-        Task {
-            let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
-            try? await UserManager.shared.removeUserFavoriteProduct(userID: authDataResult.uid, favoriteProductID: favoriteProductID)
-        }
+    func removeListenerForCompletedMatches() {
+        
+        UserManager.shared.removeListenerForCompletedUserMatches()
+        
     }
     
+
     
     
-    // superseded by addListenerForFavorites()
+    
     func getMatches() {
         Task {
             
@@ -89,6 +91,8 @@ final class MatchesViewModel: ObservableObject {
             
         }
     }
+    
+    
     
 }
 

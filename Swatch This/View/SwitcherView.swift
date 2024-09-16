@@ -223,14 +223,14 @@ struct SwitcherView: View {
                 if self.viewRouter.onlineGame == false {
                     
                     if self.gameData.colorIndices == [0,0,0,0] { // if the data is the defaults, we'll create a new game
-                        
+                       /*
                         ContentView(gameData: self.generateNewGameDataReturn(indiciesCount: 4, localRematch: false),
                                     turnData: self.resetTurnData(),
                                     playerCount: self.viewRouter.playerCount,
                                     onlineGame: false,
                                     colorIndices: self.gameData.colorIndices,
                                     playDealAnimation: false)   // should match onlineGame
-                        
+                        */
                     } else { // if there is non-default data, we assume it was from this game (since it should've been reset otherwise) and we'll resume
                         
                         
@@ -276,7 +276,7 @@ struct SwitcherView: View {
                                         turnData: self.turnData,
                                         playerCount: self.viewRouter.playerCount,
                                         onlineGame: true,
-                                        colorIndices: self.gameData.colorIndices,
+                                        colorIndices: self.gameData.colorIndices, // why is this getting reset?
                                         playDealAnimation: true) // should match onlineGame
                             
                         } else {    // in guess color phase
@@ -425,8 +425,6 @@ struct SwitcherView: View {
     }
     
     private func loadAndDisplay(loadedMatch: GKTurnBasedMatch) {
-        
-        loadedMatch
         
         print("initial loadedMatch.participants = \(loadedMatch.participants)")
         print("initial loadedMatch.ID = \(loadedMatch.matchID)")

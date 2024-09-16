@@ -11,43 +11,46 @@ import Foundation
 
 // these are all case sensitive
 struct Match: Identifiable, Codable, Equatable {
-    let id: Int
-    let title: String?
-    let description: String?
-    let price: Int?
-    let discountPercentage: Double?
-    let rating: Double?
-    let stock: Int?
-    let brand, category: String?
-    let thumbnail: String?
-    let images: [String]?
+    let id: String // need id for Identifiable
     
     let matchID: String
-    let phase: Int?
-    let playerIDs: [String]?
+    let playerIDs: [String]
+    
     let appVersion: Float?
+
+    // array (round) of dictionaries: colorIndex (int), createdNames (array of strings), guessed names (array of strings)
+    var colors: [Round] // Array of Round structs, which contain the data for each match round
+        
+        
+    
+  //  let colorIndices: [Int]?
+    
+    let dateCreated: Date?
+    let phase: Int? // 1 for name creation phase, 2 for guessing phase, 3 for complete
+    let playerDisplayNames: [String?]? // optional strings in an optional array
+    
     
     enum CodingKeys: String, CodingKey {
         case id
-        case title
-        case description
-        case price
-        case discountPercentage
-        case rating
-        case stock
-        case brand
-        case category
-        case thumbnail
-        case images
-        
         case matchID
-        case phase
         case playerIDs
         case appVersion
+        case colors
+     //   case colorIndices
+        case dateCreated
+        case phase
+        case playerDisplayNames
     }
     
     static func ==(lhs: Match, rhs: Match) -> Bool {
         return lhs.id == rhs.id
     }
     
+}
+
+
+struct Round: Codable, Equatable {
+    var colorIndex: Int
+    var createdNames: [String?]?
+    var guessedNames: [String?]?
 }

@@ -854,9 +854,7 @@ struct ContentView: View {
     
     func gameSwatchView(turnNumber: Int, swatchHeight: CGFloat, tag: Int) -> some View {
         
-        
         let fontSize: CGFloat = 15
-        
         
         let swatchColor = hexColor(gameBrain.getColorHex(turn: turnNumber,
                                                          indexArray: self.colorIndices))

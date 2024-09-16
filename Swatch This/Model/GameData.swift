@@ -100,3 +100,4 @@ final class GameData: ObservableObject, Codable {
     var appVersion: Float = 1.0 // will be set to the app version when the match was created
     
 }
+

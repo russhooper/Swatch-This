@@ -16,12 +16,7 @@ struct ProductsView: View {
         List {
             ForEach(viewModel.products) { product in
                 ProductCellView(product: product)
-                    .contextMenu(ContextMenu(menuItems: {
-                        Button("Add to favorites") {
-                            viewModel.addUserFavoriteProduct(productID: product.id)
-                        }
-                    }))
-                
+                    
                 if product == viewModel.products.last { // would probably want to call at last-5 objects to have more time to load
                     ProgressView()
                         .onAppear {

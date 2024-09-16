@@ -83,14 +83,7 @@ final class ProductsViewModel: ObservableObject {
         }
     }
     
-    func addUserFavoriteProduct(productID: Int) {
-        Task {
-            let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
-            try? await UserManager.shared.addUserFavoriteProduct(userID: authDataResult.uid, productID: productID)
-        }
-        
-        
-    }
+    
     
     
     func getProductsCount() {

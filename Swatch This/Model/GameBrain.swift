@@ -65,7 +65,7 @@ struct GameBrain {
 
    //     returnArray = [68, 181, 153]  //  for screenshots. I used this
     //    returnArray = [18, 181, 153]  //  for screenshots
-    //         returnArray = [132, 181, 153]  //  for screenshots
+    //    returnArray = [132, 181, 153]  //  for screenshots
         // returnArray = [13, 181, 153]  //  for screenshots.
 
 

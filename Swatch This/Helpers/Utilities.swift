@@ -34,3 +34,9 @@ final class Utilities {
     }
     
 }
+
+// generates a random string of length 20 that can be used as match IDs
+func randomString() -> String {
+    let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    return String((0..<20).map { _ in characters.randomElement()! })
+}
