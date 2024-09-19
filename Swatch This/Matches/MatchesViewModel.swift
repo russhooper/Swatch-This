@@ -59,7 +59,29 @@ final class MatchesViewModel: ObservableObject {
     }
     
 
-    
+    func getMatchData(userMatch: UserMatch) {
+        
+        Task {
+            do {
+                
+                let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
+                print(match.matchID)
+                
+                MatchData.shared.colorIndices = match.colors.map {  round in
+                    return round.colorIndex
+                } // Use map to extract colorIndex from each Round in the colors array
+                
+                MatchData.shared.onlineGame = true
+
+                
+                
+            } catch {
+                print(error)
+            }
+        }
+        
+        
+    }
     
     
     func getMatches() {

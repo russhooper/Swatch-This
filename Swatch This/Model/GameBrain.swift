@@ -266,14 +266,13 @@ struct GameBrain {
     
     mutating func setupPlayers(playerCount: Int) -> [String: Int] {
         
-        // starter array already has Player 1 and Player 2
-        var i = 3
+        // starter array already has Player 1
+        var i = 2
         
         // array of dictionaries of player, score
         var updatedPlayersArray = [
             "Player 1": 0,
-            "Player 2": 0
-        ]   // will have at least 2 players
+        ]   // will have at least 1 players
         
         while  updatedPlayersArray.count < playerCount {
             
@@ -351,7 +350,119 @@ struct GameBrain {
     
     
     
-   
+    
+    func processTurn(userColorName: String, turnData: TurnData, playerCount: Int) -> [Int] {
+        
+        let turn = turnData.turnArray[0]
+        let trimmedName = checkName(userColorName: userColorName, turn: turn)
+        
+        MatchData.shared.colors[turn].createdNames = storeName(userColorName: trimmedName, turn: turn, playerCount: playerCount)
+
+        print("MatchData: \(MatchData.shared.colors[turn])")
+
+        
+        /*
+        // turn will only be 0 at this point if we've gone through the 4 submissions
+        if MatchData.shared.onlineGame == true && self.turnData.turnArray[0] == 0 {
+            
+            //   self.hideKeyboard()
+            
+            
+            
+            MatchData.shared.turnArray = self.turnData.turnArray
+            
+            gameBrain.endOnlineTurn(matchData: MatchData.shared)
+        }
+         */
+        
+        print("turnArray A: \(turnData.turnArray)")
+
+        
+        // advance the game
+        return gameBrain.advanceGame(turnArray: turnData.turnArray,
+                                                        indexArray: MatchData.shared.colorIndices,
+                                                        playerCount: playerCount)
+        
+        
+    }
+    
+    
+    
+    
+    
+    func checkName(userColorName: String, turn: Int) -> String {
+        
+        /*
+         // set up players if this is the first submission of the game
+         if  self.turnData.turnArray[0] == 0 && self.turnData.turnArray[1] == 0 {
+         
+         MatchData.shared.players = gameBrain.setupPlayers(playerCount: self.playerCount)
+         MatchData.shared.playersByRound = gameBrain.setupPlayersByRound(playerCount: self.playerCount)
+         
+         if let appVersion = Float(UIApplication.appVersion!) {
+         MatchData.shared.appVersion = appVersion   // the app version when the match was created
+         }
+         
+         }
+         */
+        
+        
+        // remove leading and trailing spaces and tabs
+        var trimmedName = userColorName.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        
+        if let createdNames = MatchData.shared.colors[turn].createdNames?.values {
+         //   let createdNamesArray = Array(createdNames)
+            // Use createdNames here
+            
+            // check that the user didn't create another submitted name
+            if createdNames.contains(trimmedName.localizedCapitalized) {
+                
+                // make it not technically match the real one by adding a space at the end
+                trimmedName.append(" ")
+                // this isn't an ideal fix, but at least it should smooth things out a bit
+                
+            } else {
+                
+                // check that the user didn't actually create the real name
+                if trimmedName.capitalized == gameBrain.getColorName(turn: turn, indexArray: MatchData.shared.colorIndices).capitalized {
+                    
+                    // make it not technically match the real one by adding a space at the end
+                    trimmedName.append(" ")
+                    // this isn't an ideal fix, but at least it should smooth things out a bit
+                    
+                }
+            }
+            
+            
+        } else {
+            // createdNames is nil
+        }
+        
+        // by this point the name will be safe to upload
+        return trimmedName
+    }
+    
+    
+    
+    
+    func storeName(userColorName: String, turn: Int, playerCount: Int) -> [String: String] {
+        
+        var round = MatchData.shared.colors[turn]
+            
+        if var createdNames = MatchData.shared.colors[turn].createdNames {
+            // If createdNames is not nil, modify it
+            createdNames[MatchData.shared.localPlayerID] = userColorName
+            return createdNames // Assign the updated dictionary back to MatchData
+
+        } else {
+            // If createdNames is nil, create a new dictionary and assign the value
+            return [MatchData.shared.localPlayerID: userColorName]
+        }
+    }
+    
+    
+    
     
     mutating func advanceGame(turnArray: [Int], indexArray: [Int], playerCount: Int) -> [Int] {
         
@@ -717,6 +828,11 @@ struct GameBrain {
         }
     }
     
+    func endOnlineTurn(matchData: MatchData) {
+        
+        //
+    }
+    
     func endOnlineGame(gameData: GameData) {
         
         var isTie = false
@@ -746,7 +862,10 @@ struct GameBrain {
         }
     }
     
-    
+    func endOnlineGame(matchData: MatchData) {
+        
+       //
+    }
     
     func saveMatchToHistory(gameData: GameData) {
        
@@ -836,6 +955,10 @@ struct GameBrain {
         
     }
     
+    func saveMatchToHistory(matchData: MatchData) {
+       
+        
+    }
     
     func getLocalPlayerNum(localPlayerDisplayName: String, gameData: GameData) -> String {
         

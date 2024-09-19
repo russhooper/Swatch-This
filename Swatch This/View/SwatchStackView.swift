@@ -21,7 +21,6 @@ struct SwatchStackView: View {
     let turnNumber: Int
     
     let blushColor: UInt32 = 0xf95352
-    let tangerineColorText: UInt32 = 0xFA9343
 
     
     var body: some View {
@@ -98,7 +97,7 @@ struct SwatchStackView: View {
                 }
             }
         }
-        .accentColor(Color(tangerineColorText))
+        .accentColor(Color(DefaultColors.shared.tangerineColorText))
 
     }
 }

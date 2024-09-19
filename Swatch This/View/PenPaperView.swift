@@ -27,9 +27,7 @@ struct PenPaperView: View {
     @EnvironmentObject var observer: SwipeObserver
     
     @State var showQuit = false
-    
-    let tangerineColorText: UInt32 = 0xFA9343
-    
+        
     
     let invertedColorArray = ["White", "Yellow", "Light Blue", "Light Pink", "Light Gray", "Light Green"]
     
@@ -416,7 +414,7 @@ struct PenPaperView: View {
                 
                 
             }
-            .accentColor(Color(tangerineColorText))
+            .accentColor(Color(DefaultColors.shared.tangerineColorText))
             
         }
     }

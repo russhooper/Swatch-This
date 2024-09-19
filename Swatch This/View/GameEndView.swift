@@ -51,7 +51,6 @@ struct GameEndView: View {
     
     
     let blushColor: UInt32 = 0xf95352
-    let tangerineColorText: UInt32 = 0xFA9343
     let mediumTealColor: UInt32 = 0x54A5B6
     let mercuryColor: UInt32 = 0xEBEBEB
     
@@ -417,7 +416,7 @@ struct GameEndView: View {
                 }
                 
                 
-                .accentColor(Color(tangerineColorText))
+                .accentColor(Color(DefaultColors.shared.tangerineColorText))
                 
                 
                 // show the iPad's transition view if coming here not as last player, starting as the swatches filling the screen. Yes, the iPad's, for simplicity. The iPhone's transition actually occurs in GuessColorsView
@@ -749,7 +748,7 @@ struct GameEndView: View {
                                                 if sortedPlayer == self.selection {
                                                     
                                                     Image(systemName: "chevron.right")
-                                                        .foregroundColor(Color(tangerineColorText))
+                                                        .foregroundColor(Color(DefaultColors.shared.tangerineColorText))
                                                     //     .bold()
                                                         .font(Font.system(size: 20, weight: .bold))
                                                     
@@ -785,7 +784,7 @@ struct GameEndView: View {
                             .frame(width: geoWidth50)
                             
                         }
-                        .accentColor(Color(tangerineColorText))
+                        .accentColor(Color(DefaultColors.shared.tangerineColorText))
                         .animation(Animation.easeOut(duration: 0.3))
                         
                         if self.viewRouter.onlineGame == false {   // online matches are saved so we don't need to ask about quitting in that case

@@ -71,9 +71,7 @@ struct SwitcherView: View {
     @State var colorIndices: [Int] = [
         0
     ]
-    
-    let tangerineColorText: UInt32 = 0xFA9343
-    
+        
     
     // @StateObject var storeManager = StoreManager()
     
@@ -121,7 +119,7 @@ struct SwitcherView: View {
         .alert(item: $alertId) { (alertId) -> Alert in
             return createAlert(alertId: alertId)
         }
-        .accentColor(Color(tangerineColorText))
+        .accentColor(Color(DefaultColors.shared.tangerineColorText))
         .onReceive(presentGamePub) { output in
             self.presentGame(output)
         }
@@ -223,14 +221,14 @@ struct SwitcherView: View {
                 if self.viewRouter.onlineGame == false {
                     
                     if self.gameData.colorIndices == [0,0,0,0] { // if the data is the defaults, we'll create a new game
-                       /*
+                       
                         ContentView(gameData: self.generateNewGameDataReturn(indiciesCount: 4, localRematch: false),
                                     turnData: self.resetTurnData(),
                                     playerCount: self.viewRouter.playerCount,
                                     onlineGame: false,
                                     colorIndices: self.gameData.colorIndices,
                                     playDealAnimation: false)   // should match onlineGame
-                        */
+                        
                     } else { // if there is non-default data, we assume it was from this game (since it should've been reset otherwise) and we'll resume
                         
                         
@@ -272,12 +270,13 @@ struct SwitcherView: View {
                         if gameBrain.isSubmissionEnd(roundsFinished: self.gameData.turnArray[1],
                                                      playerCount: self.viewRouter.playerCount) == false {
                             
-                            ContentView(gameData: self.gameData,
-                                        turnData: self.turnData,
+                            
+                            NameColorsView(turnData: self.turnData,
                                         playerCount: self.viewRouter.playerCount,
-                                        onlineGame: true,
-                                        colorIndices: self.gameData.colorIndices, // why is this getting reset?
-                                        playDealAnimation: true) // should match onlineGame
+                                        playDealAnimation: MatchData.shared.onlineGame) // should match onlineGame
+                            
+                            
+                            
                             
                         } else {    // in guess color phase
                             

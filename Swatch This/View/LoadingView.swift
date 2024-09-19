@@ -13,7 +13,6 @@ struct LoadingView: View {
     @EnvironmentObject var viewRouter: ViewRouter
    
     let blushColor: UInt32 = 0xf95352
-    let tangerineColorText: UInt32 = 0xFA9343
 
     
     var body: some View {
@@ -57,7 +56,7 @@ struct LoadingView: View {
                 Spacer()
             }
         }
-        .accentColor(Color(tangerineColorText))
+        .accentColor(Color(DefaultColors.shared.tangerineColorText))
 
     }
 }

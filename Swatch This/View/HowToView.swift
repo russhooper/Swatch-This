@@ -49,7 +49,6 @@ struct HowToView: View {
         
         let geoWidth = geometry.size.width
       
-        let tangerineColorText: UInt32 = 0xFA9343
 
         
         
@@ -99,7 +98,7 @@ struct HowToView: View {
                         
                         
                     }
-                    .accentColor(Color(tangerineColorText))
+                    .accentColor(Color(DefaultColors.shared.tangerineColorText))
                     .frame(width: geoWidth)
                     
                 }

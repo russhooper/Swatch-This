@@ -33,12 +33,19 @@ final class MatchesManager {
     }
     
     
-    func createMatch() {
+    func createMatch() { // should differentiate between online and local and not upload online at this point
         
-        let indiciesCount = 4
+        let indiciesCount = 4 //
 
-        self.gameData.colorIndices = GameBrain().generateNIndices(count: indiciesCount)
+        MatchData.shared.colorIndices = GameBrain().generateNIndices(count: indiciesCount)
+        MatchData.shared.onlineGame = true
 
+        
+        let rounds: [Round] = MatchData.shared.colorIndices.map { index in
+            Round(colorIndex: index, createdNames: nil, guessedNames: nil)
+        }
+        
+        MatchData.shared.colors = rounds
         
         Task {
             do {
@@ -46,11 +53,9 @@ final class MatchesManager {
                 guard let authDataResult = try? AuthenticationManager.shared
                     .getAuthenticatedUser() else { return }
                 
-                                
+                MatchData.shared.localPlayerID = authDataResult.uid
 
-                let rounds: [Round] = self.gameData.colorIndices.map { index in
-                    Round(colorIndex: index, createdNames: nil, guessedNames: nil)
-                }
+                
                 
                 let matchID = randomString()
                 let dateCreated = Date()

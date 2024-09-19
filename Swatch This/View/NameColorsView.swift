@@ -1,10 +1,11 @@
 //
-//  ContentView.swift
+//  CreateColorsView.swift
 //  Swatch This
 //
-//  Created by Russ Hooper on 7/8/20.
-//  Copyright © 2020 Radio Silence. All rights reserved.
+//  Created by Russ Hooper on 9/17/24.
+//  Copyright © 2024 Radio Silence. All rights reserved.
 //
+
 
 import SwiftUI
 import CoreHaptics
@@ -12,16 +13,31 @@ import Introspect
 //import AVFoundation
 
 
+prefix operator ⋮
+prefix func ⋮(hex:UInt32) -> Color {
+    return Color(hex)
+}
 
-var gameBrain = GameBrain()
+extension Color {
+    init(_ hex: UInt32, opacity:Double = 1.0) {
+        let red = Double((hex & 0xff0000) >> 16) / 255.0
+        let green = Double((hex & 0xff00) >> 8) / 255.0
+        let blue = Double((hex & 0xff) >> 0) / 255.0
+        self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
+    }
+}
 
 
-struct ContentView: View {
+let hexColor:(UInt32) -> (Color) = {
+    return Color($0)
+}
+
+
+struct NameColorsView: View {
     
     @State private var engine: CHHapticEngine?
     
     
-    var gameData: GameData
     var turnData: TurnData
     
     @State private var passToNextPlayer = false
@@ -34,8 +50,6 @@ struct ContentView: View {
     
     // get passed in from menu
     let playerCount: Int
-    let onlineGame: Bool
-    var colorIndices: [Int]
     //  @Binding var isPresented: Bool
     @State var playDealAnimation: Bool
     
@@ -90,6 +104,10 @@ struct ContentView: View {
                 
             } else {
                 
+                GeometryReader(content: geometricView(with:))
+
+                /*
+                
                 if horizontalSizeClass == .regular && verticalSizeClass == .regular {   // iPad
                     if self.prepLastSwatch == false {
                         GeometryReader(content: geometricView(with:))
@@ -99,7 +117,7 @@ struct ContentView: View {
                 } else {
                     GeometryReader(content: geometricView(with:))
                 }
-               
+               */
             }
             
         }
@@ -124,9 +142,6 @@ struct ContentView: View {
         } else {
             swatchHeight = min(max(geoWidth * 0.75, 250), 370)
         }
-        
-        
-        
         
         
         
@@ -176,8 +191,8 @@ struct ContentView: View {
         }
         
         let shouldShowUsernameEntry = gameBrain.shouldShowUsernameEntry(turnData: self.turnData.turnArray,
-                                                                        displayNames: self.gameData.displayNames,
-                                                                        onlineGame: self.onlineGame,
+                                                                        displayNames: MatchData.shared.displayNames,
+                                                                        onlineGame: MatchData.shared.onlineGame,
                                                                         showUsernameToggle: self.showUsernameToggle)
         
         
@@ -185,7 +200,7 @@ struct ContentView: View {
         
         return Group {
             
-            if self.isSubmissionEnd == false {
+         //   if self.isSubmissionEnd == false {
                 
                 
                 if shouldShowUsernameEntry == true {
@@ -278,7 +293,7 @@ struct ContentView: View {
                                 .animation(.timingCurve(0.02, 0.95, 0.4, 0.95, duration: self.flingDuration))
                             
                             
-                            if self.onlineGame == false {   // online game progress is saved so we don't need to ask about quitting in that case
+                            if MatchData.shared.onlineGame == false {   // online game progress is saved so we don't need to ask about quitting in that case
                                 
                                 quitView(swatchHeight: swatchHeight)
                                     .padding(.bottom, 80)
@@ -307,13 +322,13 @@ struct ContentView: View {
                 
                 
                 
-            }
+          //  }
             
-            
+            /*
             if self.passToNextPlayer == true {
                 
                 
-                if self.onlineGame == false {
+                if MatchData.shared.onlineGame == false {
                     
                     ZStack {
                         
@@ -410,20 +425,21 @@ struct ContentView: View {
                     
                 } else {
                     
-                    OtherPlayersTurn(colorIndices: self.colorIndices, rotations: gameBrain.generate4Angles())
+                    OtherPlayersTurn(colorIndices: MatchData.shared.colorIndices, rotations: gameBrain.generate4Angles())
                         .environmentObject(ViewRouter.sharedInstance)
                     //    .transition(.move(edge: .trailing))
 
                     
                 }
             } else if self.isSubmissionEnd == true {
-                
+                /*
                 GuessColorsView(gameData: self.gameData,
                                 turnData: self.turnData,
                                 playerCount: self.playerCount,
                                 viewRouter: self._viewRouter)
-                
+                */
             }
+             */
         }
         
         
@@ -579,7 +595,7 @@ struct ContentView: View {
         
     }
     
-    
+    /*
     func geometricFlingEndView(with geometry: GeometryProxy) -> some View {
         
         let geoWidth = geometry.size.width
@@ -716,7 +732,7 @@ struct ContentView: View {
         
         
     }
-    
+    */
     
     func submitDisplayName(swatchHeight: CGFloat, geoWidth: CGFloat, geoHeight: CGFloat) -> some View {
         
@@ -769,7 +785,7 @@ struct ContentView: View {
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // to allow time for paint animation
                             
-                            self.gameData.displayNames = gameBrain.updateUserName(round: self.turnData.turnArray[1], userName: self.enteredPlayerName, displayNames: self.gameData.displayNames)
+                            MatchData.shared.displayNames = gameBrain.updateUserName(round: self.turnData.turnArray[1], userName: self.enteredPlayerName, displayNames: MatchData.shared.displayNames)
                             
                             self.showUsernameToggle = false
                             
@@ -832,17 +848,21 @@ struct ContentView: View {
         let fontSize: CGFloat = 15
         
         let swatchColor = hexColor(gameBrain.getColorHex(turn: turnNumber,
-                                                         indexArray: self.colorIndices))
+                                                         indexArray: MatchData.shared.colorIndices))
         
         let player = self.turnData.turnArray[1]+1
         
         var createdName = ""
         
-        let count = self.gameData.submittedColorNames[turnNumber].count
+        /*
+        let count = MatchData.shared.colors[turnNumber].createdNames?.count
         
-        if count > 1 && count > player { // submittedColorNames will always have at least a placeholder. The second check is for the 4th submission, when the game gets advanced -- this would cause an index out of bounds error. However, we don't actually show the result of that card as the game moves to the next player
-            createdName = self.gameData.submittedColorNames[turnNumber][player]
+        if count != nil {
+            if count > 1 && count > player { // submittedColorNames will always have at least a placeholder. The second check is for the 4th submission, when the game gets advanced -- this would cause an index out of bounds error. However, we don't actually show the result of that card as the game moves to the next player
+                createdName = MatchData.shared.colors[turnNumber].createdNames[player]
+            }
         }
+*/
         
         
         return Group {
@@ -920,7 +940,7 @@ struct ContentView: View {
                                     self.flingLastSwatch = true // this tells the last swatch it should fling
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + self.flingDuration) { // to allow time for last swatch fling animation
-                                        processTurn(userColorName: createdName)
+                                        self.turnData.turnArray = gameBrain.processTurn(userColorName: createdName, turnData: turnData, playerCount: playerCount)
                                         self.prepLastSwatch = false
                                         self.flingLastSwatch = false
                                     }
@@ -933,8 +953,10 @@ struct ContentView: View {
                                     }
                                     
                                     
-                                    processTurn(userColorName: createdName)
+                                    self.turnData.turnArray = gameBrain.processTurn(userColorName: createdName, turnData: turnData, playerCount: playerCount)
                                     
+                                    print("turnArray B: \(turnData.turnArray)")
+
                                     
                                 }
                                 
@@ -965,133 +987,28 @@ struct ContentView: View {
     }
     
     
-    func processTurn(userColorName: String) {
-        
-        
-        self.checkName(userColorName: userColorName)
-        
-        
-        print(self.turnData.turnArray[0])
-        
-        // turn will only be 0 at this point if we've gone through the 4 submissions
-        if self.onlineGame == true && self.turnData.turnArray[0] == 0 {
-            
-            //   self.hideKeyboard()
-            
-            
-            
-            self.gameData.colorIndices = self.colorIndices
-            self.gameData.turnArray = self.turnData.turnArray
-            
-            gameBrain.endOnlineTurn(gameData: self.gameData)
-        }
-        
-    }
+   
+   
+   
     
     
-    
-    func checkName(userColorName: String) {
-        
-        
-        // set up players if this is the first submission of the game
-        if  self.turnData.turnArray[0] == 0 && self.turnData.turnArray[1] == 0 {
-            
-            self.gameData.players = gameBrain.setupPlayers(playerCount: self.playerCount)
-            self.gameData.playersByRound = gameBrain.setupPlayersByRound(playerCount: self.playerCount)
-            
-            if let appVersion = Float(UIApplication.appVersion!) {
-                self.gameData.appVersion = appVersion   // the app version when the match was created
-            }
-            
-        }
-        
-        // remove leading and trailing spaces and tabs
-        let trimmedName = userColorName.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        
-        // check that the user didn't actually create the real name or another submitted name
-        if trimmedName.capitalized == gameBrain.getColorName(turn: self.turnData.turnArray[0], indexArray: self.colorIndices).capitalized ||
-            self.gameData.submittedColorNames[self.turnData.turnArray[0]].contains(trimmedName.localizedCapitalized) {
-            
-            var modifiedUserColorName = trimmedName
-            // make it not technically match the real one by adding a space at the end
-            modifiedUserColorName.append(" ")
-            // this isn't an ideal fix, but at least it should smooth things out a bit
-            
-            submitName(userColorName: modifiedUserColorName)
-            
-            
-        } else {
-            
-            submitName(userColorName: trimmedName)
-            
-        }
-    }
-    
-    
+    /*
     func submitName(userColorName: String) {
         
         
-        // check that the player count is accurate. This is a fix for the GameCenter bug where it sometimes says there are the max players when there aren't
-        // we'll check this for each submission
-        // the submittedColorNames array is set up as an array of color names for each round (so an array of 4 arrays of color names)
-        // turnArray is an array containing turn (0) and round (1)
-        if self.gameData.players.count > self.playerCount {
-            
-            // need to trim arrays that are too large
-            
-            /*
-             arrays that could be too large:
-             gamedata.players
-             gamedata.sortedplayersarray -- non-issue, occurs later
-             gamedata.finalpointsarray -- non-issue, occurs later
-             gamedata.playersbyround
-            
-             
-             gamedata.players is an array of dictionaries, so we need to drop the excess players by their player number
-             
-             gamedata.playersbyround is an array of arrays of dictionaries, so for each round we need to drop the excess players by their player number
-
-             upon further testing, we don't need to worry about gamedata.playersbyround
-             
-            */
-            
-            
-         //   self.gameData.players = self.gameData.players[0...self.playerCount-1]
-           
-            let correctCount = self.playerCount
-            let falseCount = self.gameData.players.count
-            
-            print("correctCount: \(self.playerCount)")
-            print("falseCount: \(self.gameData.players.count)")
-            
-            for player in correctCount+1...falseCount {
-             
-                print("key to remove: Player \(player)")
-                
-                self.gameData.players.removeValue(forKey: "Player \(player)")
-                
-            }
-            
-
-           
-            
-         
-            
-        }
-        
-        
         // store the submitted color name
-        self.gameData.submittedColorNames = gameBrain.storeUserColorName(turnArray: self.turnData.turnArray,
+        MatchData.shared.submittedColorNames = gameBrain.storeUserColorName(turnArray: self.turnData.turnArray,
                                                                          userColor: userColorName.localizedCapitalized, // capitalize all first letters of words to try to disguise entries
-                                                                         indexArray: self.colorIndices,
-                                                                         submittedColors: self.gameData.submittedColorNames)
+                                                                         indexArray: MatchData.shared.colorIndices,
+                                                                         submittedColors: MatchData.shared.submittedColorNames)
         
         
-        self.gameData.submissionsByPlayer[userColorName.localizedCapitalized] = "Player \(self.gameData.currentPlayer)"
+        
+        
+        MatchData.shared.submissionsByPlayer[userColorName.localizedCapitalized] = "Player \(MatchData.shared.currentPlayer)"
         
         // playersByRound[what turn are we on?][what player is this? (considering arrays start at 0)][get "Created" key] = set to submitted color name
-        self.gameData.playersByRound[self.turnData.turnArray[0]][self.gameData.currentPlayer-1]["Created"] = userColorName.localizedCapitalized
+        MatchData.shared.playersByRound[self.turnData.turnArray[0]][MatchData.shared.currentPlayer-1]["Created"] = userColorName.localizedCapitalized
         
         // clear the textfield
         self.userColorName = ""
@@ -1102,23 +1019,23 @@ struct ContentView: View {
         
         // advance the game
         self.turnData.turnArray = gameBrain.advanceGame(turnArray: self.turnData.turnArray,
-                                                        indexArray: self.colorIndices,
+                                                        indexArray: MatchData.shared.colorIndices,
                                                         playerCount: self.playerCount)
         
         print("turnArray B: \(self.turnData.turnArray)")
         
         // update GameData's copy of the turn array, which will be sent online
-        self.gameData.turnArray = self.turnData.turnArray
+        MatchData.shared.turnArray = self.turnData.turnArray
         
         
         
         // toggle the "pass to next player" screen if we need to
         if gameBrain.isPlayerEnd(turnArray: self.turnData.turnArray) {
             
-            if self.gameData.currentPlayer < self.playerCount {
-                self.gameData.currentPlayer += 1
+            if MatchData.shared.currentPlayer < self.playerCount {
+                MatchData.shared.currentPlayer += 1
             } else {
-                self.gameData.currentPlayer = 1
+                MatchData.shared.currentPlayer = 1
             }
             
             self.passToNextPlayer.toggle()
@@ -1128,7 +1045,7 @@ struct ContentView: View {
         
         
     }
-    
+    */
     
     func quitView(swatchHeight: CGFloat) -> some View {
         
@@ -1284,6 +1201,17 @@ struct ContentView: View {
         }
     }
 }
+
+
+
+#if canImport(UIKit)
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+#endif
+
 /*
  struct ContentView_Previews: PreviewProvider {
  static var previews: some View {
@@ -1296,14 +1224,3 @@ struct ContentView: View {
 
 
 
-
-
-
-
-/*
- struct ContentView_Previews: PreviewProvider {
- static var previews: some View {
- 
- }
- }
- */

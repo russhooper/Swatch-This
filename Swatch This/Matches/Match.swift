@@ -9,6 +9,8 @@
 import Foundation
 
 
+// this is what's put in the Firebase Matches collection
+
 // these are all case sensitive
 struct Match: Identifiable, Codable, Equatable {
     let id: String // need id for Identifiable
@@ -28,7 +30,6 @@ struct Match: Identifiable, Codable, Equatable {
     let dateCreated: Date?
     let phase: Int? // 1 for name creation phase, 2 for guessing phase, 3 for complete
     let playerDisplayNames: [String?]? // optional strings in an optional array
-    
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -51,6 +52,9 @@ struct Match: Identifiable, Codable, Equatable {
 
 struct Round: Codable, Equatable {
     var colorIndex: Int
-    var createdNames: [String?]?
-    var guessedNames: [String?]?
+    var createdNames: [String: String]? // userid, color name
+    var guessedNames: [String: String]? // userid, color name
 }
+
+
+

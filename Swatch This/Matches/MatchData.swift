@@ -8,157 +8,84 @@
 
 import Foundation
 
+// MatchData is the local and persistent (during runtime) version of Match, which is what's actually put into Firebase.
+
 class MatchData {
     
     static let shared = MatchData() // Singleton instance
     
     var turnArray: [Int]
+    var localPlayerID: String
     var colorIndices: [Int]
-    
     var colors: [Round]
-    
-    // dictionary of player, score
-    var players: [Dictionary<String, Int>]
-    
+    var players: [String : Int] // dictionary of player, score
     var sortedPlayersArray: [String]
-    
-    var displayNames: [Dictionary<String, String>]
-    
+    var displayNames: [String : String]
     var finalPointsArray: [Int]
+    var submissionsByPlayer: [String : String]
+    var currentPlayer: Int     // this keeps track of whose turn it currently is
+    var isComplete: Bool
+    var matchID: String
+    var onlineGame: Bool
+    var matchDate: Date // will be set to the date when the match was created
+    var appVersion: Float // will be set to the app version when the match was created
     
-    var submissionsByPlayer: [Dictionary<String, String>]
     
-    // array (rounds) of arrays (players) of dictionaries (created name, guessed name)
-    var playersByRound = [
+    private init() { // initialize with defaults
         
-        // round 0
-        [
-            ["Created": "Submitted color", "Guessed": "Guessed color" ],    // player 1
-            ["Created": "Submitted color", "Guessed": "Guessed color" ],    // player 2
-        ],
+        self.turnArray = [0, 0]    // turn, roundsFinished
         
-        // round 1
-        [
-            ["Created": "Submitted color", "Guessed": "Guessed color" ],
-            ["Created": "Submitted color", "Guessed": "Guessed color" ]
-        ],
+        self.localPlayerID = "123"
         
-        // round 2
-        [
-            ["Created": "Submitted color", "Guessed": "Guessed color" ],
-            ["Created": "Submitted color", "Guessed": "Guessed color" ]
-        ],
-        
-        // round 3
-        [
-            ["Created": "Submitted color", "Guessed": "Guessed color" ],
-            ["Created": "Submitted color", "Guessed": "Guessed color" ]
-        ]
-    ]
-    
-    // this keeps track of whose turn it currently is
-    var currentPlayer = 1
-    
-    var isComplete = false
-    
-    var matchID = "abc123"
-    
-    var onlineGame = false
-    
-    var matchDate: Date = Date() // will be set to the date when the match was created
-    
-    var appVersion: Float = 1.0 // will be set to the app version when the match was created
-    
-    
-    private init() {
-        
-        var turnArray = [0, 0]    // turn, roundsFinished
-        
-        var colorIndices: [Int] = [
+        self.colorIndices = [
             0,
             0,
             0,
             0
         ]
         
-        // we can manually set this up since we know there will be 4 color entry arrays
-        var submittedColorNames = [
-            ["Placeholder"],
-            ["Placeholder"],
-            ["Placeholder"],
-            ["Placeholder"]
+        self.colors = [
+            Round(colorIndex: 0)
         ]
         
         // dictionary of player, score
-        var players = [
+        self.players = [
             "Player 1": 0,
             "Player 2": 0
         ]   // will have at least 2 players
         
         
-        var sortedPlayersArray = [
+        self.sortedPlayersArray = [
             "Player 1",
             "Player 2"
         ]
         
-        var displayNames = [
+        self.displayNames = [
             "Player 1": "Player 1",
             "Player 2": "Player 2"
         ]
         
-        var finalPointsArray = [
+        self.finalPointsArray = [
             1,
             1
         ]
         
-        var submissionsByPlayer = [
+        self.submissionsByPlayer = [
             "Submitted color" : "Player X"
         ]
         
-        // array (rounds) of arrays (players) of dictionaries (created name, guessed name)
-        var playersByRound = [
-            
-            // round 0
-            [
-                ["Created": "Submitted color", "Guessed": "Guessed color" ],    // player 1
-                ["Created": "Submitted color", "Guessed": "Guessed color" ],    // player 2
-            ],
-            
-            // round 1
-            [
-                ["Created": "Submitted color", "Guessed": "Guessed color" ],
-                ["Created": "Submitted color", "Guessed": "Guessed color" ]
-            ],
-            
-            // round 2
-            [
-                ["Created": "Submitted color", "Guessed": "Guessed color" ],
-                ["Created": "Submitted color", "Guessed": "Guessed color" ]
-            ],
-            
-            // round 3
-            [
-                ["Created": "Submitted color", "Guessed": "Guessed color" ],
-                ["Created": "Submitted color", "Guessed": "Guessed color" ]
-            ]
-        ]
+        self.currentPlayer = 1
         
-        // this keeps track of whose turn it currently is
-        var currentPlayer = 1
+        self.isComplete = false
         
-        var isComplete = false
+        self.matchID = "abc123"
         
-        var matchID = "abc123"
+        self.onlineGame = false
         
-        var onlineGame = false
+        self.matchDate = Date()
         
-        var matchDate: Date = Date() // will be set to the date when the match was created
-        
-        var appVersion: Float = 1.0 // will be set to the app version when the match was created
+        self.appVersion = 1.0
         
     }
-    
-    //   func update
-    
     
 }

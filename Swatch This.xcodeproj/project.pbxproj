@@ -66,6 +66,8 @@
 		638A59F625DE04DF00A0F880 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 638A59F525DE04DF00A0F880 /* StoreKit.framework */; };
 		638A59F825DE051400A0F880 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A59F725DE051400A0F880 /* StoreManager.swift */; };
 		6393184B2C97B39100DF3C2F /* MatchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6393184A2C97B39100DF3C2F /* MatchData.swift */; };
+		6393184D2C98FF7B00DF3C2F /* DefaultColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6393184C2C98FF7B00DF3C2F /* DefaultColors.swift */; };
+		6393184F2C99A63500DF3C2F /* NameColorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6393184E2C99A63500DF3C2F /* NameColorsView.swift */; };
 		6397119124D5ECF300DB0405 /* TurnData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6397119024D5ECF300DB0405 /* TurnData.swift */; };
 		63AAE41824C3949100B36FAD /* GameEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AAE41724C3949100B36FAD /* GameEndView.swift */; };
 		63AB777824BA9E49009BC9CE /* GameBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AB777724BA9E49009BC9CE /* GameBrain.swift */; };
@@ -172,6 +174,8 @@
 		638A59F525DE04DF00A0F880 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		638A59F725DE051400A0F880 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		6393184A2C97B39100DF3C2F /* MatchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchData.swift; sourceTree = "<group>"; };
+		6393184C2C98FF7B00DF3C2F /* DefaultColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultColors.swift; sourceTree = "<group>"; };
+		6393184E2C99A63500DF3C2F /* NameColorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameColorsView.swift; sourceTree = "<group>"; };
 		6397119024D5ECF300DB0405 /* TurnData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnData.swift; sourceTree = "<group>"; };
 		63AAE41724C3949100B36FAD /* GameEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEndView.swift; sourceTree = "<group>"; };
 		63AB777724BA9E49009BC9CE /* GameBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBrain.swift; sourceTree = "<group>"; };
@@ -360,6 +364,7 @@
 				6397119024D5ECF300DB0405 /* TurnData.swift */,
 				6340481C24C92E56004F8C53 /* ViewRouter.swift */,
 				63F8587E269E2F830072C19C /* TransitionSwatches.swift */,
+				6393184C2C98FF7B00DF3C2F /* DefaultColors.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -371,6 +376,7 @@
 				632CC93324B7F1A400EBD566 /* MenuView.swift */,
 				633A4D6724DF255B00CFA355 /* LoadingView.swift */,
 				632CC90324B6B12500EBD566 /* ContentView.swift */,
+				6393184E2C99A63500DF3C2F /* NameColorsView.swift */,
 				6385C2A524C27D5A00F79C5E /* GuessColorsView.swift */,
 				63AAE41724C3949100B36FAD /* GameEndView.swift */,
 				635097EA24C7878900300F58 /* ScoreDetailView.swift */,
@@ -581,11 +587,13 @@
 				632CC90024B6B12500EBD566 /* AppDelegate.swift in Sources */,
 				6311C7732C8664D300E70312 /* AuthenticationView.swift in Sources */,
 				633C33902C8A169500BBDA38 /* ProductsDatabase.swift in Sources */,
+				6393184F2C99A63500DF3C2F /* NameColorsView.swift in Sources */,
 				63F2AADF24C4A325004897FD /* SAConfettiView.swift in Sources */,
 				632CC93424B7F1A400EBD566 /* MenuView.swift in Sources */,
 				6366621D24E09A8900CAAFC7 /* OtherPlayersTurn.swift in Sources */,
 				6385C2A624C27D5A00F79C5E /* GuessColorsView.swift in Sources */,
 				633C339D2C8A489600BBDA38 /* MatchesView.swift in Sources */,
+				6393184D2C98FF7B00DF3C2F /* DefaultColors.swift in Sources */,
 				6311C7862C866C2E00E70312 /* OnFirstAppearViewModifier.swift in Sources */,
 				63DA3A5924CCF3BA00531B6F /* GameKitHelper.swift in Sources */,
 				6311C78E2C866D9000E70312 /* SignInAppleHelper.swift in Sources */,

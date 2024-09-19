@@ -22,7 +22,6 @@ struct AboutView: View {
     let moonriseColor3: UInt32 = 0x759F89
     let moonriseColor4: UInt32 = 0xE0A295
     let denimColor: UInt32 = 0x4F98C3
-    let tangerineColorText: UInt32 = 0xFA9343
     let babySealBlack: UInt32 = 0x474B51
     let grayFlannel: UInt32 = 0x585861
     let californiaWineColor: UInt32 = 0xC94B66

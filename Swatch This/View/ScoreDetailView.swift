@@ -17,7 +17,6 @@ struct ScoreDetailView: View {
     
     
     let blushColor: UInt32 = 0xf95352
-    let tangerineColorText: UInt32 = 0xFA9343
     let mediumTealColor: UInt32 = 0x54A5B6
     
     
@@ -134,7 +133,7 @@ struct ScoreDetailView: View {
                 }
                 
             }
-            .accentColor(Color(tangerineColorText))
+            .accentColor(Color(DefaultColors.shared.tangerineColorText))
             .navigationTitle(titleString)
             .navigationBarTitleDisplayMode(.inline)
             

@@ -42,7 +42,6 @@ struct OtherPlayersTurn: View {
     let gray2: UInt32 = 0x585861
     let gray3: UInt32 = 0x41414B
     let blushColor: UInt32 = 0xf95352
-    let tangerineColorText: UInt32 = 0xFA9343
     
     
     
@@ -307,7 +306,7 @@ struct OtherPlayersTurn: View {
                 
                 
             }
-            .accentColor(Color(tangerineColorText))
+            .accentColor(Color(DefaultColors.shared.tangerineColorText))
         }
         
     }

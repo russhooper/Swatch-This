@@ -35,7 +35,6 @@ struct GuessColorsView: View {
     @State private var showQuit = false
     
     let blushColor: UInt32 = 0xf95352
-    let tangerineColorText: UInt32 = 0xFA9343
     
     
     
@@ -639,7 +638,7 @@ struct GuessColorsView: View {
                     }
                 }
             }
-            .accentColor(Color(tangerineColorText))
+            .accentColor(Color(DefaultColors.shared.tangerineColorText))
             
         }
     }
@@ -918,7 +917,7 @@ struct GuessColorsView: View {
                                  } else {
                                  */
                                 Text(string)
-                                    .foregroundColor(Color(tangerineColorText))
+                                    .foregroundColor(Color(DefaultColors.shared.tangerineColorText))
                                 //  }
                             }.disabled(self.hasGuessed)
                         }

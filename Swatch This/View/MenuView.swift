@@ -23,7 +23,6 @@ struct MenuView: View {
     let swatchColor4: UInt32 = 0x00cec9
     let swatchColor5: UInt32 = 0x00c7e1
     let tangerineColor: UInt32 = 0xFF9B54
-    let tangerineColorText: UInt32 = 0xFA9343
     let swatchColor7: UInt32 = 0x005493
     let blushColor: UInt32 = 0xf95352
     let darkBlueColor: UInt32 = 0x2a82b4
@@ -670,26 +669,7 @@ struct MenuView: View {
                         }.disabled(self.localFirst)
                         
                         
-                        
-                        
-                        Button(action: {
-                            
-                            self.mildHaptics()
-                            GKAccessPoint.shared.isActive = false
-                            
-                            self.showingHowTo.toggle()
-                        }) {
-                            Text("How to Play")
-                                .font(.system(size: 23))
-                            
-                        }
-                        .sheet(isPresented: self.$showingHowTo) {
-                            HowToView(isPresented: self.$showingHowTo)
-                        }
-                        
-                        
                         HStack {
-                            
                             
                             Button(action: {
                                 
@@ -717,6 +697,29 @@ struct MenuView: View {
                                 .fontWeight(.bold)
                                 .foregroundColor(Color(brightTealColor))
                             
+                            
+                            
+                            Button(action: {
+                                
+                                self.mildHaptics()
+                                GKAccessPoint.shared.isActive = false
+                                
+                                self.showingHowTo.toggle()
+                            }) {
+                                Text("How to Play")
+                                    .font(.system(size: 23))
+                                
+                            }
+                            .sheet(isPresented: self.$showingHowTo) {
+                                HowToView(isPresented: self.$showingHowTo)
+                            }
+                            
+                        }
+                        
+                        
+                        
+                        
+                        HStack {
                             
                             
                             Button(action: {
@@ -798,7 +801,7 @@ struct MenuView: View {
                 
                 
             }
-            .accentColor(Color(tangerineColorText))
+            .accentColor(Color(DefaultColors.shared.tangerineColorText))
             
         }
         
