@@ -139,17 +139,17 @@ struct SwitcherView: View {
         }
         .onAppear {
             if let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()  {
-                
-                // optional try (question mark) because we don't care what the error is if it fails, the authUser is just nil
                 print("authUser: \(String(describing: authUser.uid))")
-                                
+                showSignInView = false
+                                                
             } else {
-                
                 showSignInView = true
-
             }
 
-            print("showSignInView: \(showSignInView)")
+           // print("showSignInView: \(showSignInView)")
+        }
+        .task {
+            try? await UserManager.shared.loadCurrentUser()
         }
         .fullScreenCover(isPresented: $showSignInView) {
             NavigationStack {

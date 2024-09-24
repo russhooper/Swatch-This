@@ -11,9 +11,9 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @StateObject private var settingsViewModel = SettingsViewModel()
+    @StateObject private var settingsViewModel: SettingsViewModel = SettingsViewModel()
     @Binding var showSignInView: Bool
-    @State var displayName: String
+    @State var displayName: String = (DBUser.shared.displayName ?? "")
     @FocusState private var isFocused: Bool
 
     var body: some View {
@@ -31,6 +31,8 @@ struct SettingsView: View {
                     HStack {
                         
                         Button("Save") {
+                            
+                            DBUser.shared.displayName = displayName
                             
                             isFocused = false
                             
@@ -99,10 +101,7 @@ struct SettingsView: View {
             settingsViewModel.loadAuthProviders()
             settingsViewModel.loadAuthUser()
             
-            guard let authDataResult = try? AuthenticationManager.shared
-                .getAuthenticatedUser() else { return }
-            
-            displayName = authDataResult.displayName ?? ""
+            displayName = DBUser.shared.displayName ?? ""
             print("displayName: \(displayName)")
         }
         .navigationBarTitle("Settings")

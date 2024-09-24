@@ -643,8 +643,8 @@ struct MenuView: View {
                             
                         }) {
                             HStack {
+                                Image(systemName: "paintbrush.fill")
                                 Text("Play Online")
-                                Image(systemName: "paintbrush")
                             }
                                 .font(.system(size: 23))
                                 .bold()
@@ -672,8 +672,8 @@ struct MenuView: View {
                             
                         }) {
                             HStack {
+                                Image(systemName: "paintbrush.pointed.fill")
                                 Text("Play Locally")
-                                Image(systemName: "paintbrush.pointed")
                             }
                                 .font(.system(size: 23))
                                 .bold()
@@ -691,8 +691,8 @@ struct MenuView: View {
                                 self.showingColors.toggle()
                             }) {
                                 HStack {
+                                    Image(systemName: "swatchpalette")
                                     Text("\(colorLocalizedCap)s") // Colors
-                                    Image(systemName: "paintpalette")
                                 }
                                     .font(.system(size: 23))
                                 
@@ -721,8 +721,8 @@ struct MenuView: View {
                                 self.showingHowTo.toggle()
                             }) {
                                 HStack {
-                                    Text("How to Play")
                                     Image(systemName: "book.pages")
+                                    Text("How to Play")
                                 }
                                     .font(.system(size: 23))
                                 
@@ -736,66 +736,6 @@ struct MenuView: View {
                         
                         
                         
-                        HStack {
-                            
-                            
-                            Button(action: {
-                                
-                                self.mildHaptics()
-                                GKAccessPoint.shared.isActive = false
-                                
-                                self.showingSettings.toggle()
-                            }) {
-                                HStack {
-                                    Text("Settings")
-                                    Image(systemName: "gear")
-                                }
-                                    .font(.system(size: 23))
-                                
-                            }
-                            .sheet(isPresented: self.$showingSettings) {
-                              //  let displayName = try await UserManager.shared.getUserDisplayName()
-                                
-                                SettingsView(showSignInView: $showSignInView, displayName: "")
-                            }
-                            
-                            
-                            
-                            Text("/")
-                                .font(.system(size: 23))
-                                .fontWeight(.bold)
-                                .foregroundColor(Color(brightTealColor))
-                            
-                            
-                            
-                            Button(action: {
-                                
-                                self.mildHaptics()
-                                GKAccessPoint.shared.isActive = false
-                                
-                                self.showingAbout.toggle()
-                            }) {
-                                HStack {
-                                    Text("About")
-                                    Image(systemName: "questionmark")
-                                }
-                                    .font(.system(size: 23))
-                                
-                            }
-                            .sheet(isPresented: self.$showingAbout) {
-                                AboutView(isPresented: self.$showingAbout)
-                            }
-                            
-                            
-                        }
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                     }.onAppear() {
                         
                         GameKitHelper.sharedInstance
@@ -803,30 +743,65 @@ struct MenuView: View {
                         
                     }
                     
-                    /*
-                     Image("Paint Stripe Reveal")
-                     .frame(width: geometry.size.width, height: 250, alignment: .center)
-                     .offset(x: self.paintOffsetX, y: 3)
-                     .animation(.linear(duration: 0.5))
-                     .onAppear {
-                     let baseAnimation = Animation.linear(duration: 5.5)
-                     
-                     return withAnimation(baseAnimation) {
-                     self.paintOffsetX = 1700
-                     }
-                     }
-                     */
                     
                 }
-                
-                
+                .accentColor(Color(DefaultColors.shared.tangerineColorText))
+
                 
                 Spacer()
                 
-                
+                HStack {
+                    
+                    Button(action: {
+                        
+                        self.mildHaptics()
+                        GKAccessPoint.shared.isActive = false
+                        
+                        self.showingAbout.toggle()
+                    }) {
+                        HStack {
+                            Image(systemName: "star.circle")
+                            Text("About")
+                        }
+                        
+                    }
+                    .padding()
+                    .sheet(isPresented: self.$showingAbout) {
+                        AboutView(isPresented: self.$showingAbout)
+                    }
+                    
+                    
+                    
+                    Spacer()
+                    
+                    
+                    
+                    Button(action: {
+                        
+                        self.mildHaptics()
+                        GKAccessPoint.shared.isActive = false
+                        
+                        self.showingSettings.toggle()
+                    }) {
+                        HStack {
+                            Image(systemName: "gear")
+                            Text("Settings")
+                        }
+                        
+                    }
+                    .padding()
+                    .sheet(isPresented: self.$showingSettings) {
+                      //  let displayName = try await UserManager.shared.getUserDisplayName()
+                        
+                        SettingsView(showSignInView: $showSignInView)
+                    }
+                    
+                    
+                }
+                .accentColor(Color(.white))
+
                 
             }
-            .accentColor(Color(DefaultColors.shared.tangerineColorText))
             
         }
         

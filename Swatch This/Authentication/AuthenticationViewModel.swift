@@ -36,8 +36,15 @@ final class AuthenticationViewModel: ObservableObject {
     }
     
     func signIn(authDataResult: AuthDataResultModel) async throws {
-        let user = DBUser(auth: authDataResult)
-        try await UserManager.shared.createNewUser(user: user)
+        
+        DBUser.shared.userID = authDataResult.uid
+        DBUser.shared.isAnonymous = authDataResult.isAnonymous
+        DBUser.shared.email = authDataResult.email
+        DBUser.shared.displayName = authDataResult.displayName
+        DBUser.shared.photoURL = authDataResult.photoURL
+        DBUser.shared.dateCreated = Date()
+                
+        try await UserManager.shared.createNewUser(user: DBUser.shared)
     }
     
     

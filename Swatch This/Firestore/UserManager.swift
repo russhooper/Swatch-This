@@ -11,17 +11,29 @@ import FirebaseFirestore
 import Combine
 
 
-struct DBUser: Codable {
+class DBUser: Codable {
+    static var shared = DBUser() // Singleton instance
+
+    var userID: String
+    var isAnonymous: Bool?
+    var email: String?
+    var displayName: String?
+    var photoURL: String?
+    var dateCreated: Date?
+    var isPremium: Bool?
+    
+    private init() { // initialize with defaults
+        self.userID = "user1"
+        self.isAnonymous = nil
+        self.email = nil
+        self.displayName = nil
+        self.photoURL = nil
+        self.dateCreated = nil
+        self.isPremium = nil
+    }
     
     
-    let userID: String
-    let isAnonymous: Bool?
-    let email: String?
-    let displayName: String?
-    let photoURL: String?
-    let dateCreated: Date?
-    let isPremium: Bool?
-    let preferences: [String]?
+    /*
     
     // if we're creating a user, we can set a number of these things from the auth data
     init(auth: AuthDataResultModel) {
@@ -55,6 +67,8 @@ struct DBUser: Codable {
         self.isPremium = isPremium
         self.preferences = preferences
     }
+     
+     */
     
 }
 
@@ -84,6 +98,11 @@ final class UserManager {
         return matchDoc
     }
     
+    
+    func loadCurrentUser() async throws {
+        let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
+        DBUser.shared = try await getUser(userID: authDataResult.uid)
+    }
         
     private var userActiveMatchesListener: ListenerRegistration? = nil
     private var userCompletedMatchesListener: ListenerRegistration? = nil
@@ -98,6 +117,8 @@ final class UserManager {
         print("userID: \(userID)")
         return try await userDocument(userID: userID).getDocument(as: DBUser.self)
     }
+    
+
     
     
     func updateUserPremiumStatus(userID: String, isPremium: Bool) async throws {

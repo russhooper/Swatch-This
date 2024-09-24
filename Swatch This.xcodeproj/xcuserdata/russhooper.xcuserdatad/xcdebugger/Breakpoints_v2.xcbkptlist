@@ -398,8 +398,8 @@
             filePath = "Swatch This/Firestore/UserManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
             landmarkName = "addListenerForAllUserMatches(userID:isCompleted:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -670,13 +670,13 @@
             filePath = "Swatch This/Firestore/UserManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
             landmarkName = "updateUserMatch(userMatch:userID:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - ad3dc7d19e378981"
+                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - ad3dc7d19e37875e"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -686,11 +686,11 @@
                   urlString = "file:///Users/russhooper/Documents/Swatch%20This/Swatch%20This/Firestore/UserManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "162"
-                  endingLineNumber = "162">
+                  startingLineNumber = "183"
+                  endingLineNumber = "183">
                </Location>
                <Location
-                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - 432eab5a2b00dae"
+                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - 432eab5a2b00371"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -700,11 +700,11 @@
                   urlString = "file:///Users/russhooper/Documents/Swatch%20This/Swatch%20This/Firestore/UserManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "162"
-                  endingLineNumber = "162">
+                  startingLineNumber = "183"
+                  endingLineNumber = "183">
                </Location>
                <Location
-                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - d6efbf3e3c0cd583"
+                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - d6efbf3e3c0cdb5c"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -714,11 +714,11 @@
                   urlString = "file:///Users/russhooper/Documents/Swatch%20This/Swatch%20This/Firestore/UserManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "162"
-                  endingLineNumber = "162">
+                  startingLineNumber = "183"
+                  endingLineNumber = "183">
                </Location>
                <Location
-                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - bdb76ab48b71b382"
+                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - bdb76ab48b71bd5d"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -728,8 +728,8 @@
                   urlString = "file:///Users/russhooper/Documents/Swatch%20This/Swatch%20This/Firestore/UserManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "162"
-                  endingLineNumber = "162">
+                  startingLineNumber = "183"
+                  endingLineNumber = "183">
                </Location>
             </Locations>
          </BreakpointContent>
