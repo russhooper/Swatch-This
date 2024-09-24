@@ -138,9 +138,16 @@ struct SwitcherView: View {
             self.alertId = AlertId(id: .typeGameCenter)
         }
         .onAppear {
-            let authUser = try? AuthenticationManager.shared.getAuthenticatedUser() // optional try (question mark) because we don't care what the error is if it fails, the authUser is just nil
-            self.showSignInView = authUser == nil
-            print("authUser: \(String(describing: authUser?.uid))")
+            if let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()  {
+                
+                // optional try (question mark) because we don't care what the error is if it fails, the authUser is just nil
+                print("authUser: \(String(describing: authUser.uid))")
+                                
+            } else {
+                
+                showSignInView = true
+
+            }
 
             print("showSignInView: \(showSignInView)")
         }
@@ -264,7 +271,7 @@ struct SwitcherView: View {
                     
                     // online match
                     
-                    if GameKitHelper.sharedInstance.canTakeTurnForCurrentMatch == true || self.turnData.showingTransition == true {
+                 //   if self.turnData.showingTransition == true {
                         
                         // in color creation phase
                         if gameBrain.isSubmissionEnd(roundsFinished: self.gameData.turnArray[1],
@@ -273,7 +280,7 @@ struct SwitcherView: View {
                             
                             NameColorsView(turnData: self.turnData,
                                         playerCount: self.viewRouter.playerCount,
-                                        playDealAnimation: MatchData.shared.onlineGame) // should match onlineGame
+                                        playDealAnimation: true) // should match onlineGame
                             
                             
                             
@@ -289,6 +296,8 @@ struct SwitcherView: View {
                             
                         }
                         
+                    
+                    /*
                     } else {    // cannot take turn
                         
                         
@@ -297,6 +306,7 @@ struct SwitcherView: View {
                           //  .transition(.move(edge: .trailing))
                         
                     }
+                     */
                 }
                 
                 

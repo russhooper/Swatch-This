@@ -609,16 +609,17 @@ struct MenuView: View {
                         Button(action: {
                             
                             self.mildHaptics()
-                                                        
+                                  
+                            /*
                             if self.gameCenter.enabled {
                                 
                                 GKAccessPoint.shared.isActive = false
                                 self.viewRouter.onlineGame = true
                                 
-                                /*
+                                
                                 self.isShowingGameCenter.toggle()
                                 self.viewRouter.playerCount = self.numberOfPlayers
-                                */
+                                
                                 
                                 self.viewRouter.currentPage = "loading"
 
@@ -634,10 +635,17 @@ struct MenuView: View {
                                 NotificationCenter.default.post(name: .gameCenterAlert, object: nil)
                                 
                             }
+                            */
                             
+                            self.viewRouter.onlineGame = true
+                            self.viewRouter.currentPage = "loading"
+
                             
                         }) {
-                            Text("Play Online")
+                            HStack {
+                                Text("Play Online")
+                                Image(systemName: "paintbrush")
+                            }
                                 .font(.system(size: 23))
                                 .bold()
                         }.disabled(self.localFirst)
@@ -663,7 +671,10 @@ struct MenuView: View {
                             self.local2Offset = 1
                             
                         }) {
-                            Text("Play Locally")
+                            HStack {
+                                Text("Play Locally")
+                                Image(systemName: "paintbrush.pointed")
+                            }
                                 .font(.system(size: 23))
                                 .bold()
                         }.disabled(self.localFirst)
@@ -679,7 +690,10 @@ struct MenuView: View {
                                 
                                 self.showingColors.toggle()
                             }) {
-                                Text("\(colorLocalizedCap)s")
+                                HStack {
+                                    Text("\(colorLocalizedCap)s") // Colors
+                                    Image(systemName: "paintpalette")
+                                }
                                     .font(.system(size: 23))
                                 
                             }
@@ -706,7 +720,10 @@ struct MenuView: View {
                                 
                                 self.showingHowTo.toggle()
                             }) {
-                                Text("How to Play")
+                                HStack {
+                                    Text("How to Play")
+                                    Image(systemName: "book.pages")
+                                }
                                     .font(.system(size: 23))
                                 
                             }
@@ -729,12 +746,17 @@ struct MenuView: View {
                                 
                                 self.showingSettings.toggle()
                             }) {
-                                Text("Settings")
+                                HStack {
+                                    Text("Settings")
+                                    Image(systemName: "gear")
+                                }
                                     .font(.system(size: 23))
                                 
                             }
                             .sheet(isPresented: self.$showingSettings) {
-                                SettingsView(showSignInView: $showSignInView)
+                              //  let displayName = try await UserManager.shared.getUserDisplayName()
+                                
+                                SettingsView(showSignInView: $showSignInView, displayName: "")
                             }
                             
                             
@@ -753,7 +775,10 @@ struct MenuView: View {
                                 
                                 self.showingAbout.toggle()
                             }) {
-                                Text("About")
+                                HStack {
+                                    Text("About")
+                                    Image(systemName: "questionmark")
+                                }
                                     .font(.system(size: 23))
                                 
                             }

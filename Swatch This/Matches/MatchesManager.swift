@@ -36,48 +36,56 @@ final class MatchesManager {
     func createMatch() { // should differentiate between online and local and not upload online at this point
         
         let indiciesCount = 4 //
-
-        MatchData.shared.colorIndices = GameBrain().generateNIndices(count: indiciesCount)
+        
+        MatchData.shared.match.colorIndices = GameBrain().generateNIndices(count: indiciesCount)
         MatchData.shared.onlineGame = true
-
         
-        let rounds: [Round] = MatchData.shared.colorIndices.map { index in
-            Round(colorIndex: index, createdNames: nil, guessedNames: nil)
-        }
-        
-        MatchData.shared.colors = rounds
         
         Task {
             do {
                 
-                guard let authDataResult = try? AuthenticationManager.shared
+                guard let authDataResult: AuthDataResultModel = try? AuthenticationManager.shared
                     .getAuthenticatedUser() else { return }
                 
                 MatchData.shared.localPlayerID = authDataResult.uid
-
                 
+                
+                let playerID = authDataResult.uid
+                
+                var displayNameArray: [String: String]
+                if let authDisplayName = authDataResult.displayName {
+                    displayNameArray = [playerID: authDisplayName]
+                    
+                } else {
+                    displayNameArray = ["playerID1": "Joe"]
+                }
                 
                 let matchID = randomString()
                 let dateCreated = Date()
                 
                 let match: Match = await Match(id: matchID,
                                                matchID: matchID, // try to get rid of this bc it's redundant
-                                               playerIDs: [authDataResult.uid],
-                                               appVersion: Float(UIApplication.appVersion ?? "0"),
-                                               colors: rounds,
+                                               matchPassword: generatePassword(),
+                                               playerIDs: [playerID],
+                                               colorIndices: MatchData.shared.match.colorIndices,
+                                               createdNames: nil,
+                                               guessedNames: nil,
+                                               appVersion: Double(UIApplication.appVersion ?? "0"),
                                                dateCreated: dateCreated,
                                                phase: 1, // 1 is name creation, 2 is guessing, 3 is complete
-                                               playerDisplayNames: ["Joe"])
+                                               playerDisplayNames: displayNameArray)
                 
-                try? await uploadMatch(match: match)
+                MatchData.shared.match = match
                 
-                
-                try await self.addMatchToUser(matchID: matchID,
-                                              userID: authDataResult.uid,
-                                              dateCreated: dateCreated)
+                try? await uploadMatch(match: MatchData.shared.match)
                 
                 
-                print("success: \(match.id)")
+                try await addMatchToUser(matchID: matchID,
+                                         userID: authDataResult.uid,
+                                         dateCreated: dateCreated)
+                
+                
+                print("success: \(MatchData.shared.match.id)")
             } catch {
                 print("match creation error: \(error)")
             }
@@ -100,8 +108,44 @@ final class MatchesManager {
         } catch {
             print("UserMatch creation error: \(error)")
         }
-
+        
     }
+    
+    func updateMatch(match: Match) async throws {
+        
+        
+        // use Firestore.Encoder to encode the Match object
+        guard let encodedData = try? Firestore.Encoder().encode(match) else {
+              throw URLError(.badURL)
+          }
+        
+        try await matchDocument(id: String(match.matchID)).setData(encodedData, merge: true)
+         
+        /*
+        var match2 = match
+        match2.phase = 2
+        
+        guard let encodedPhase = try? Firestore.Encoder().encode(match2.phase) else {
+            print("match update encoding error")
+            throw URLError(.badURL)
+        }
+        
+        
+        let dict: [String: Any] = [
+            "createdNames": encodedData
+          //  "phase": encodedPhase
+        ]
+        
+        do {
+            // update the document with the encoded data
+            try await matchDocument(id: String(match.matchID)).updateData(dict)
+        } catch {
+            print("match update error: \(error)")
+        }
+        */
+        
+    }
+    
     
     
     /*
@@ -125,6 +169,13 @@ final class MatchesManager {
      
      }
      */
+    
+    private func generatePassword() -> String {
+        
+        return "green"
+    }
+    
+    
     private func getAllMatchesForUserQuery(userID: String) -> Query {
         matchesCollection
             .whereField(Match.CodingKeys.playerIDs.rawValue, arrayContains: userID)

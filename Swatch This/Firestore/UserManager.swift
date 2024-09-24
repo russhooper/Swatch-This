@@ -12,9 +12,12 @@ import Combine
 
 
 struct DBUser: Codable {
+    
+    
     let userID: String
     let isAnonymous: Bool?
     let email: String?
+    let displayName: String?
     let photoURL: String?
     let dateCreated: Date?
     let isPremium: Bool?
@@ -25,6 +28,7 @@ struct DBUser: Codable {
         self.userID = auth.uid
         self.isAnonymous = auth.isAnonymous
         self.email = auth.email
+        self.displayName = auth.displayName
         self.photoURL = auth.photoURL
         self.dateCreated = Date()
         self.isPremium = false
@@ -36,6 +40,7 @@ struct DBUser: Codable {
         userID: String,
         isAnonymous: Bool? = nil,
         email: String? = nil,
+        displayName: String? = nil,
         photoURL: String? = nil,
         dateCreated: Date? = nil,
         isPremium: Bool? = nil,
@@ -44,6 +49,7 @@ struct DBUser: Codable {
         self.userID = userID
         self.isAnonymous = isAnonymous
         self.email = email
+        self.displayName = displayName
         self.photoURL = photoURL
         self.dateCreated = dateCreated
         self.isPremium = isPremium
@@ -102,6 +108,27 @@ final class UserManager {
         try await userDocument(userID: userID).updateData(data)
     }
     
+    func getUserDisplayName() async throws -> String? {
+        
+        guard let authDataResult = try? AuthenticationManager.shared
+            .getAuthenticatedUser() else { return nil }
+        
+        let user = try await userDocument(userID: authDataResult.uid).getDocument(as: DBUser.self)
+        
+        return user.displayName
+    }
+    
+    func updateUserDisplayName(displayName: String) async throws {
+                
+        guard let authDataResult = try? AuthenticationManager.shared
+            .getAuthenticatedUser() else { return }
+        
+        let data: [String:Any] = [
+            "displayName": displayName
+        ]
+        
+        try await userDocument(userID: authDataResult.uid).updateData(data)
+    }
     
     
     func getAllUserMatches(userID: String) async throws -> [UserMatch] {
@@ -111,6 +138,33 @@ final class UserManager {
     // add a match as a UserMatches document
     func createUserMatch(userMatch: UserMatch, userID: String) async throws {
         try userMatchDocument(userID: userID, matchID: userMatch.matchID).setData(from: userMatch, merge: false)
+    }
+    
+    func updateUserMatch(userMatch: UserMatch, userID: String) async throws {
+        
+        let updatedUserMatch = UserMatch(id: userID,
+                                         matchID: userMatch.matchID,
+                                         isCompleted: true,
+                                         dateCreated: userMatch.dateCreated)
+        
+        // encode the match's colors array using Firestore.Encoder
+        guard let encodedData = try? Firestore.Encoder().encode(updatedUserMatch) else {
+            print("UserMatch update encoding error")
+            throw URLError(.badURL)
+        }
+        
+        let dict: [String: Any] = [
+            "isCompleted": encodedData["isCompleted"] ?? []  // properly encoded array of Round objects
+        ]
+        
+        do {
+            // update the document with the encoded data
+            try await userMatchDocument(userID: userID, matchID: userMatch.matchID).updateData(dict)
+        } catch {
+            print("UserMatch update error: \(error)")
+        }
+        
+        
     }
     
     func removeListenerForCompletedUserMatches() {
@@ -177,7 +231,7 @@ final class UserManager {
 struct UserMatch: Identifiable, Codable, Equatable {
     let id: String
     let matchID: String
-    let isCompleted: Bool
+    var isCompleted: Bool
     let dateCreated: Date
 
     enum CodingKeys: String, CodingKey {

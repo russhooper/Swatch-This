@@ -66,11 +66,7 @@ final class MatchesViewModel: ObservableObject {
                 
                 let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
                 print(match.matchID)
-                
-                MatchData.shared.colorIndices = match.colors.map {  round in
-                    return round.colorIndex
-                } // Use map to extract colorIndex from each Round in the colors array
-                
+                                
                 MatchData.shared.onlineGame = true
 
                 

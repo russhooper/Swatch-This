@@ -11,15 +11,17 @@ import FirebaseAuth
 
 struct AuthDataResultModel {
     let uid: String
-    let email: String?
-    let photoURL: String?
     let isAnonymous: Bool // if the user is signed in anonymously, and they then try to sign in using another method, we need to link that method to their anonymous account
+    let displayName: String?
+    let photoURL: String?
+    let email: String?
     
     init(user: User) {
         self.uid = user.uid
-        self.email = user.email
-        self.photoURL = user.photoURL?.absoluteString
         self.isAnonymous = user.isAnonymous
+        self.displayName = user.displayName
+        self.photoURL = user.photoURL?.absoluteString
+        self.email = user.email
     }
 }
 
@@ -41,8 +43,7 @@ final class AuthenticationManager {
         }
         return AuthDataResultModel(user: user)
     }
-    
-    
+        
     
     func getProviders() throws -> [AuthProviderOption] {
         guard let providerData = Auth.auth().currentUser?.providerData else {

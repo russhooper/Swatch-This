@@ -18,8 +18,8 @@ final class AuthenticationViewModel: ObservableObject {
         let helper = SignInGoogleHelper()
         let tokens = try await helper.signIn()
         let authDataResult = try await AuthenticationManager.shared.signInWithGoogle(tokens: tokens)
-        let user = DBUser(auth: authDataResult)
-        try await UserManager.shared.createNewUser(user: user)
+        try await signIn(authDataResult: authDataResult)
+
     }
     
     // all part of one async flow, so it won't get to the end of this until it successfully runs all lines
@@ -27,15 +27,17 @@ final class AuthenticationViewModel: ObservableObject {
         let helper = SignInAppleHelper()
         let tokens = try await helper.startSignInWithAppleFlow()
         let authDataResult = try await AuthenticationManager.shared.signInWithApple(tokens: tokens)
-        let user = DBUser(auth: authDataResult)
-        try await UserManager.shared.createNewUser(user: user)
+        try await signIn(authDataResult: authDataResult)
     }
     
     func signInAnonymous() async throws {
         let authDataResult = try await AuthenticationManager.shared.signInAnonymous()
+        try await signIn(authDataResult: authDataResult)
+    }
+    
+    func signIn(authDataResult: AuthDataResultModel) async throws {
         let user = DBUser(auth: authDataResult)
         try await UserManager.shared.createNewUser(user: user)
-       // try await UserManager.shared.createNewUser(auth: authDataResult)
     }
     
     

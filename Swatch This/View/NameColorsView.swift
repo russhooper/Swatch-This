@@ -191,8 +191,8 @@ struct NameColorsView: View {
         }
         
         let shouldShowUsernameEntry = gameBrain.shouldShowUsernameEntry(turnData: self.turnData.turnArray,
-                                                                        displayNames: MatchData.shared.displayNames,
-                                                                        onlineGame: MatchData.shared.onlineGame,
+                                                                        displayNames: MatchData.shared.match.playerDisplayNames,
+                                                                        onlineGame: MatchData.shared.onlineGame ?? false,
                                                                         showUsernameToggle: self.showUsernameToggle)
         
         
@@ -785,7 +785,7 @@ struct NameColorsView: View {
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // to allow time for paint animation
                             
-                            MatchData.shared.displayNames = gameBrain.updateUserName(round: self.turnData.turnArray[1], userName: self.enteredPlayerName, displayNames: MatchData.shared.displayNames)
+                            MatchData.shared.match.playerDisplayNames = gameBrain.updateDisplayName(round: self.turnData.turnArray[1], userName: self.enteredPlayerName, displayNames: MatchData.shared.match.playerDisplayNames)
                             
                             self.showUsernameToggle = false
                             
@@ -848,7 +848,7 @@ struct NameColorsView: View {
         let fontSize: CGFloat = 15
         
         let swatchColor = hexColor(gameBrain.getColorHex(turn: turnNumber,
-                                                         indexArray: MatchData.shared.colorIndices))
+                                                         indexArray: MatchData.shared.match.colorIndices))
         
         let player = self.turnData.turnArray[1]+1
         

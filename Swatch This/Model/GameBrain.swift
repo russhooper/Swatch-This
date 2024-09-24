@@ -13,7 +13,7 @@ import StoreKit
 struct GameBrain {
     
     let palette = Palette()
-        
+    
     
     
     func generateNIndices(count: Int) -> [Int] {
@@ -48,27 +48,27 @@ struct GameBrain {
             // index must now be unique -- add it to the return array
             returnArray.append(randomInt)
             groupArray.append(self.getColorGroup(index: randomInt))
-
+            
         }
         
         
         // store the swatches used in the history so we don't pick a repeat next time
-       
+        
         // access Shared Defaults Object
         let userDefaults = UserDefaults.standard
         userDefaults.set(returnArray, forKey: "swatchthis.swatchHistory")
-
-      //  returnArray = [141, 56, 154, 188] //  for screenshots
-     //   returnArray = [93, 85, 153, 13]  //  for screenshots
-    //    returnArray = [17, 158, 32, 149]
-    //    returnArray = [149, 32, 158, 17] // I used this
-
-   //     returnArray = [68, 181, 153]  //  for screenshots. I used this
-    //    returnArray = [18, 181, 153]  //  for screenshots
-    //    returnArray = [132, 181, 153]  //  for screenshots
+        
+        //  returnArray = [141, 56, 154, 188] //  for screenshots
+        //   returnArray = [93, 85, 153, 13]  //  for screenshots
+        //    returnArray = [17, 158, 32, 149]
+        //    returnArray = [149, 32, 158, 17] // I used this
+        
+        //     returnArray = [68, 181, 153]  //  for screenshots. I used this
+        //    returnArray = [18, 181, 153]  //  for screenshots
+        //    returnArray = [132, 181, 153]  //  for screenshots
         // returnArray = [13, 181, 153]  //  for screenshots.
-
-
+        
+        
         return returnArray
     }
     
@@ -79,11 +79,11 @@ struct GameBrain {
     func getAvailablePalette(excludeRecentColors: Bool) -> [Int] {
         
         let palettePackUnlocked = UserDefaults.standard.bool(forKey: "swatchthis.IAP.palettepack1")
-
+        
         let enableBaseGame = UserDefaults.standard.bool(forKey: "swatchthis.basegame.enabled")
         let enablePalettePack = UserDefaults.standard.bool(forKey: "swatchthis.palettepack1.enabled")
         
-                
+        
         
         var enabled = [Int]()
         
@@ -101,16 +101,16 @@ struct GameBrain {
         if enabled.isEmpty == true {
             // if it's empty, put the base game in as a default
             enabled.append(0)
-
+            
         }
-
+        
         
         var availablePalette = [Int]()
         
         for index in 0...palette.masterPalette.count-1 {
             
             for pack in enabled {
-               
+                
                 if palette.masterPalette[index].pack == pack {
                     
                     availablePalette.append(index)
@@ -129,16 +129,16 @@ struct GameBrain {
             let swatchHistoryArray = userDefaults.object(forKey: "swatchthis.swatchHistory") as? [Int]
             
             if swatchHistoryArray?.count ?? 0 > 3 { // if problem with stored history, defaults to a count of 0
-             
+                
                 // let swatchHistorySet = Set(swatchHistoryArray)
-                 let filteredAvailablePalette = availablePalette.filter { !swatchHistoryArray!.contains($0) }
-                 
-                 return filteredAvailablePalette
+                let filteredAvailablePalette = availablePalette.filter { !swatchHistoryArray!.contains($0) }
+                
+                return filteredAvailablePalette
                 
             } else {    // if no history, we'll return the full array
                 
                 return availablePalette
-
+                
             }
         } else {
             
@@ -156,7 +156,7 @@ struct GameBrain {
         var gamesFinishedCount = UserDefaults.standard.integer(forKey: "swatchthis.gamesFinishedCount")
         
         gamesFinishedCount = gamesFinishedCount + 1
-   
+        
         
         if gamesFinishedCount == 2 {
             // we'll only bug the user for this after their second game end (note that there's no real way to know if Pen & Paper was actually played or just visited)
@@ -215,31 +215,31 @@ struct GameBrain {
     
     
     func playSlideSoundEffect() {
-
+        
         playSoundEffect(title: "Card Flip", soundID: 0)
-
+        
     }
     
     func playDealSoundEffect() {
-       
+        
         playSoundEffect(title: "Card Deal", soundID: 1)
-
+        
     }
     
     func playCorrectSoundEffect() {
         
         playSoundEffect(title: "Correct Guess", soundID: 2)
-
+        
     }
     
     func playWinSoundEffect() {
-    
+        
         playSoundEffect(title: "Master Colorsmith", soundID: 3)
         
     }
     
     func playSoundEffect(title: String, soundID: UInt32) {
-       
+        
         if let soundURL = Bundle.main.url(forResource: title, withExtension: "mp3") {
             var mySound: SystemSoundID = soundID
             AudioServicesCreateSystemSoundID(soundURL as CFURL, &mySound)
@@ -255,7 +255,7 @@ struct GameBrain {
     }
     
     func getColorGroup(index: Int) -> String {
-                
+        
         let colorGroup = palette.masterPalette[index].group
         
         return colorGroup
@@ -333,14 +333,14 @@ struct GameBrain {
                 // playersByRound[what turn are we on?][what player is this? (considering arrays start at 0)][get "Created" key] = set to template dictionary
                 
                 updatedPlayersByRound[round].append(appendDict)
-                                
+                
                 print("playersByRound (\(round)): \(updatedPlayersByRound)")
-
+                
                 
             }
             
             print("playersByRound (\(round)): \(updatedPlayersByRound)")
-
+            
         }
         
         print("final playersByRound: \(updatedPlayersByRound)")
@@ -353,35 +353,36 @@ struct GameBrain {
     
     func processTurn(userColorName: String, turnData: TurnData, playerCount: Int) -> [Int] {
         
+        
         let turn = turnData.turnArray[0]
         let trimmedName = checkName(userColorName: userColorName, turn: turn)
         
-        MatchData.shared.colors[turn].createdNames = storeName(userColorName: trimmedName, turn: turn, playerCount: playerCount)
-
-        print("MatchData: \(MatchData.shared.colors[turn])")
-
+        MatchData.shared.match.createdNames = storeName(userColorName: trimmedName, turn: turn, playerCount: playerCount)
+        
+        print("MatchData: \(MatchData.shared.match)")
+        
         
         /*
-        // turn will only be 0 at this point if we've gone through the 4 submissions
-        if MatchData.shared.onlineGame == true && self.turnData.turnArray[0] == 0 {
-            
-            //   self.hideKeyboard()
-            
-            
-            
-            MatchData.shared.turnArray = self.turnData.turnArray
-            
-            gameBrain.endOnlineTurn(matchData: MatchData.shared)
-        }
+         // turn will only be 0 at this point if we've gone through the 4 submissions
+         if MatchData.shared.onlineGame == true && self.turnData.turnArray[0] == 0 {
+         
+         //   self.hideKeyboard()
+         
+         
+         
+         MatchData.shared.turnArray = self.turnData.turnArray
+         
+         gameBrain.endOnlineTurn(matchData: MatchData.shared)
+         }
          */
         
         print("turnArray A: \(turnData.turnArray)")
-
+        
         
         // advance the game
         return gameBrain.advanceGame(turnArray: turnData.turnArray,
-                                                        indexArray: MatchData.shared.colorIndices,
-                                                        playerCount: playerCount)
+                                     indexArray: MatchData.shared.match.colorIndices,
+                                     playerCount: playerCount)
         
         
     }
@@ -411,29 +412,33 @@ struct GameBrain {
         var trimmedName = userColorName.trimmingCharacters(in: .whitespacesAndNewlines)
         
         
-        if let createdNames = MatchData.shared.colors[turn].createdNames?.values {
-         //   let createdNamesArray = Array(createdNames)
-            // Use createdNames here
-            
-            // check that the user didn't create another submitted name
-            if createdNames.contains(trimmedName.localizedCapitalized) {
+        if let createdNamesTurnArray = MatchData.shared.match.createdNames {
                 
-                // make it not technically match the real one by adding a space at the end
-                trimmedName.append(" ")
-                // this isn't an ideal fix, but at least it should smooth things out a bit
+            if createdNamesTurnArray.count > turn {
                 
-            } else {
+                let createdNames = createdNamesTurnArray[turn].values
+                // Use createdNames here
                 
-                // check that the user didn't actually create the real name
-                if trimmedName.capitalized == gameBrain.getColorName(turn: turn, indexArray: MatchData.shared.colorIndices).capitalized {
+                // check that the user didn't create another submitted name
+                if createdNames.contains(trimmedName.localizedCapitalized) {
                     
                     // make it not technically match the real one by adding a space at the end
                     trimmedName.append(" ")
                     // this isn't an ideal fix, but at least it should smooth things out a bit
                     
+                } else {
+                    
+                    // check that the user didn't actually create the real name
+                    if trimmedName.capitalized == gameBrain.getColorName(turn: turn, indexArray: MatchData.shared.match.colorIndices).capitalized {
+                        
+                        // make it not technically match the real one by adding a space at the end
+                        trimmedName.append(" ")
+                        // this isn't an ideal fix, but at least it should smooth things out a bit
+                        
+                    }
                 }
             }
-            
+           
             
         } else {
             // createdNames is nil
@@ -446,19 +451,41 @@ struct GameBrain {
     
     
     
-    func storeName(userColorName: String, turn: Int, playerCount: Int) -> [String: String] {
+    func storeName(userColorName: String, turn: Int, playerCount: Int) -> [[String: String]]? {
         
-        var round = MatchData.shared.colors[turn]
-            
-        if var createdNames = MatchData.shared.colors[turn].createdNames {
+        if var createdNames = MatchData.shared.match.createdNames {
             // If createdNames is not nil, modify it
-            createdNames[MatchData.shared.localPlayerID] = userColorName
-            return createdNames // Assign the updated dictionary back to MatchData
+            if let playerID = MatchData.shared.localPlayerID {
+                
+                if createdNames.count > turn {
+                    createdNames[turn][playerID] = userColorName // store userColorName for this playerID at this turn's slot in the createdNames array
+                    print("name stored into existing turn dict: \(userColorName)")
 
+                } else {
+                    createdNames.append([playerID: userColorName])
+                    print("name stored into new turn dict: \(userColorName)")
+                }
+                
+                return createdNames // Assign the updated dictionary back to MatchData
+            }
+            
+            
         } else {
             // If createdNames is nil, create a new dictionary and assign the value
-            return [MatchData.shared.localPlayerID: userColorName]
+            
+            if let playerID = MatchData.shared.localPlayerID {
+                print("name stored into new array: \(userColorName)")
+                return [[playerID: userColorName]]
+            } else {
+                
+                print("error with localPlayerID")
+                return nil
+            }
+            
         }
+        
+        print("error with either localPlayerID or createdNames")
+        return nil
     }
     
     
@@ -473,8 +500,46 @@ struct GameBrain {
         
         if turn >= 3 {  // we're at the end of a player's 4 submissions
             
+            if let playerID = MatchData.shared.localPlayerID {
+                
+                if let createdNames = MatchData.shared.match.createdNames {
+                    
+                    if createdNames.count >= 4 { // should never be > 4, but putting in for protection
+                        
+                        //  let match: Match = Match(id: MatchData.shared.matchID, matchID: MatchData.shared.matchID, playerIDs: ["123"], colors: MatchData.shared.colors)
+                        
+                        Task {
+                            do {
+                                try await MatchesManager.shared.updateMatch(match: MatchData.shared.match)
+                            } catch {
+                                print("update match error")
+                            }
+                        }
+                        
+                    }
+                }
+                
+                
+                
+            } else {
+                
+                print("playerID is nil")
+                
+            }
+            
+            
+            
+            
+            
             
             if  roundsFinished+1 >= playerCount {    // End of game -- display score screen and button back to menu
+            } else { // end of player's submissions?
+                
+                
+                
+                
+                
+                
             }
             
             // we need to have the submitted colors list with the real color of the previous round in it - this should have been made with the first player's submissions
@@ -499,14 +564,20 @@ struct GameBrain {
     }
     
     
-    func updateUserName(round: Int, userName: String, displayNames: [String: String]) -> [String: String] {
+    func updateDisplayName(round: Int, userName: String, displayNames: [String: String]?) -> [String: String] {
         
-        var updatedDisplayNames = displayNames
+        if var newDisplayNames = displayNames {
+            // display names previously created
+            
+            newDisplayNames["Player \(round+1)"] = userName
+            
+            return newDisplayNames
+            
+        } else {
+            // set up display names with new dictionary
+            return ["Player \(round+1)": userName]
+        }
         
-        // since this is the first round, (turn+1) must mean Player X
-        updatedDisplayNames["Player \(round+1)"] = userName
-        
-        return updatedDisplayNames
         
     }
     
@@ -540,13 +611,13 @@ struct GameBrain {
     // the names are now alphabetized within GuessColorsView's List using .sorted()
     // for some reason this would sometimes not get called or work -- seems like after a few rematches
     func alphabetizeSubmittedColors(gameData: GameData) -> GameData {
-                
+        
         let sortedGameData = gameData
         
         for round in (0...3) {
             
             sortedGameData.submittedColorNames[round] = gameData.submittedColorNames[round].sorted()
-                    
+            
         }
         
         return sortedGameData
@@ -583,42 +654,42 @@ struct GameBrain {
         // determine if the color is too light to show over the white background
         
         /*
-        var c = colorHex.removeFirst();      // strip #
-        var rgb = parseInt(c, 16);   // convert rrggbb to decimal
-        var r = (rgb >> 16) & 0xff;  // extract red
-        var g = (rgb >>  8) & 0xff;  // extract green
-        var b = (rgb >>  0) & 0xff;  // extract blue
-
-        var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-
-        if (luma < 40) {
-            // pick a different colour
-        }
-        
-        */
-        
-        /*
-        // algorithm from: http://www.w3.org/WAI/ER/WD-AERT/#color-contrast
-        let brightness = ((r * 299) + (g * 587) + (b * 114)) / 1_000
-        
-        if brightness >= 0.5 {
-            
-            // use dark
-        } else {
-            
-            // use light
-        }
-        */
+         var c = colorHex.removeFirst();      // strip #
+         var rgb = parseInt(c, 16);   // convert rrggbb to decimal
+         var r = (rgb >> 16) & 0xff;  // extract red
+         var g = (rgb >>  8) & 0xff;  // extract green
+         var b = (rgb >>  0) & 0xff;  // extract blue
+         
+         var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+         
+         if (luma < 40) {
+         // pick a different colour
+         }
+         
+         */
         
         /*
-        var red: CGFloat = 0
-        var green: CGFloat = 0
-        var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-*/
-       // hexStringToUIColor(hex: String(colorHex)
-                           
-     //   UIColor(hex: colorHex).getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+         // algorithm from: http://www.w3.org/WAI/ER/WD-AERT/#color-contrast
+         let brightness = ((r * 299) + (g * 587) + (b * 114)) / 1_000
+         
+         if brightness >= 0.5 {
+         
+         // use dark
+         } else {
+         
+         // use light
+         }
+         */
+        
+        /*
+         var red: CGFloat = 0
+         var green: CGFloat = 0
+         var blue: CGFloat = 0
+         var alpha: CGFloat = 0
+         */
+        // hexStringToUIColor(hex: String(colorHex)
+        
+        //   UIColor(hex: colorHex).getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         
         
         
@@ -629,42 +700,42 @@ struct GameBrain {
     }
     
     /*
-    func UIColorFromHex(hex: UInt32, opacity:Double = 1.0) {
-        
-        let red = Double((hex & 0xff0000) >> 16) / 255.0
-        let green = Double((hex & 0xff00) >> 8) / 255.0
-        let blue = Double((hex & 0xff) >> 0) / 255.0
-       // self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
-        
-        
-    }
-    
-    
-    func hexStringToUIColor (hex:String) -> UIColor {
-        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-
-        if (cString.hasPrefix("#")) {
-            cString.remove(at: cString.startIndex)
-        }
-
-        if ((cString.count) != 6) {
-            return UIColor.gray
-        }
-
-        var rgbValue:UInt64 = 0
-        Scanner(string: cString).scanHexInt64(&rgbValue)
-
-        return UIColor(
-            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-            alpha: CGFloat(1.0)
-        )
-    }
-    */
+     func UIColorFromHex(hex: UInt32, opacity:Double = 1.0) {
+     
+     let red = Double((hex & 0xff0000) >> 16) / 255.0
+     let green = Double((hex & 0xff00) >> 8) / 255.0
+     let blue = Double((hex & 0xff) >> 0) / 255.0
+     // self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
+     
+     
+     }
+     
+     
+     func hexStringToUIColor (hex:String) -> UIColor {
+     var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+     
+     if (cString.hasPrefix("#")) {
+     cString.remove(at: cString.startIndex)
+     }
+     
+     if ((cString.count) != 6) {
+     return UIColor.gray
+     }
+     
+     var rgbValue:UInt64 = 0
+     Scanner(string: cString).scanHexInt64(&rgbValue)
+     
+     return UIColor(
+     red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+     green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+     blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+     alpha: CGFloat(1.0)
+     )
+     }
+     */
     
     func getColorHexOfFullPalette(index: Int) -> UInt32 {
-                        
+        
         return palette.masterPalette[index].hex
         
     }
@@ -680,7 +751,7 @@ struct GameBrain {
         
         let colorName = palette.masterPalette[paletteColorIndex].name
         
-     //   print("getColorName: \(colorName)")
+        //   print("getColorName: \(colorName)")
         
         return colorName
     }
@@ -696,7 +767,7 @@ struct GameBrain {
         
         let companyName = palette.masterPalette[paletteColorIndex].company
         
-     //   print("getColorCompany: \(companyName)")
+        //   print("getColorCompany: \(companyName)")
         
         return companyName
     }
@@ -712,11 +783,11 @@ struct GameBrain {
         
         let colorWebsite = palette.masterPalette[paletteColorIndex].website
         
-     //   print("getColorURL: \(colorWebsite)")
+        //   print("getColorURL: \(colorWebsite)")
         
         return colorWebsite
     }
-        
+    
     
     
     func storeUserColorName(turnArray: [Int], userColor: String, indexArray: [Int], submittedColors: [[String]]) -> [[String]] {
@@ -762,8 +833,8 @@ struct GameBrain {
     }
     
     
-    func shouldShowUsernameEntry(turnData: [Int], displayNames: [String: String], onlineGame: Bool, showUsernameToggle: Bool) -> Bool {
-
+    func shouldShowUsernameEntry(turnData: [Int], displayNames: [String: String]?, onlineGame: Bool, showUsernameToggle: Bool) -> Bool {
+        
         let turn = turnData[0]
         let round = turnData[1]
         
@@ -771,12 +842,19 @@ struct GameBrain {
         
         var hasNewDisplayName = true    // assume a new name has been entered; will check below
         
-        if displayNames[playerString] == playerString ||    // if the displayname is the default Player X...
-            displayNames[playerString] == nil { // or no displayName exists in this slot
-                
-            // then we'll say that no name has been created
+        if let displayName = displayNames?[playerString] {
+            
+            if displayName == playerString {
+                // if the displayname is the default Player X...
+                // then we'll say that no name has been created
+                hasNewDisplayName = false
+            }
+            
+        } else {
+            // no displayName exists
             hasNewDisplayName = false
         }
+        
         
         if onlineGame == false &&
             showUsernameToggle == true &&
@@ -824,7 +902,7 @@ struct GameBrain {
             }
         } else {
             print("Error ending turn: canTakeTurnForCurrentMatch == false")
-
+            
         }
     }
     
@@ -864,11 +942,11 @@ struct GameBrain {
     
     func endOnlineGame(matchData: MatchData) {
         
-       //
+        //
     }
     
     func saveMatchToHistory(gameData: GameData) {
-       
+        
         if gameData.onlineGame == false {   // we don't save the win/loss history for local games
             
             return
@@ -888,20 +966,20 @@ struct GameBrain {
         
         if retrievedHistory == nil {
             let newGameDataArray:[String: GameData] = [matchID:gameData]
-                        
+            
             // save the new history
-             if let encoded = try? encoder.encode(History(gameDataArray: newGameDataArray)) {
-                 defaults.set(encoded, forKey: "MatchHistory")
-                 print("saved match as new history")
-             }
+            if let encoded = try? encoder.encode(History(gameDataArray: newGameDataArray)) {
+                defaults.set(encoded, forKey: "MatchHistory")
+                print("saved match as new history")
+            }
             
             // no saved data at all, we need to do that and update achievements
             
         } else if checkIfMatchInHistory(loadedHistory: retrievedHistory!, matchID: matchID) != true {
             
-                        
+            
             // check if the match is already in the history. If not, then the achievements will need to be updated.
-
+            
             
             // load the existing history of GameDatas
             if var loadedGameDataArray = retrievedHistory {
@@ -909,15 +987,15 @@ struct GameBrain {
                 loadedGameDataArray[matchID] = gameData
                 
                 // save the new full history
-                 if let encoded = try? encoder.encode(History(gameDataArray: loadedGameDataArray)) {
-                     defaults.set(encoded, forKey: "MatchHistory")
-                     print("appended match")
-                 }
-
+                if let encoded = try? encoder.encode(History(gameDataArray: loadedGameDataArray)) {
+                    defaults.set(encoded, forKey: "MatchHistory")
+                    print("appended match")
+                }
+                
             } else {
                 
                 print("error loading history")
-
+                
                 
                 return  // abort
             }
@@ -933,7 +1011,7 @@ struct GameBrain {
         
         
         let localPlayerDisplayName = GameKitHelper.sharedInstance.getLocalUserName()
-
+        
         let localPlayer = getLocalPlayerNum(localPlayerDisplayName: localPlayerDisplayName, gameData: gameData)
         
         
@@ -942,10 +1020,10 @@ struct GameBrain {
         
         let newFooled = calculateFooledCount(localPlayer: localPlayer, playersByRound: gameData.playersByRound, playerCount: gameData.players.count)
         saveFooledToHistory(newFooled: newFooled, fooledHistory: retrieveFooledHistory())
-                
+        
         
         // if there's a problem, default to 0 new points
-        savePointsToHistory(newPoints: gameData.players[localPlayer] ?? 0, 
+        savePointsToHistory(newPoints: gameData.players[localPlayer] ?? 0,
                             numberOfPlayers: gameData.finalPointsArray.count)
         
         
@@ -956,7 +1034,7 @@ struct GameBrain {
     }
     
     func saveMatchToHistory(matchData: MatchData) {
-       
+        
         
     }
     
@@ -965,14 +1043,14 @@ struct GameBrain {
         print("GKLocalPlayer name: \(localPlayerDisplayName)")
         
         // determine local player's Player #
-
+        
         var localPlayer = "Player 1" // placeholder
         if let key = gameData.displayNames.first(where: { $0.value == localPlayerDisplayName })?.key {
-           
+            
             localPlayer = key
             
             print("Player #: \(localPlayer)")
-
+            
             
         } else {
             
@@ -994,14 +1072,14 @@ struct GameBrain {
         
         
         let defaults = UserDefaults.standard
-
+        
         if let matchHistory = defaults.object(forKey: "MatchHistory") as? Data {
             
             
             let decoder = JSONDecoder()
             if let loadedHistory = try? decoder.decode(History.self, from: matchHistory) {
                 print("success loading history: \(loadedHistory.gameDataArray.count) matches")
-
+                
                 return loadedHistory.gameDataArray
             } else {
                 return nil  // error
@@ -1009,7 +1087,7 @@ struct GameBrain {
         } else {
             return nil  // no match history
         }
-                
+        
         
         
     }
@@ -1018,7 +1096,7 @@ struct GameBrain {
     func checkIfMatchInHistory(loadedHistory: [String: GameData], matchID: String) -> Bool {
         
         if loadedHistory.count > 0 {
-                        
+            
             if loadedHistory[matchID] != nil {
                 return true
             } else {
@@ -1042,7 +1120,7 @@ struct GameBrain {
         struct PointsHistory: Codable {
             var points: Int
         }
-
+        
         if let points = defaults.object(forKey: "PointHistory") as? Data {
             let decoder = JSONDecoder()
             if let loadedPoints = try? decoder.decode(PointsHistory.self, from: points) {
@@ -1061,7 +1139,7 @@ struct GameBrain {
     
     func savePointsToHistory(newPoints: Int, numberOfPlayers: Int) {
         
-            
+        
         let defaults = UserDefaults.standard
         let encoder = JSONEncoder()
         
@@ -1098,7 +1176,7 @@ struct GameBrain {
             // Prismania achievement
             if newPoints == calculateMaxPoints(numberOfPlayers: numberOfPlayers) {
                 GameKitHelper.sharedInstance.reportAchievement(identifier: "swatchthis.achievement.prismania", percentComplete: Double(100))
-
+                
             }
             
             
@@ -1147,12 +1225,12 @@ struct GameBrain {
         struct FooledHistory: Codable {
             var fooled: Int
         }
-
+        
         if let fooled = defaults.object(forKey: "FooledHistory") as? Data {
             let decoder = JSONDecoder()
             if let loadedFooled = try? decoder.decode(FooledHistory.self, from: fooled) {
                 print("success loading fooled: \(loadedFooled.fooled)")
-
+                
                 return loadedFooled.fooled
             } else {
                 return 0    // doing it like this in case this is a multithreaded operation
@@ -1160,7 +1238,7 @@ struct GameBrain {
         } else {
             return 0
         }
-                        
+        
     }
     
     
@@ -1179,12 +1257,12 @@ struct GameBrain {
             
             // playersByRound[round][what player is this?][get "Created" key]
             let created = playersByRound[round][getPlayerInt(playerString: localPlayer) - 1]["Created"]!
-
+            
             // if the player's created color was guessed by any other players, we'll add that to the count
             for data in playersByRound[round] {
                 
                 if created == data["Guessed"] {
-                   
+                    
                     fooledTally = fooledTally + 1
                     
                     let fooledPlayer = "Player \(turn+1)"
@@ -1213,13 +1291,13 @@ struct GameBrain {
                             soulMatesArray = [fooledPlayer]
                         }
                     }
-
+                    
                     
                 }
                 
                 turn = turn + 1
             }
-                        
+            
             
         }
         
@@ -1260,14 +1338,14 @@ struct GameBrain {
             if highestCount?.value == 4 {
                 
                 GameKitHelper.sharedInstance.reportAchievement(identifier: "swatchthis.achievement.soul_mates", percentComplete: Double(100))
-            
+                
             }
             
         }
         
-
+        
         return fooledTally
-    
+        
     }
     
     
@@ -1280,14 +1358,14 @@ struct GameBrain {
         struct FooledHistory: Codable {
             var fooled: Int
         }
-                
+        
         
         let updatedFooled = fooledHistory + newFooled
         
-            // save the new history
-             if let encoded = try? encoder.encode(FooledHistory(fooled: updatedFooled)) {
-                 defaults.set(encoded, forKey: "FooledHistory")
-                 print("saved fooled: \(updatedFooled)")
+        // save the new history
+        if let encoded = try? encoder.encode(FooledHistory(fooled: updatedFooled)) {
+            defaults.set(encoded, forKey: "FooledHistory")
+            print("saved fooled: \(updatedFooled)")
         }
         
         
@@ -1303,12 +1381,12 @@ struct GameBrain {
         struct WonHistory: Codable {
             var gamesWon: Int
         }
-
+        
         if let won = defaults.object(forKey: "WonHistory") as? Data {
             let decoder = JSONDecoder()
             if let loadedWon = try? decoder.decode(WonHistory.self, from: won) {
                 print("success loading won: \(loadedWon.gamesWon)")
-
+                
                 return loadedWon.gamesWon
             } else {
                 return 0    // doing it like this in case this is a multithreaded operation
@@ -1322,9 +1400,9 @@ struct GameBrain {
     
     
     func saveWonToHistory(gameData: GameData, wonHistory: Int, localPlayer: String, localDisplayName: String) {
-    
+        
         var currentWin = 0
-    
+        
         // regardless of whether display names or Player X are coming through, we should catch it here
         if gameData.sortedPlayersArray[0] == localPlayer || gameData.sortedPlayersArray[0] == localDisplayName {
             
@@ -1333,7 +1411,7 @@ struct GameBrain {
                 currentWin = 1
             }
         }
-    
+        
         
         let defaults = UserDefaults.standard
         let encoder = JSONEncoder()
@@ -1342,18 +1420,18 @@ struct GameBrain {
         struct WonHistory: Codable {
             var gamesWon: Int
         }
-                
         
-            // save the new history
-             if let encoded = try? encoder.encode(WonHistory(gamesWon: currentWin+wonHistory)) {
-                 defaults.set(encoded, forKey: "WonHistory")
-                 print("saved won: \(currentWin+wonHistory)")
+        
+        // save the new history
+        if let encoded = try? encoder.encode(WonHistory(gamesWon: currentWin+wonHistory)) {
+            defaults.set(encoded, forKey: "WonHistory")
+            print("saved won: \(currentWin+wonHistory)")
         }
         
         
         
     }
-
+    
     
     
     
@@ -1389,7 +1467,7 @@ struct GameBrain {
     
     
     
-
+    
     
     
     
@@ -1440,7 +1518,7 @@ struct GameBrain {
         
         // every player should have a created and guessed for each color
         scoreDetailList.append("Created \(createdVar) and guessed \(guessedVar)")
-
+        
         var counter = 0
         
         // if the player's created color was guessed by any other players, we'll add that to the score detail list
@@ -1449,7 +1527,7 @@ struct GameBrain {
             if created == data["Guessed"] {
                 
                 let userName = userNames["Player \(counter+1)"] ?? "Player \(counter+1)"
-                    
+                
                 scoreDetailList.append("Fooled \(userName)")
                 
             }
@@ -1487,7 +1565,7 @@ struct GameBrain {
         
         
         let filteredPalette = palette.masterPalette.filter { color in
-          return color.pack == 1
+            return color.pack == 1
         }
         
         
@@ -1507,7 +1585,7 @@ struct GameBrain {
         
         
         let filteredPalette = palette.masterPalette.filter { color in
-          return color.pack == 0
+            return color.pack == 0
         }
         
         
@@ -1529,22 +1607,22 @@ struct GameBrain {
     
     
     /* // if using this need to import AVFoundation at top of file
-
-    func textToSpeech(text: String) {
-        
-        let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-      //  utterance.rate = 0.1
-
-        let synthesizer = AVSpeechSynthesizer()
-        synthesizer.speak(utterance)
-        
-        
-    }
+     
+     func textToSpeech(text: String) {
+     
+     let utterance = AVSpeechUtterance(string: text)
+     utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+     //  utterance.rate = 0.1
+     
+     let synthesizer = AVSpeechSynthesizer()
+     synthesizer.speak(utterance)
+     
+     
+     }
+     
+     */
     
-    */
     
-  
     
     
     

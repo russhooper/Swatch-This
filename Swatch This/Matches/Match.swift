@@ -16,28 +16,30 @@ struct Match: Identifiable, Codable, Equatable {
     let id: String // need id for Identifiable
     
     let matchID: String
+    let matchPassword: String?
     let playerIDs: [String]
     
-    let appVersion: Float?
-
-    // array (round) of dictionaries: colorIndex (int), createdNames (array of strings), guessed names (array of strings)
-    var colors: [Round] // Array of Round structs, which contain the data for each match round
-        
-        
+    var colorIndices: [Int]
+    var createdNames: [[String: String]]? // userid, color name
+    var guessedNames: [[String: String]]? // userid, color name
+    
+    let appVersion: Double?
     
   //  let colorIndices: [Int]?
     
-    let dateCreated: Date?
-    let phase: Int? // 1 for name creation phase, 2 for guessing phase, 3 for complete
-    let playerDisplayNames: [String?]? // optional strings in an optional array
+    let dateCreated: Date
+    var phase: Int? // 1 for name creation phase, 2 for guessing phase, 3 for complete
+    var playerDisplayNames: [String: String]? // optional dictionary of player display names keyed to player IDs
     
     enum CodingKeys: String, CodingKey {
         case id
         case matchID
+        case matchPassword
         case playerIDs
+        case colorIndices
+        case createdNames
+        case guessedNames
         case appVersion
-        case colors
-     //   case colorIndices
         case dateCreated
         case phase
         case playerDisplayNames
@@ -47,13 +49,6 @@ struct Match: Identifiable, Codable, Equatable {
         return lhs.id == rhs.id
     }
     
-}
-
-
-struct Round: Codable, Equatable {
-    var colorIndex: Int
-    var createdNames: [String: String]? // userid, color name
-    var guessedNames: [String: String]? // userid, color name
 }
 
 

@@ -8,45 +8,37 @@
 
 import Foundation
 
-// MatchData is the local and persistent (during runtime) version of Match, which is what's actually put into Firebase.
+// MatchData is the local and persistent (during runtime) expanded version of Match, which is what's actually put into Firebase.
 
-class MatchData {
+class MatchData {   // should this be a struct?
     
     static let shared = MatchData() // Singleton instance
     
+    // should make some of these optional
+    
     var turnArray: [Int]
-    var localPlayerID: String
-    var colorIndices: [Int]
-    var colors: [Round]
-    var players: [String : Int] // dictionary of player, score
-    var sortedPlayersArray: [String]
-    var displayNames: [String : String]
-    var finalPointsArray: [Int]
-    var submissionsByPlayer: [String : String]
-    var currentPlayer: Int     // this keeps track of whose turn it currently is
-    var isComplete: Bool
-    var matchID: String
-    var onlineGame: Bool
-    var matchDate: Date // will be set to the date when the match was created
-    var appVersion: Float // will be set to the app version when the match was created
+    var localPlayerID: String?
+    var players: [String: Int]? // dictionary of player, score
+    var sortedPlayersArray: [String]?
+    var finalPointsArray: [Int]?
+    var submissionsByPlayer: [String: String]?
+    var currentPlayer: Int?     // this keeps track of whose turn it currently is
+    var onlineGame: Bool?
     
+    var match: Match // contains id, matchID, matchPassword?, playerIDs, colorIndices, createdNames?, guessedNames?, appVersion?, dateCreated?, phase?, playerDisplayNames?
     
+    // should this still be done? Maybe just used for local match?
     private init() { // initialize with defaults
         
         self.turnArray = [0, 0]    // turn, roundsFinished
         
-        self.localPlayerID = "123"
+      //  self.localPlayerID = nil
         
-        self.colorIndices = [
-            0,
-            0,
-            0,
-            0
-        ]
-        
+        /*
         self.colors = [
             Round(colorIndex: 0)
         ]
+        
         
         // dictionary of player, score
         self.players = [
@@ -73,19 +65,34 @@ class MatchData {
         self.submissionsByPlayer = [
             "Submitted color" : "Player X"
         ]
-        
+         
+         self.appVersion = 1.0
+
+        */
         self.currentPlayer = 1
-        
-        self.isComplete = false
-        
-        self.matchID = "abc123"
-        
+                        
         self.onlineGame = false
+                
         
-        self.matchDate = Date()
-        
-        self.appVersion = 1.0
+        self.match = Match(id: "matchID1",
+                           matchID: "matchID1",
+                           matchPassword: nil,
+                           playerIDs: ["playerID1"],
+                           colorIndices: [0,0,0,0],
+                           createdNames: nil,
+                           guessedNames: nil,
+                           appVersion: nil,
+                           dateCreated: Date(),
+                           phase: nil,
+                           playerDisplayNames: nil)
         
     }
     
+    /*
+    func getCreatedNames(for userID: String) -> [String] {
+        return match.colors.compactMap { round in
+            round.createdNames?[userID]
+        }
+    }
+    */
 }

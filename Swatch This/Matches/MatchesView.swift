@@ -11,7 +11,8 @@ import SwiftUI
 struct MatchesView: View {
     
     @StateObject private var viewModel = MatchesViewModel()
-    
+    @State private var matchPassword: String = ""
+    @FocusState private var isFocused: Bool
     @EnvironmentObject var viewRouter: ViewRouter
     // @EnvironmentObject var gameData: GameData
     
@@ -39,7 +40,7 @@ struct MatchesView: View {
                 }
             }
             
-            Section(header: Text("New Match")) {
+            Section(header: Text("Create Match")) {
                 
                 Button(action: {
                     
@@ -52,6 +53,34 @@ struct MatchesView: View {
                 }, label: {
                     Image(systemName: "plus.square.fill")
                 })
+                
+                
+            }
+            
+            Section(header: Text("Join Match")) {
+                
+                VStack {
+                    TextField("Enter match code", text: $matchPassword)
+                    //   .frame( alignment: .leading)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .focused($isFocused)
+
+                    HStack {
+                        
+                        Button("Join") {
+                            
+                            isFocused = false
+                            
+                            
+                 
+                        }
+                        .disabled(!isFocused)
+
+                        
+                        Spacer()
+                    }
+                    
+                }
                 
                 
             }

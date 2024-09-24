@@ -174,13 +174,14 @@ struct ContentView: View {
             
             
         }
-        
+        /*
         let shouldShowUsernameEntry = gameBrain.shouldShowUsernameEntry(turnData: self.turnData.turnArray,
                                                                         displayNames: self.gameData.displayNames,
                                                                         onlineGame: self.onlineGame,
                                                                         showUsernameToggle: self.showUsernameToggle)
         
-        
+        */
+        let shouldShowUsernameEntry = true
         //  let shouldShowUsernameEntry = false // for testing
         
         return Group {
@@ -769,7 +770,8 @@ struct ContentView: View {
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // to allow time for paint animation
                             
-                            self.gameData.displayNames = gameBrain.updateUserName(round: self.turnData.turnArray[1], userName: self.enteredPlayerName, displayNames: self.gameData.displayNames)
+                       //     self.gameData.displayNames = gameBrain.updateUserName(round: self.turnData.turnArray[1], userName: self.enteredPlayerName, displayNames: self.gameData.displayNames)
+                            
                             
                             self.showUsernameToggle = false
                             
