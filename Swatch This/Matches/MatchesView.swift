@@ -69,10 +69,23 @@ struct MatchesView: View {
                         
                         Button("Join") {
                             
+                            Task {
+                                
+                                do {
+                                    let passwordCheck = try await MatchesManager.shared.checkMatchCode(password: matchPassword)
+                                    
+                                    print("passwordCheck: \(passwordCheck)")
+                                } catch {
+                                    
+                                    print("passwordCheck error")
+                                }
+                                
+                            }
+                            
+                            
+                            
                             isFocused = false
                             
-                            
-                 
                         }
                         .disabled(!isFocused)
 

@@ -96,6 +96,7 @@ final class MatchesManager {
         try matchDocument(id: String(match.id)).setData(from: match, merge: false)
     }
     
+    
     func addMatchToUser(matchID: String, userID: String, dateCreated: Date) async throws {
         
         let userMatch: UserMatch = UserMatch(id: matchID,
@@ -175,6 +176,23 @@ final class MatchesManager {
         return "green"
     }
     
+    func checkMatchCode(password: String) async throws -> Bool {
+        
+        let query = getAllMatchesForCode(password: password)
+        
+        let (matches, _) = try await query
+            .getDocumentsWithSnapshot(as: Match.self)
+        // This function returns a tuple. (matches, _) will get the first object of the tuple
+        
+        return !matches.isEmpty
+        
+    }
+    
+    private func getAllMatchesForCode(password: String) -> Query {
+        matchesCollection
+            .whereField(Match.CodingKeys.matchPassword.rawValue, isEqualTo: password)
+    }
+    
     
     private func getAllMatchesForUserQuery(userID: String) -> Query {
         matchesCollection
@@ -183,7 +201,7 @@ final class MatchesManager {
     
     private func getAllMatchesForPhaseQuery(phase: Int) -> Query {
         matchesCollection
-            .whereField(Match.CodingKeys.phase.rawValue, isEqualTo: 3)
+            .whereField(Match.CodingKeys.phase.rawValue, isEqualTo: phase)
     }
     
     func getAllMatches(forUser userID: String?,
@@ -193,20 +211,29 @@ final class MatchesManager {
         matches: [Match],
         lastDocument: DocumentSnapshot?
     ) {
-        
-        var query: Query = getAllMatchesQuery()
-        
-        //   UserManager.shared.getUser(userID: <#T##String#>)
-        
+                        
         if let phase {
-            query = getAllMatchesForPhaseQuery(phase: phase)
+            let query = getAllMatchesForPhaseQuery(phase: phase)
+            
+            return try await query
+                .startOptionally(afterDocument: lastDocument)
+                .getDocumentsWithSnapshot(as: Match.self)
+            
         } else if let userID {
-            query = getAllMatchesForUserQuery(userID: userID)
+            let query = getAllMatchesForUserQuery(userID: userID)
+            
+            return try await query
+                .startOptionally(afterDocument: lastDocument)
+                .getDocumentsWithSnapshot(as: Match.self)
+            
+        } else {
+            let query = getAllMatchesQuery()
+            
+            return try await query
+                .startOptionally(afterDocument: lastDocument)
+                .getDocumentsWithSnapshot(as: Match.self)
         }
         
-        return try await query
-            .startOptionally(afterDocument: lastDocument)
-            .getDocumentsWithSnapshot(as: Match.self)
         
     }
     
