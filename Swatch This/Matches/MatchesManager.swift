@@ -17,21 +17,45 @@ final class MatchesManager {
     var gameData: GameData = GameData()
     
     private let matchesCollection = Firestore.firestore().collection("Matches")
-    
+
     private func matchDocument(id: String) -> DocumentReference {
         let docRef = matchesCollection.document(id)
-        print("docRef: \(docRef)")
+        print("matchDocument ref: \(docRef)")
         return docRef
     }
+    
     
     func getMatch(matchID: String) async throws -> Match {
         try await matchDocument(id: matchID).getDocument(as: Match.self)
     }
     
+    
+    
     private func getAllMatchesQuery() -> Query {
         matchesCollection
     }
     
+    
+    func joinMatch(match: Match) {
+        guard let authDataResult: AuthDataResultModel = try? AuthenticationManager.shared
+            .getAuthenticatedUser() else { return }
+        
+        MatchData.shared.localPlayerID = authDataResult.uid
+        MatchData.shared.onlineGame = true
+        MatchData.shared.match = match
+        
+        if let playerID = MatchData.shared.localPlayerID {
+            if let localDisplayName = LocalUser.shared.displayName {
+                if let displayNames = MatchData.shared.match.playerDisplayNames {
+                    MatchData.shared.match.playerDisplayNames?[playerID] = localDisplayName
+                } else {
+                    MatchData.shared.match.playerDisplayNames = [playerID: localDisplayName]
+                }
+            }
+        }
+
+        
+    }
     
     func createMatch() { // should differentiate between online and local and not upload online at this point
         
@@ -40,40 +64,69 @@ final class MatchesManager {
         MatchData.shared.match.colorIndices = GameBrain().generateNIndices(count: indiciesCount)
         MatchData.shared.onlineGame = true
         
+        let playerCount = 2
+        
+        let matchID = randomString()
+        let dateCreated = Date()
+        
+        let userID = LocalUser.shared.userID
+        MatchData.shared.localPlayerID = userID
+        
+        let phaseByPlayer: [String: Int]? = [userID: 1] // 1 for name creation, 2 for color guessing, 3 for completed
+        
+        
+        var displayNameArray: [String: String]?
+        if let authDisplayName = LocalUser.shared.displayName {
+            displayNameArray = [userID: authDisplayName]
+            
+        } else {
+            displayNameArray = nil
+        }
         
         Task {
             do {
-                
+                /*
                 guard let authDataResult: AuthDataResultModel = try? AuthenticationManager.shared
                     .getAuthenticatedUser() else { return }
+                 let playerID = authDataResult.uid
+
+                */
                 
-                MatchData.shared.localPlayerID = authDataResult.uid
+
                 
                 
-                let playerID = authDataResult.uid
                 
-                var displayNameArray: [String: String]
-                if let authDisplayName = authDataResult.displayName {
-                    displayNameArray = [playerID: authDisplayName]
-                    
-                } else {
-                    displayNameArray = ["playerID1": "Joe"]
+                 
+                /*
+                if let localDisplayName = LocalUser.shared.displayName {
+                    if let displayNames = MatchData.shared.match.playerDisplayNames {
+                        displayNameArray[playerID] = localDisplayName
+                    } else {
+                        displayNameArray = [playerID: localDisplayName]
+                    }
                 }
+                 */
                 
-                let matchID = randomString()
-                let dateCreated = Date()
+                let code = try await generateCode()
+
+                
+                print("code: \(String(describing: code))")
+                
+
                 
                 let match: Match = await Match(id: matchID,
                                                matchID: matchID, // try to get rid of this bc it's redundant
-                                               matchPassword: generatePassword(),
-                                               playerIDs: [playerID],
+                                               matchPassword: code,
+                                               playerIDs: [userID],
                                                colorIndices: MatchData.shared.match.colorIndices,
                                                createdNames: nil,
                                                guessedNames: nil,
                                                appVersion: Double(UIApplication.appVersion ?? "0"),
                                                dateCreated: dateCreated,
                                                phase: 1, // 1 is name creation, 2 is guessing, 3 is complete
-                                               playerDisplayNames: displayNameArray)
+                                               phaseByPlayer: phaseByPlayer,
+                                               playerDisplayNames: displayNameArray,
+                                               playerCount: playerCount)
                 
                 MatchData.shared.match = match
                 
@@ -81,7 +134,7 @@ final class MatchesManager {
                 
                 
                 try await addMatchToUser(matchID: matchID,
-                                         userID: authDataResult.uid,
+                                         userID: userID,
                                          dateCreated: dateCreated)
                 
                 
@@ -114,7 +167,7 @@ final class MatchesManager {
     
     func updateMatch(match: Match) async throws {
         
-        
+                
         // use Firestore.Encoder to encode the Match object
         guard let encodedData = try? Firestore.Encoder().encode(match) else {
               throw URLError(.badURL)
@@ -171,12 +224,13 @@ final class MatchesManager {
      }
      */
     
-    private func generatePassword() -> String {
+    private func generateCode() async throws -> String? {
         
-        return "green"
+        return try await MatchCodeManager().getRandomCode()
+        
     }
     
-    func checkMatchCode(password: String) async throws -> Bool {
+    func checkMatchCode(password: String) async throws -> [Match]? {
         
         let query = getAllMatchesForCode(password: password)
         
@@ -184,7 +238,13 @@ final class MatchesManager {
             .getDocumentsWithSnapshot(as: Match.self)
         // This function returns a tuple. (matches, _) will get the first object of the tuple
         
-        return !matches.isEmpty
+      //  return !matches.isEmpty
+        if matches.count > 0 {
+            return matches
+        } else {
+            return nil
+        }
+        
         
     }
     

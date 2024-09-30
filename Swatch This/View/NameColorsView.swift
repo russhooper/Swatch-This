@@ -906,6 +906,7 @@ struct NameColorsView: View {
                             TextField("Name this \(colorLocalized)", text: self.$userColorName)
                                 .frame(width: swatchHeight, alignment: .leading)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .fontWeight(.heavy)
                                 .disabled(tag == self.turnData.turnArray[0] ? false : true)
                                 .introspectTextField { textField in
                                     if tag == self.turnData.turnArray[0] && tag > 0 {  // the swatch views have "tag" values that match their turn

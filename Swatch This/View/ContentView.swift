@@ -527,7 +527,6 @@ struct ContentView: View {
                                     self.offsetY1 = 0.0
                                     self.opacity1 = 1
                                 }
-                                
                             }
                         }
                     gameSwatchView(turnNumber: 0, swatchHeight: swatchHeight, tag: 0)

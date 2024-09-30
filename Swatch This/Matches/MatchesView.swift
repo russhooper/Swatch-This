@@ -12,6 +12,7 @@ struct MatchesView: View {
     
     @StateObject private var viewModel = MatchesViewModel()
     @State private var matchPassword: String = ""
+    @State var incorrectPassword: Int = 0
     @FocusState private var isFocused: Bool
     @EnvironmentObject var viewRouter: ViewRouter
     // @EnvironmentObject var gameData: GameData
@@ -29,9 +30,9 @@ struct MatchesView: View {
                     
                     Button(action: {
                         
-                        viewModel.getMatchData(userMatch: item)
-                        self.viewRouter.currentPage = "game"
-
+                     //   viewModel.getMatchData(userMatch: item)
+                     //   self.viewRouter.currentPage = "game"
+                        
                         
                     }, label: {
                         Text("item.matchID: \(item.matchID)")
@@ -63,32 +64,41 @@ struct MatchesView: View {
                     TextField("Enter match code", text: $matchPassword)
                     //   .frame( alignment: .leading)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocapitalization(.none)
+                        .fontWeight(.heavy)
                         .focused($isFocused)
-
+                        .modifier(Shake(animatableData: CGFloat(self.incorrectPassword)))
+                    
                     HStack {
                         
                         Button("Join") {
                             
                             Task {
-                                
                                 do {
-                                    let passwordCheck = try await MatchesManager.shared.checkMatchCode(password: matchPassword)
+                                    if let matchesForPassword = try await MatchesManager.shared.checkMatchCode(password: matchPassword) {
+                                        print("matchesForPassword: \(matchesForPassword)")
+                                                                        
+                                        //join the match
+                                        self.incorrectPassword = 0
+                                        MatchesManager.shared.joinMatch(match: matchesForPassword.first!) // if there are multiple, that's bad -- we'll just pick the first. Using !, which is also bad -- but can it get to this point if nil?
+                                        self.viewRouter.currentPage = "game"
+                                        
+                                    } else {
+                                        handleIncorrectPassword()
+                                    }
                                     
-                                    print("passwordCheck: \(passwordCheck)")
                                 } catch {
-                                    
+                                    handleIncorrectPassword()
                                     print("passwordCheck error")
                                 }
-                                
                             }
-                            
                             
                             
                             isFocused = false
                             
                         }
                         .disabled(!isFocused)
-
+                        
                         
                         Spacer()
                     }
@@ -114,7 +124,33 @@ struct MatchesView: View {
             
         }
     }
+    
+    
+    // Helper function to handle incorrect password logic
+    func handleIncorrectPassword() {
+        withAnimation(.default) {
+            self.incorrectPassword += 1
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.incorrectPassword = 0
+        }
+    }
 }
+
+struct Shake: GeometryEffect {
+    var amount: CGFloat = 10
+    var shakesPerUnit = 3
+    var animatableData: CGFloat
+    
+    func effectValue(size: CGSize) -> ProjectionTransform {
+        ProjectionTransform(CGAffineTransform(translationX:
+                                                amount * sin(animatableData * .pi * CGFloat(shakesPerUnit)),
+                                              y: 0))
+    }
+}
+
+
 
 #Preview {
     MatchesView()

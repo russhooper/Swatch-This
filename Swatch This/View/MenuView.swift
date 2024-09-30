@@ -57,7 +57,7 @@ struct MenuView: View {
     @State var showingSettings = false
     
     @State private var showSignInView: Bool = false
-
+    
     
     var gameData: GameData
     @EnvironmentObject var viewRouter: ViewRouter
@@ -609,45 +609,45 @@ struct MenuView: View {
                         Button(action: {
                             
                             self.mildHaptics()
-                                  
+                            
                             /*
-                            if self.gameCenter.enabled {
-                                
-                                GKAccessPoint.shared.isActive = false
-                                self.viewRouter.onlineGame = true
-                                
-                                
-                                self.isShowingGameCenter.toggle()
-                                self.viewRouter.playerCount = self.numberOfPlayers
-                                
-                                
-                                self.viewRouter.currentPage = "loading"
-
-                                
-                            } else {
-                                
-                                /*
-                                let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
-                                self.showSignInView = authUser == nil
-                                AuthenticationView(showSignInView: $showSignInView)
-                                */
-                                
-                                NotificationCenter.default.post(name: .gameCenterAlert, object: nil)
-                                
-                            }
-                            */
+                             if self.gameCenter.enabled {
+                             
+                             GKAccessPoint.shared.isActive = false
+                             self.viewRouter.onlineGame = true
+                             
+                             
+                             self.isShowingGameCenter.toggle()
+                             self.viewRouter.playerCount = self.numberOfPlayers
+                             
+                             
+                             self.viewRouter.currentPage = "loading"
+                             
+                             
+                             } else {
+                             
+                             /*
+                              let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
+                              self.showSignInView = authUser == nil
+                              AuthenticationView(showSignInView: $showSignInView)
+                              */
+                             
+                             NotificationCenter.default.post(name: .gameCenterAlert, object: nil)
+                             
+                             }
+                             */
                             
                             self.viewRouter.onlineGame = true
                             self.viewRouter.currentPage = "loading"
-
+                            
                             
                         }) {
                             HStack {
                                 Image(systemName: "paintbrush.fill")
                                 Text("Play Online")
                             }
-                                .font(.system(size: 23))
-                                .bold()
+                            .font(.system(size: 23))
+                            .bold()
                         }.disabled(self.localFirst)
                         
                         
@@ -658,7 +658,7 @@ struct MenuView: View {
                         //    }
                         
                         
-
+                        
                         Button(action: {
                             
                             self.mildHaptics()
@@ -675,65 +675,55 @@ struct MenuView: View {
                                 Image(systemName: "paintbrush.pointed.fill")
                                 Text("Play Locally")
                             }
-                                .font(.system(size: 23))
-                                .bold()
+                            .font(.system(size: 23))
+                            .bold()
                         }.disabled(self.localFirst)
                         
                         
-                        HStack {
+                        
+                        Button(action: {
                             
-                            Button(action: {
-                                
-                                
-                                self.mildHaptics()
-                                GKAccessPoint.shared.isActive = false
-                                
-                                self.showingColors.toggle()
-                            }) {
-                                HStack {
-                                    Image(systemName: "swatchpalette")
-                                    Text("\(colorLocalizedCap)s") // Colors
-                                }
-                                    .font(.system(size: 23))
-                                
+                            
+                            self.mildHaptics()
+                            GKAccessPoint.shared.isActive = false
+                            
+                            self.showingColors.toggle()
+                        }) {
+                            HStack {
+                                Image(systemName: "swatchpalette")
+                                Text("\(colorLocalizedCap)s") // Colors
                             }
-                            .sheet(isPresented: self.$showingColors) {
-                                ColorsView(isPresented: self.$showingColors,
-                                           hexes: self.setUpPalettePackColors().hex,
-                                           rotations: self.setUpPalettePackColors().rotation,
-                                           baseGameHexes: gameBrain.getBaseGameColors().shuffled())
-                            }
+                            .font(.system(size: 21))
                             
-                            
-                            
-                            Text("/")
-                                .font(.system(size: 23))
-                                .fontWeight(.bold)
-                                .foregroundColor(Color(brightTealColor))
-                            
-                            
-                            
-                            Button(action: {
-                                
-                                self.mildHaptics()
-                                GKAccessPoint.shared.isActive = false
-                                
-                                self.showingHowTo.toggle()
-                            }) {
-                                HStack {
-                                    Image(systemName: "book.pages")
-                                    Text("How to Play")
-                                }
-                                    .font(.system(size: 23))
-                                
-                            }
-                            .sheet(isPresented: self.$showingHowTo) {
-                                HowToView(isPresented: self.$showingHowTo)
-                            }
-                            
+                        }
+                        .sheet(isPresented: self.$showingColors) {
+                            ColorsView(isPresented: self.$showingColors,
+                                       hexes: self.setUpPalettePackColors().hex,
+                                       rotations: self.setUpPalettePackColors().rotation,
+                                       baseGameHexes: gameBrain.getBaseGameColors().shuffled())
                         }
                         
                         
+                        
+                        
+                        
+                        Button(action: {
+                            
+                            self.mildHaptics()
+                            GKAccessPoint.shared.isActive = false
+                            
+                            self.showingHowTo.toggle()
+                        }) {
+                            HStack {
+                                Image(systemName: "book.pages")
+                                Text("How to Play")
+                            }
+                            .font(.system(size: 21))
+                            
+                        }
+                        .sheet(isPresented: self.$showingHowTo) {
+                            HowToView(isPresented: self.$showingHowTo)
+                        }
                         
                         
                     }.onAppear() {
@@ -746,7 +736,7 @@ struct MenuView: View {
                     
                 }
                 .accentColor(Color(DefaultColors.shared.tangerineColorText))
-
+                
                 
                 Spacer()
                 
@@ -791,7 +781,7 @@ struct MenuView: View {
                     }
                     .padding()
                     .sheet(isPresented: self.$showingSettings) {
-                      //  let displayName = try await UserManager.shared.getUserDisplayName()
+                        //  let displayName = try await UserManager.shared.getUserDisplayName()
                         
                         SettingsView(showSignInView: $showSignInView)
                     }
@@ -799,7 +789,7 @@ struct MenuView: View {
                     
                 }
                 .accentColor(Color(.white))
-
+                
                 
             }
             

@@ -34,17 +34,17 @@ final class AuthenticationViewModel: ObservableObject {
         let authDataResult = try await AuthenticationManager.shared.signInAnonymous()
         try await signIn(authDataResult: authDataResult)
     }
-    
+
     func signIn(authDataResult: AuthDataResultModel) async throws {
         
-        DBUser.shared.userID = authDataResult.uid
-        DBUser.shared.isAnonymous = authDataResult.isAnonymous
-        DBUser.shared.email = authDataResult.email
-        DBUser.shared.displayName = authDataResult.displayName
-        DBUser.shared.photoURL = authDataResult.photoURL
-        DBUser.shared.dateCreated = Date()
+        LocalUser.shared.userID = authDataResult.uid
+        LocalUser.shared.isAnonymous = authDataResult.isAnonymous
+        LocalUser.shared.email = authDataResult.email
+        LocalUser.shared.displayName = authDataResult.displayName
+        LocalUser.shared.photoURL = authDataResult.photoURL
+        LocalUser.shared.dateCreated = Date()
                 
-        try await UserManager.shared.createNewUser(user: DBUser.shared)
+        try await UserManager.shared.createNewUser(user: LocalUser.shared)
     }
     
     

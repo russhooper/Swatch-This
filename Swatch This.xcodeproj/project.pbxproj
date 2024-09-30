@@ -43,6 +43,8 @@
 		632CC93424B7F1A400EBD566 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632CC93324B7F1A400EBD566 /* MenuView.swift */; };
 		632CC93624B7FCD700EBD566 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632CC93524B7FCD700EBD566 /* SpriteKit.framework */; };
 		632FE02C25DC9E7D008356B0 /* ColorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632FE02B25DC9E7D008356B0 /* ColorsView.swift */; };
+		63357AE32CAA2DDD00445CB3 /* MatchCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63357AE22CAA2DDD00445CB3 /* MatchCode.swift */; };
+		63357AE52CAA2F0D00445CB3 /* MatchCodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63357AE42CAA2F0D00445CB3 /* MatchCodeManager.swift */; };
 		633A4D6824DF255B00CFA355 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633A4D6724DF255B00CFA355 /* LoadingView.swift */; };
 		633C338A2C8A158F00BBDA38 /* ProductsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633C33892C8A158F00BBDA38 /* ProductsManager.swift */; };
 		633C338C2C8A159F00BBDA38 /* ProductsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633C338B2C8A159F00BBDA38 /* ProductsViewModel.swift */; };
@@ -151,6 +153,8 @@
 		632CC93324B7F1A400EBD566 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		632CC93524B7FCD700EBD566 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
 		632FE02B25DC9E7D008356B0 /* ColorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsView.swift; sourceTree = "<group>"; };
+		63357AE22CAA2DDD00445CB3 /* MatchCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchCode.swift; sourceTree = "<group>"; };
+		63357AE42CAA2F0D00445CB3 /* MatchCodeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchCodeManager.swift; sourceTree = "<group>"; };
 		633A4D6724DF255B00CFA355 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		633C33892C8A158F00BBDA38 /* ProductsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsManager.swift; sourceTree = "<group>"; };
 		633C338B2C8A159F00BBDA38 /* ProductsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewModel.swift; sourceTree = "<group>"; };
@@ -274,6 +278,7 @@
 				632CC93224B6B15500EBD566 /* Swatch This.entitlements */,
 				632CC8FF24B6B12500EBD566 /* AppDelegate.swift */,
 				632CC90124B6B12500EBD566 /* SceneDelegate.swift */,
+				63357AE02CAA2D5B00445CB3 /* Match Codes */,
 				63AB777624BA90CB009BC9CE /* Model */,
 				633C33952C8A345700BBDA38 /* Matches */,
 				63AB777924BAAA58009BC9CE /* View */,
@@ -328,6 +333,15 @@
 				632CC93024B6B15100EBD566 /* GameKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		63357AE02CAA2D5B00445CB3 /* Match Codes */ = {
+			isa = PBXGroup;
+			children = (
+				63357AE22CAA2DDD00445CB3 /* MatchCode.swift */,
+				63357AE42CAA2F0D00445CB3 /* MatchCodeManager.swift */,
+			);
+			path = "Match Codes";
 			sourceTree = "<group>";
 		};
 		633C33882C8A157500BBDA38 /* Products */ = {
@@ -601,6 +615,7 @@
 				6340481D24C92E56004F8C53 /* ViewRouter.swift in Sources */,
 				63F2AAEB24C5265D004897FD /* SwatchView.swift in Sources */,
 				633C338A2C8A158F00BBDA38 /* ProductsManager.swift in Sources */,
+				63357AE32CAA2DDD00445CB3 /* MatchCode.swift in Sources */,
 				6393184B2C97B39100DF3C2F /* MatchData.swift in Sources */,
 				6311C7902C866DD100E70312 /* Utilities.swift in Sources */,
 				633C338C2C8A159F00BBDA38 /* ProductsViewModel.swift in Sources */,
@@ -613,6 +628,7 @@
 				633C33942C8A16C400BBDA38 /* ProductCellViewBuilder.swift in Sources */,
 				638A59F825DE051400A0F880 /* StoreManager.swift in Sources */,
 				6397119124D5ECF300DB0405 /* TurnData.swift in Sources */,
+				63357AE52CAA2F0D00445CB3 /* MatchCodeManager.swift in Sources */,
 				63F8587F269E2F830072C19C /* TransitionSwatches.swift in Sources */,
 				632CC90424B6B12500EBD566 /* ContentView.swift in Sources */,
 				633C338E2C8A15B500BBDA38 /* ProductsView.swift in Sources */,

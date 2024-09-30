@@ -11,8 +11,8 @@ import FirebaseFirestore
 import Combine
 
 
-class DBUser: Codable {
-    static var shared = DBUser() // Singleton instance
+class LocalUser: Codable {
+    static var shared = LocalUser() // Singleton instance
 
     var userID: String
     var isAnonymous: Bool?
@@ -101,21 +101,21 @@ final class UserManager {
     
     func loadCurrentUser() async throws {
         let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
-        DBUser.shared = try await getUser(userID: authDataResult.uid)
+        LocalUser.shared = try await getUser(userID: authDataResult.uid)
     }
         
     private var userActiveMatchesListener: ListenerRegistration? = nil
     private var userCompletedMatchesListener: ListenerRegistration? = nil
 
         
-    func createNewUser(user: DBUser) async throws {
+    func createNewUser(user: LocalUser) async throws {
         try userDocument(userID: user.userID).setData(from: user, merge: false)
     }
     
     
-    func getUser(userID: String) async throws -> DBUser {
+    func getUser(userID: String) async throws -> LocalUser {
         print("userID: \(userID)")
-        return try await userDocument(userID: userID).getDocument(as: DBUser.self)
+        return try await userDocument(userID: userID).getDocument(as: LocalUser.self)
     }
     
 
@@ -134,7 +134,7 @@ final class UserManager {
         guard let authDataResult = try? AuthenticationManager.shared
             .getAuthenticatedUser() else { return nil }
         
-        let user = try await userDocument(userID: authDataResult.uid).getDocument(as: DBUser.self)
+        let user = try await userDocument(userID: authDataResult.uid).getDocument(as: LocalUser.self)
         
         return user.displayName
     }

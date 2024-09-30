@@ -102,8 +102,9 @@ struct SwitcherView: View {
                 
                 // show a loading screen while the Game Center view and the data are being loaded
               //  LoadingView()
-                
-                MatchesView()
+                NavigationStack {
+                    MatchesView()
+                }
                 
             }
             

@@ -45,7 +45,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let locale = Locale.current
         
-        if locale.regionCode == "US" {
+        if locale.region?.identifier == "US" {
             colorLocalized = "color"
             colorLocalizedCap = "Color"
         }

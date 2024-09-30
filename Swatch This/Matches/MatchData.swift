@@ -84,7 +84,9 @@ class MatchData {   // should this be a struct?
                            appVersion: nil,
                            dateCreated: Date(),
                            phase: nil,
-                           playerDisplayNames: nil)
+                           phaseByPlayer: nil,
+                           playerDisplayNames: nil,
+                           playerCount: 2)
         
     }
     
