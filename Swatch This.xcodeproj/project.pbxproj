@@ -56,6 +56,9 @@
 		635097EB24C7878900300F58 /* ScoreDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635097EA24C7878900300F58 /* ScoreDetailView.swift */; };
 		635DC55D25E5EDE800FB283F /* HowToTabletopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635DC55C25E5EDE800FB283F /* HowToTabletopView.swift */; };
 		6366621D24E09A8900CAAFC7 /* OtherPlayersTurn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6366621C24E09A8900CAAFC7 /* OtherPlayersTurn.swift */; };
+		637AACE32CB071A20096F9F5 /* ProfanityWords.txt in Resources */ = {isa = PBXBuildFile; fileRef = 637AACE12CB071A20096F9F5 /* ProfanityWords.txt */; };
+		637AACE62CB071B40096F9F5 /* ProfanityFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637AACE42CB071B40096F9F5 /* ProfanityFilter.swift */; };
+		637AACE72CB071B40096F9F5 /* ProfanityFilter+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637AACE52CB071B40096F9F5 /* ProfanityFilter+Helper.swift */; };
 		63813BD224B92D3400DCA2CB /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63813BD124B92D3400DCA2CB /* AboutView.swift */; };
 		63813BD424B92D6200DCA2CB /* HowToView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63813BD324B92D6200DCA2CB /* HowToView.swift */; };
 		6385C2A624C27D5A00F79C5E /* GuessColorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6385C2A524C27D5A00F79C5E /* GuessColorsView.swift */; };
@@ -163,6 +166,19 @@
 		635097EA24C7878900300F58 /* ScoreDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreDetailView.swift; sourceTree = "<group>"; };
 		635DC55C25E5EDE800FB283F /* HowToTabletopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToTabletopView.swift; sourceTree = "<group>"; };
 		6366621C24E09A8900CAAFC7 /* OtherPlayersTurn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherPlayersTurn.swift; sourceTree = "<group>"; };
+		637AACD62CB071A20096F9F5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text; name = de; path = de.lproj/ProfanityWords.txt; sourceTree = "<group>"; };
+		637AACD72CB071A20096F9F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = en.lproj/ProfanityWords.txt; sourceTree = "<group>"; };
+		637AACD82CB071A20096F9F5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text; name = es; path = es.lproj/ProfanityWords.txt; sourceTree = "<group>"; };
+		637AACD92CB071A20096F9F5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = fr; path = fr.lproj/ProfanityWords.txt; sourceTree = "<group>"; };
+		637AACDA2CB071A20096F9F5 /* it */ = {isa = PBXFileReference; lastKnownFileType = text; name = it; path = it.lproj/ProfanityWords.txt; sourceTree = "<group>"; };
+		637AACDB2CB071A20096F9F5 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text; name = ja; path = ja.lproj/ProfanityWords.txt; sourceTree = "<group>"; };
+		637AACDC2CB071A20096F9F5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/ProfanityWords.txt; sourceTree = "<group>"; };
+		637AACDD2CB071A20096F9F5 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text; name = pl; path = pl.lproj/ProfanityWords.txt; sourceTree = "<group>"; };
+		637AACDE2CB071A20096F9F5 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text; name = pt; path = pt.lproj/ProfanityWords.txt; sourceTree = "<group>"; };
+		637AACDF2CB071A20096F9F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text; name = ru; path = ru.lproj/ProfanityWords.txt; sourceTree = "<group>"; };
+		637AACE02CB071A20096F9F5 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text; name = zh; path = zh.lproj/ProfanityWords.txt; sourceTree = "<group>"; };
+		637AACE42CB071B40096F9F5 /* ProfanityFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfanityFilter.swift; sourceTree = "<group>"; };
+		637AACE52CB071B40096F9F5 /* ProfanityFilter+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfanityFilter+Helper.swift"; sourceTree = "<group>"; };
 		63813BD124B92D3400DCA2CB /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		63813BD324B92D6200DCA2CB /* HowToView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToView.swift; sourceTree = "<group>"; };
 		6385C2A524C27D5A00F79C5E /* GuessColorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuessColorsView.swift; sourceTree = "<group>"; };
@@ -352,6 +368,24 @@
 			path = Matches;
 			sourceTree = "<group>";
 		};
+		637AACD52CB0718C0096F9F5 /* ProfanityFilter */ = {
+			isa = PBXGroup;
+			children = (
+				637AACE42CB071B40096F9F5 /* ProfanityFilter.swift */,
+				637AACE52CB071B40096F9F5 /* ProfanityFilter+Helper.swift */,
+				637AACE22CB071A20096F9F5 /* Assets */,
+			);
+			path = ProfanityFilter;
+			sourceTree = "<group>";
+		};
+		637AACE22CB071A20096F9F5 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				637AACE12CB071A20096F9F5 /* ProfanityWords.txt */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		63AB777624BA90CB009BC9CE /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -403,6 +437,7 @@
 				6311C78B2C866D7800E70312 /* SignInGoogleHelper.swift */,
 				6311C78D2C866D9000E70312 /* SignInAppleHelper.swift */,
 				6311C78F2C866DD100E70312 /* Utilities.swift */,
+				637AACD52CB0718C0096F9F5 /* ProfanityFilter */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -504,6 +539,16 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				ja,
+				es,
+				it,
+				pl,
+				ru,
+				fr,
+				nl,
+				pt,
+				zh,
 			);
 			mainGroup = 632CC8F324B6B12500EBD566;
 			packageReferences = (
@@ -528,6 +573,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				637AACE32CB071A20096F9F5 /* ProfanityWords.txt in Resources */,
 				63C6D490265B4397000C3C7F /* Card Flip.mp3 in Resources */,
 				6311C7752C8665B700E70312 /* GoogleService-Info.plist in Resources */,
 				6318884B26B712EF00CA7A06 /* Master Colorsmith.mp3 in Resources */,
@@ -611,6 +657,8 @@
 				6397119124D5ECF300DB0405 /* TurnData.swift in Sources */,
 				63357AE52CAA2F0D00445CB3 /* MatchCodeManager.swift in Sources */,
 				63F8587F269E2F830072C19C /* TransitionSwatches.swift in Sources */,
+				637AACE62CB071B40096F9F5 /* ProfanityFilter.swift in Sources */,
+				637AACE72CB071B40096F9F5 /* ProfanityFilter+Helper.swift in Sources */,
 				632CC90424B6B12500EBD566 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -653,6 +701,24 @@
 				632CC90B24B6B12600EBD566 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		637AACE12CB071A20096F9F5 /* ProfanityWords.txt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				637AACD62CB071A20096F9F5 /* de */,
+				637AACD72CB071A20096F9F5 /* en */,
+				637AACD82CB071A20096F9F5 /* es */,
+				637AACD92CB071A20096F9F5 /* fr */,
+				637AACDA2CB071A20096F9F5 /* it */,
+				637AACDB2CB071A20096F9F5 /* ja */,
+				637AACDC2CB071A20096F9F5 /* nl */,
+				637AACDD2CB071A20096F9F5 /* pl */,
+				637AACDE2CB071A20096F9F5 /* pt */,
+				637AACDF2CB071A20096F9F5 /* ru */,
+				637AACE02CB071A20096F9F5 /* zh */,
+			);
+			name = ProfanityWords.txt;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

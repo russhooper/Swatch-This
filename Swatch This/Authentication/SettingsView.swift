@@ -8,7 +8,6 @@
 
 import SwiftUI
 
-
 struct SettingsView: View {
     
     @StateObject private var settingsViewModel: SettingsViewModel = SettingsViewModel()
@@ -32,14 +31,14 @@ struct SettingsView: View {
                         
                         Button("Save") {
                             
-                            LocalUser.shared.displayName = displayName
+                            LocalUser.shared.displayName = displayName.profanityFiltered()
                             
                             isFocused = false
                             
                             Task {
                                 do {
                                     // update displayName
-                                    try await UserManager.shared.updateUserDisplayName(displayName: displayName)
+                                    try await UserManager.shared.updateUserDisplayName(displayName: displayName.profanityFiltered())
                                     
                                 } catch {
                                     print("error updating displayName: \(error)")
@@ -48,7 +47,7 @@ struct SettingsView: View {
                             }
                  
                         }
-                        .disabled(!isFocused)
+                        .disabled(!isFocused || displayName.containsProfanity() || displayName.profanityFiltered().count < 3 || displayName.profanityFiltered().count > 20)
 
                         
                         Spacer()
