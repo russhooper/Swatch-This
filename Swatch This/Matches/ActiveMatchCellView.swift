@@ -1,11 +1,3 @@
-//
-//  CurrentMatchCellView.swift
-//  Swatch This
-//
-//  Created by Russ Hooper on 10/3/24.
-//  Copyright © 2024 Radio Silence. All rights reserved.
-//
-
 import SwiftUI
 
 struct ActiveMatchCellView: View {
@@ -15,13 +7,13 @@ struct ActiveMatchCellView: View {
     
     var body: some View {
         GeometryReader { geo in
-            HStack {
+            HStack(alignment: .center) {
                 swatchesView(userMatch: userMatch, geoWidth: geo.size.width, geoHeight: geo.size.height)
                 
-                Spacer()
+                Spacer() // This pushes the textView to the right
                 
                 textView(userMatch: userMatch)
-                    .frame(width: geo.size.width * 1 / 2)
+                    .frame(width: geo.size.width * 1 / 2, alignment: .trailing) // Ensures the text is aligned to the right
             }
         }
     }
@@ -32,7 +24,7 @@ struct ActiveMatchCellView: View {
             
             ZStack {
                 
-                ForEach(0 ..< userMatch.match.colorIndices.count, id: \.self) {i in
+                ForEach(0 ..< userMatch.match.colorIndices.count, id: \.self) { i in
                     
                     SwatchView(colorIndices: userMatch.match.colorIndices.reversed(),
                                colorAtIndex: i,
@@ -46,10 +38,7 @@ struct ActiveMatchCellView: View {
                                fontSize: 10,
                                showTurns: false)
                     .rotationEffect(.degrees(rotations[i]))
-                    .offset(x: CGFloat(i)*geoWidth/16, y: offsetsY[i])
-                    
-                    
-                    
+                    .offset(x: CGFloat(i-1) * geoWidth / 16, y: offsetsY[i])
                 }
             }
         }
@@ -57,23 +46,20 @@ struct ActiveMatchCellView: View {
     
     func textView(userMatch: UserMatch) -> some View {
         
+        // Initialize userNamesArray with an empty array by default
+        let userNamesArray: [String] = userMatch.match.playerDisplayNames?.values.map { $0 } ?? []
+        
         return Group {
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(userMatch.turnLastTakenDate != nil ? formatDate(userMatch.turnLastTakenDate!) : "No turns taken")                    .font(.headline)
+            VStack(alignment: .trailing, spacing: 4) {  // Right alignment
+                Text(userMatch.turnLastTakenDate != nil ? formatDate(userMatch.turnLastTakenDate!) : "No turns taken")
+                    .font(.headline)
                     .foregroundColor(.primary)
-                Text("Phase " + String(userMatch.match.phase ?? 0))
+                // Text("Phase " + String(userMatch.match.phase ?? 0))
+                Text(userNamesArray.joined(separator: ", "))
+                    .font(.callout)
+                Text(userMatch.turnLastTakenDate != nil ? formatDate(userMatch.turnLastTakenDate!) : "No turns taken")
+                    .font(.callout)
             }
-            .font(.callout)
-            .foregroundColor(.secondary)
-            
         }
     }
 }
-
-/*
-#Preview {
-    ActiveMatchCellView(match: Match(id: "abc123", matchID: "abc123", matchPassword: nil, playerIDs: ["4567a"], colorIndices: [0,20,44,100], appVersion: nil, dateCreated: Date(), turnLastTakenDate: Date(), playerCount: 2),
-                        rotations: [-25, -10, 0, 10], offsetsY: [10, 0, -5, -2])
-}
-*/

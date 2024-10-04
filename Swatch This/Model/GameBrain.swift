@@ -521,7 +521,7 @@ struct GameBrain {
                                                                      match: MatchData.shared.match,
                                                                      turnLastTakenDate: Date())
                                 
-                                try await UserManager.shared.updateUserMatch(userMatch: userMatch, userID: LocalUser.shared.userID)
+                                try await UserManager.shared.updateUserMatch(userMatch: userMatch, userID: LocalUser.shared.userID, isGameEnd: isGameEnd)
                                 
                             } catch {
                                 print("update match error: \(error)")
@@ -540,17 +540,11 @@ struct GameBrain {
             }
             
             
-            
-            
-            
-            
+                        
             if  roundsFinished+1 >= playerCount {    // End of game -- display score screen and button back to menu
             } else { // end of player's submissions?
                 
-                
-                
-                
-                
+                print("end of player's submissions")
                 
             }
             

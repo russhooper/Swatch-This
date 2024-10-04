@@ -43,7 +43,7 @@ struct MatchesView: View {
                     }, label: {
                         ActiveMatchCellView(userMatch: userMatch, rotations: [-25, -10, 0, 10], offsetsY: [10, 0, -5, -2])
                     })
-                    .frame(height: 70)
+                    .frame(height: 90)
                 }
             }
             

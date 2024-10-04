@@ -164,11 +164,11 @@ final class UserManager {
         try userMatchDocument(userID: userID, matchID: userMatch.matchID).setData(from: userMatch, merge: false)
     }
     
-    func updateUserMatch(userMatch: UserMatch, userID: String) async throws {
+    func updateUserMatch(userMatch: UserMatch, userID: String, isGameEnd: Bool) async throws {
         
         let updatedUserMatch = UserMatch(id: userID,
                                          matchID: userMatch.matchID,
-                                         isCompleted: true,
+                                         isCompleted: isGameEnd,
                                          match: userMatch.match,
                                          turnLastTakenDate: Date())
         

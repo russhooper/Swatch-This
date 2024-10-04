@@ -944,6 +944,7 @@ struct NameColorsView: View {
                                         self.turnData.turnArray = gameBrain.processTurn(userColorName: createdName, turnData: turnData, playerCount: playerCount)
                                         self.prepLastSwatch = false
                                         self.flingLastSwatch = false
+                                        self.viewRouter.currentPage = "loading"
                                     }
                                     
                                     

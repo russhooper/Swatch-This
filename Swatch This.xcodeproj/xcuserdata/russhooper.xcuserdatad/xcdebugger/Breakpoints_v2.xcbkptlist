@@ -62,8 +62,8 @@
             filePath = "Swatch This/Model/GameBrain.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "666"
-            endingLineNumber = "666"
+            startingLineNumber = "660"
+            endingLineNumber = "660"
             landmarkName = "getColorHexForScoreDetail(turn:indexArray:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,8 +142,8 @@
             filePath = "Swatch This/Model/GameBrain.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1035"
-            endingLineNumber = "1035"
+            startingLineNumber = "1029"
+            endingLineNumber = "1029"
             landmarkName = "saveMatchToHistory(gameData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -222,8 +222,8 @@
             filePath = "Swatch This/Model/GameBrain.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "905"
-            endingLineNumber = "905"
+            startingLineNumber = "899"
+            endingLineNumber = "899"
             landmarkName = "endOnlineTurn(gameData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -270,8 +270,8 @@
             filePath = "Swatch This/Model/GameBrain.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1453"
-            endingLineNumber = "1453"
+            startingLineNumber = "1450"
+            endingLineNumber = "1450"
             landmarkName = "isGameEnd(roundsFinished:playerCount:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -366,8 +366,8 @@
             filePath = "Swatch This/Model/GameBrain.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1275"
-            endingLineNumber = "1275"
+            startingLineNumber = "1269"
+            endingLineNumber = "1269"
             landmarkName = "calculateFooledCount(localPlayer:playersByRound:playerCount:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -382,8 +382,8 @@
             filePath = "Swatch This/Model/GameBrain.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1277"
-            endingLineNumber = "1277"
+            startingLineNumber = "1271"
+            endingLineNumber = "1271"
             landmarkName = "calculateFooledCount(localPlayer:playersByRound:playerCount:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -672,15 +672,15 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "184"
             endingLineNumber = "184"
-            landmarkName = "updateUserMatch(userMatch:userID:)"
+            landmarkName = "updateUserMatch(userMatch:userID:isGameEnd:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - ad3dc7d19e3784da"
+                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - dd485df6f2faf28a"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for Swatch_This.UserManager.updateUserMatch(userMatch: Swatch_This.UserMatch, userID: Swift.String) async throws -&gt; ()"
+                  symbolName = "(1) suspend resume partial function for Swatch_This.UserManager.updateUserMatch(userMatch: Swatch_This.UserMatch, userID: Swift.String, isGameEnd: Swift.Bool) async throws -&gt; ()"
                   moduleName = "Swatch This.debug.dylib"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/russhooper/Documents/Swatch%20This/Swatch%20This/Firestore/UserManager.swift"
@@ -690,11 +690,11 @@
                   endingLineNumber = "187">
                </Location>
                <Location
-                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - 432eab5a2b000f5"
+                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - 9166c7728e1de093"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "(2) await resume partial function for Swatch_This.UserManager.updateUserMatch(userMatch: Swatch_This.UserMatch, userID: Swift.String) async throws -&gt; ()"
+                  symbolName = "(2) await resume partial function for Swatch_This.UserManager.updateUserMatch(userMatch: Swatch_This.UserMatch, userID: Swift.String, isGameEnd: Swift.Bool) async throws -&gt; ()"
                   moduleName = "Swatch This.debug.dylib"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/russhooper/Documents/Swatch%20This/Swatch%20This/Firestore/UserManager.swift"
@@ -704,11 +704,11 @@
                   endingLineNumber = "187">
                </Location>
                <Location
-                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - d6efbf3e3c0cd8d8"
+                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - fdd8126620d43688"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for Swatch_This.UserManager.updateUserMatch(userMatch: Swatch_This.UserMatch, userID: Swift.String) async throws -&gt; ()"
+                  symbolName = "(3) suspend resume partial function for Swatch_This.UserManager.updateUserMatch(userMatch: Swatch_This.UserMatch, userID: Swift.String, isGameEnd: Swift.Bool) async throws -&gt; ()"
                   moduleName = "Swatch This.debug.dylib"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/russhooper/Documents/Swatch%20This/Swatch%20This/Firestore/UserManager.swift"
@@ -718,11 +718,11 @@
                   endingLineNumber = "187">
                </Location>
                <Location
-                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - bdb76ab48b71bed9"
+                  uuid = "B78FC60E-E2B5-44C3-B8F0-272B58E0B106 - 8210caadb63a9489"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "(4) suspend resume partial function for Swatch_This.UserManager.updateUserMatch(userMatch: Swatch_This.UserMatch, userID: Swift.String) async throws -&gt; ()"
+                  symbolName = "(4) suspend resume partial function for Swatch_This.UserManager.updateUserMatch(userMatch: Swatch_This.UserMatch, userID: Swift.String, isGameEnd: Swift.Bool) async throws -&gt; ()"
                   moduleName = "Swatch This.debug.dylib"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/russhooper/Documents/Swatch%20This/Swatch%20This/Firestore/UserManager.swift"
