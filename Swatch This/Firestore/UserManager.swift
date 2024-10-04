@@ -72,6 +72,9 @@ class LocalUser: Codable {
     
 }
 
+
+
+
 final class UserManager {
     
     static let shared = UserManager()
@@ -166,7 +169,8 @@ final class UserManager {
         let updatedUserMatch = UserMatch(id: userID,
                                          matchID: userMatch.matchID,
                                          isCompleted: true,
-                                         dateCreated: userMatch.dateCreated)
+                                         match: userMatch.match,
+                                         turnLastTakenDate: Date())
         
         // encode the match's colors array using Firestore.Encoder
         guard let encodedData = try? Firestore.Encoder().encode(updatedUserMatch) else {
@@ -230,7 +234,7 @@ final class UserManager {
                 
         let (publisher, listener) = userMatchesCollection(userID: userID)
             .whereField(UserMatch.CodingKeys.isCompleted.rawValue, isEqualTo: isCompleted)
-            .order(by: UserMatch.CodingKeys.dateCreated.rawValue, descending: true)
+            //.order(by: Match.CodingKeys.dateCreated.rawValue, descending: true)
             .addSnapshotListener(as: UserMatch.self)
         
         if  (isCompleted == true) {
@@ -246,25 +250,4 @@ final class UserManager {
     
 }
 
-
-// the UserMatch is a list of match IDs that the user is or was part of
-// these are all case sensitive
-struct UserMatch: Identifiable, Codable, Equatable {
-    let id: String
-    let matchID: String
-    var isCompleted: Bool
-    let dateCreated: Date
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case matchID
-        case isCompleted
-        case dateCreated
-    }
-    
-    static func ==(lhs: UserMatch, rhs: UserMatch) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-}
 

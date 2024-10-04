@@ -498,6 +498,8 @@ struct GameBrain {
         var turn = turnArray[0]
         var roundsFinished = turnArray[1]
         
+        let isGameEnd = isGameEnd(roundsFinished: roundsFinished, playerCount: playerCount)
+        
         if turn >= 3 {  // we're at the end of a player's 4 submissions
             
             if let playerID = MatchData.shared.localPlayerID {
@@ -510,9 +512,19 @@ struct GameBrain {
                         
                         Task {
                             do {
+                                MatchData.shared.match.turnLastTakenDate = Date()
                                 try await MatchesManager.shared.updateMatch(match: MatchData.shared.match)
+                                                                
+                                let userMatch: UserMatch = UserMatch(id: MatchData.shared.match.matchID,
+                                                                     matchID: MatchData.shared.match.matchID,
+                                                                     isCompleted: isGameEnd,
+                                                                     match: MatchData.shared.match,
+                                                                     turnLastTakenDate: Date())
+                                
+                                try await UserManager.shared.updateUserMatch(userMatch: userMatch, userID: LocalUser.shared.userID)
+                                
                             } catch {
-                                print("update match error")
+                                print("update match error: \(error)")
                             }
                         }
                         
@@ -1437,7 +1449,7 @@ struct GameBrain {
     
     
     // called when in GuessColors
-    func isGameEnd(roundsFinished: Int, playerCount: Int, sortedPlayersArray: [String]) -> Bool {
+    func isGameEnd(roundsFinished: Int, playerCount: Int) -> Bool {
         
         let returnBool = roundsFinished >= playerCount*2
         print("isGameEnd: \(returnBool)")

@@ -83,6 +83,7 @@ class MatchData {   // should this be a struct?
                            guessedNames: nil,
                            appVersion: nil,
                            dateCreated: Date(),
+                           turnLastTakenDate: nil,
                            phase: nil,
                            phaseByPlayer: nil,
                            playerDisplayNames: nil,

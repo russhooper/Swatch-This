@@ -26,36 +26,25 @@ struct MatchesView: View {
             // listener to stay active
             
             Section(header: Text("Current Matches")) {
-                ForEach(viewModel.userActiveMatches, id: \.id.self) { item in
+                ForEach(viewModel.userActiveMatches, id: \.id.self) { userMatch in
                     
                     Button(action: {
                         
-                     //   viewModel.getMatchData(userMatch: item)
-                     //   self.viewRouter.currentPage = "game"
-                        
-                        
+                        Task {
+                            do {
+                                let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
+                                MatchesManager.shared.joinMatch(match: match)
+                                self.viewRouter.currentPage = "game"
+                                
+                            } catch {
+                                print("error joining match: \(error)")
+                            }
+                        }
                     }, label: {
-                        Text("item.matchID: \(item.matchID)")
+                        ActiveMatchCellView(userMatch: userMatch, rotations: [-25, -10, 0, 10], offsetsY: [10, 0, -5, -2])
                     })
-                    
+                    .frame(height: 70)
                 }
-            }
-            
-            Section(header: Text("Create Match")) {
-                
-                Button(action: {
-                    
-                    MatchesManager.shared.createMatch()
-                    
-                    self.viewRouter.currentPage = "game"
-                    
-                    
-                    
-                }, label: {
-                    Image(systemName: "plus.square.fill")
-                })
-                
-                
             }
             
             Section(header: Text("Join Match")) {
@@ -77,7 +66,7 @@ struct MatchesView: View {
                                 do {
                                     if let matchesForPassword = try await MatchesManager.shared.checkMatchCode(password: matchPassword) {
                                         print("matchesForPassword: \(matchesForPassword)")
-                                                                        
+                                        
                                         //join the match
                                         self.incorrectPassword = 0
                                         MatchesManager.shared.joinMatch(match: matchesForPassword.first!) // if there are multiple, that's bad -- we'll just pick the first. Using !, which is also bad -- but can it get to this point if nil?
@@ -105,6 +94,34 @@ struct MatchesView: View {
                     
                 }
                 
+                
+            }
+            
+            Section(header: Text("Create Match")) {
+                
+                HStack {
+                    Spacer()
+                    
+                    Button(action: {
+                        
+                        MatchesManager.shared.createMatch()
+                        
+                        self.viewRouter.currentPage = "game"
+                        
+                        
+                        
+                    }, label: {
+                        Image(systemName: "plus")
+                            .tint(.white)
+                            .font(.headline)
+                            .padding(.horizontal, 30)
+                    })
+                    .buttonStyle(.borderedProminent)
+                    .tint(Color(DefaultColors.shared.tangerineColorText))
+                    
+                    Spacer()
+                    
+                }
                 
             }
             

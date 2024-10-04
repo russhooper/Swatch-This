@@ -11,12 +11,12 @@ import Foundation
 struct MatchCode: Identifiable, Codable, Equatable {
     let id: String // need id for Identifiable
     let code: String
-    let index: Int
+    let hex: String
 
     enum CodingKeys: String, CodingKey {
         case id
         case code
-        case index
+        case hex
     }
     
     static func ==(lhs: MatchCode, rhs: MatchCode) -> Bool {

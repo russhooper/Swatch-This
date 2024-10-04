@@ -123,6 +123,7 @@ final class MatchesManager {
                                                guessedNames: nil,
                                                appVersion: Double(UIApplication.appVersion ?? "0"),
                                                dateCreated: dateCreated,
+                                               turnLastTakenDate: nil,
                                                phase: 1, // 1 is name creation, 2 is guessing, 3 is complete
                                                phaseByPlayer: phaseByPlayer,
                                                playerDisplayNames: displayNameArray,
@@ -133,9 +134,8 @@ final class MatchesManager {
                 try? await uploadMatch(match: MatchData.shared.match)
                 
                 
-                try await addMatchToUser(matchID: matchID,
-                                         userID: userID,
-                                         dateCreated: dateCreated)
+                try await addMatchToUser(match: match,
+                                         userID: userID)
                 
                 
                 print("success: \(MatchData.shared.match.id)")
@@ -150,12 +150,13 @@ final class MatchesManager {
     }
     
     
-    func addMatchToUser(matchID: String, userID: String, dateCreated: Date) async throws {
+    func addMatchToUser(match: Match, userID: String) async throws {
         
-        let userMatch: UserMatch = UserMatch(id: matchID,
-                                             matchID: matchID,
+        let userMatch: UserMatch = UserMatch(id: match.matchID,
+                                             matchID: match.matchID,
                                              isCompleted: false,
-                                             dateCreated: dateCreated)
+                                             match: match,
+                                             turnLastTakenDate: Date())
         
         do {
             try await UserManager.shared.createUserMatch(userMatch: userMatch, userID: userID)
@@ -166,8 +167,7 @@ final class MatchesManager {
     }
     
     func updateMatch(match: Match) async throws {
-        
-                
+                        
         // use Firestore.Encoder to encode the Match object
         guard let encodedData = try? Firestore.Encoder().encode(match) else {
               throw URLError(.badURL)
@@ -226,7 +226,13 @@ final class MatchesManager {
     
     private func generateCode() async throws -> String? {
         
-        return try await MatchCodeManager().getRandomCode()
+        if let code = try await MatchCodeManager().getRandomCode() {
+            return code
+        } else {
+            // if the color name codes fails for some reason, generate a random code
+            let characters = "abcdefghijklmnopqrstuvwxyz0123456789"
+            return String((0..<6).map { _ in characters.randomElement()! })
+        }
         
     }
     
@@ -244,9 +250,9 @@ final class MatchesManager {
         } else {
             return nil
         }
-        
-        
     }
+    
+    
     
     private func getAllMatchesForCode(password: String) -> Query {
         matchesCollection

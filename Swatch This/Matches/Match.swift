@@ -28,6 +28,7 @@ struct Match: Identifiable, Codable, Equatable {
   //  let colorIndices: [Int]?
     
     let dateCreated: Date
+    var turnLastTakenDate: Date?
     var phase: Int? // 1 for name creation phase, 2 for guessing phase, 3 for complete
     var phaseByPlayer: [String: Int]?
     var playerDisplayNames: [String: String]? // optional dictionary of player display names keyed to player IDs
@@ -43,6 +44,7 @@ struct Match: Identifiable, Codable, Equatable {
         case guessedNames
         case appVersion
         case dateCreated
+        case turnLastTakenDate
         case phase
         case phaseByPlayer
         case playerDisplayNames

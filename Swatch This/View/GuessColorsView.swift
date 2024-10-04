@@ -389,8 +389,7 @@ struct GuessColorsView: View {
                                 let baseAnimation = Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: self.dealDuration)
                                 
                                 if gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
-                                                        playerCount: self.playerCount,
-                                                        sortedPlayersArray: self.gameData.sortedPlayersArray) == false {
+                                                        playerCount: self.playerCount) == false {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + self.dealDelay3) {
                                         return withAnimation(baseAnimation) {
@@ -424,8 +423,7 @@ struct GuessColorsView: View {
                                 let baseAnimation = Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: self.flingDuration)
                                 
                                 if gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
-                                                        playerCount: self.playerCount,
-                                                        sortedPlayersArray: self.gameData.sortedPlayersArray) == false {
+                                                        playerCount: self.playerCount) == false {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + self.dealDelay2) {
                                         return withAnimation(baseAnimation) {
@@ -453,8 +451,7 @@ struct GuessColorsView: View {
                                 let baseAnimation = Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: self.dealDuration)
                                 
                                 if gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
-                                                        playerCount: self.playerCount,
-                                                        sortedPlayersArray: self.gameData.sortedPlayersArray) == false {
+                                                        playerCount: self.playerCount) == false {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + self.dealDelay1) {
                                         return withAnimation(baseAnimation) {
@@ -482,8 +479,7 @@ struct GuessColorsView: View {
                                 let baseAnimation = Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: self.dealDuration)
                                 
                                 if gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
-                                                        playerCount: self.playerCount,
-                                                        sortedPlayersArray: self.gameData.sortedPlayersArray) == false {
+                                                        playerCount: self.playerCount) == false {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + self.dealDelay0) {
                                         return withAnimation(baseAnimation) {
@@ -517,7 +513,7 @@ struct GuessColorsView: View {
                 
                 
                 if self.isGameEnd == true || gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
-                                                                 playerCount: self.playerCount, sortedPlayersArray: self.gameData.sortedPlayersArray) {
+                                                                 playerCount: self.playerCount) {
                                         
                     if self.horizontalSizeClass == .regular {   // iPad with large dimensions has a different transition animation
                         
@@ -649,8 +645,7 @@ struct GuessColorsView: View {
         
         // GuessColorsView gets called a lot on iPad due to the transition. This if statement is to protect against progressing the game when it's already game end
         if (gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
-                                playerCount: self.playerCount,
-                                sortedPlayersArray: self.gameData.sortedPlayersArray) == false) {
+                                playerCount: self.playerCount) == false) {
             
             self.turnData.turnArray = gameBrain.advanceGame(turnArray: self.turnData.turnArray,
                                                             indexArray: self.gameData.colorIndices,
@@ -666,7 +661,7 @@ struct GuessColorsView: View {
         
         
         if (gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
-                               playerCount: self.playerCount, sortedPlayersArray: self.gameData.sortedPlayersArray) || self.isGameEnd == true) {
+                               playerCount: self.playerCount) || self.isGameEnd == true) {
             
             if self.horizontalSizeClass == .regular {   // iPad with large dimensions needs to prep its transition animation
                 self.transitionSwatches.updateFrame(geoWidth: geoWidth, geoHeight: geoHeight)

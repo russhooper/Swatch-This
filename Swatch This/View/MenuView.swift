@@ -683,7 +683,8 @@ struct MenuView: View {
                         
                         Button(action: {
                             
-                            
+                         //   uploadCodesToFirebase() // for adding colors codes to the MatchCodes database
+
                             self.mildHaptics()
                             GKAccessPoint.shared.isActive = false
                             
@@ -697,6 +698,7 @@ struct MenuView: View {
                             
                         }
                         .sheet(isPresented: self.$showingColors) {
+                            
                             ColorsView(isPresented: self.$showingColors,
                                        hexes: self.setUpPalettePackColors().hex,
                                        rotations: self.setUpPalettePackColors().rotation,

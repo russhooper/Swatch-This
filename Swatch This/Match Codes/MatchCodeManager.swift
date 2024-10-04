@@ -19,7 +19,7 @@ final class MatchCodeManager {
         return docRef
     }
     
-    func getRandomCode() async throws -> String {
+    func getRandomCode() async throws -> String? {
         
         let count = try await getAllMatchCodesCount()
         let randomIndex = Int.random(in: 0..<count)
@@ -32,21 +32,29 @@ final class MatchCodeManager {
         
         if let code = codes.first?.code {
             
+            if try await MatchesManager.shared.checkMatchCode(password: code) != nil {
+                
+                return nil
+            }
+            
             return code
 
         } else {
-            
-            return "black"
+            return nil
         }
     }
     
     private func getCodesForIndex(index: Int) -> Query {
         codesCollection
-            .whereField(MatchCode.CodingKeys.index.rawValue, isEqualTo: index)
+            .whereField(MatchCode.CodingKeys.id.rawValue, isEqualTo: String(index))
     }
         
     func getAllMatchCodesCount() async throws -> Int {
         try await codesCollection.aggregateCount()
+    }
+    
+    func uploadCode(code: MatchCode) async throws {
+        try codeDocument(id: code.id).setData(from: code, merge: false)
     }
     
 }

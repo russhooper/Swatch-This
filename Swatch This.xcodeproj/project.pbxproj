@@ -45,13 +45,8 @@
 		632FE02C25DC9E7D008356B0 /* ColorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632FE02B25DC9E7D008356B0 /* ColorsView.swift */; };
 		63357AE32CAA2DDD00445CB3 /* MatchCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63357AE22CAA2DDD00445CB3 /* MatchCode.swift */; };
 		63357AE52CAA2F0D00445CB3 /* MatchCodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63357AE42CAA2F0D00445CB3 /* MatchCodeManager.swift */; };
+		63357AE82CAB87BF00445CB3 /* ColorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63357AE72CAB87BF00445CB3 /* ColorCodes.swift */; };
 		633A4D6824DF255B00CFA355 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633A4D6724DF255B00CFA355 /* LoadingView.swift */; };
-		633C338A2C8A158F00BBDA38 /* ProductsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633C33892C8A158F00BBDA38 /* ProductsManager.swift */; };
-		633C338C2C8A159F00BBDA38 /* ProductsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633C338B2C8A159F00BBDA38 /* ProductsViewModel.swift */; };
-		633C338E2C8A15B500BBDA38 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633C338D2C8A15B500BBDA38 /* ProductsView.swift */; };
-		633C33902C8A169500BBDA38 /* ProductsDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633C338F2C8A169500BBDA38 /* ProductsDatabase.swift */; };
-		633C33932C8A16C400BBDA38 /* ProductCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633C33912C8A16C400BBDA38 /* ProductCellView.swift */; };
-		633C33942C8A16C400BBDA38 /* ProductCellViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633C33922C8A16C400BBDA38 /* ProductCellViewBuilder.swift */; };
 		633C33972C8A346E00BBDA38 /* MatchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633C33962C8A346E00BBDA38 /* MatchesViewModel.swift */; };
 		633C33992C8A353800BBDA38 /* MatchesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633C33982C8A353800BBDA38 /* MatchesManager.swift */; };
 		633C339B2C8A365400BBDA38 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633C339A2C8A365400BBDA38 /* Match.swift */; };
@@ -74,6 +69,8 @@
 		63AAE41824C3949100B36FAD /* GameEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AAE41724C3949100B36FAD /* GameEndView.swift */; };
 		63AB777824BA9E49009BC9CE /* GameBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AB777724BA9E49009BC9CE /* GameBrain.swift */; };
 		63AB777C24BBE923009BC9CE /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AB777B24BBE923009BC9CE /* Palette.swift */; };
+		63C0565E2CAECDE80025F729 /* ActiveMatchCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C0565D2CAECDE80025F729 /* ActiveMatchCellView.swift */; };
+		63C056602CAF5AA70025F729 /* UserMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C0565F2CAF5AA70025F729 /* UserMatch.swift */; };
 		63C6D490265B4397000C3C7F /* Card Flip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 63C6D48F265B4397000C3C7F /* Card Flip.mp3 */; };
 		63C755F8268D35F8009C3AE1 /* Card Deal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 63C755F7268D35F8009C3AE1 /* Card Deal.mp3 */; };
 		63DA3A1024CB8F0000531B6F /* SwatchStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DA3A0F24CB8F0000531B6F /* SwatchStackView.swift */; };
@@ -155,13 +152,8 @@
 		632FE02B25DC9E7D008356B0 /* ColorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsView.swift; sourceTree = "<group>"; };
 		63357AE22CAA2DDD00445CB3 /* MatchCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchCode.swift; sourceTree = "<group>"; };
 		63357AE42CAA2F0D00445CB3 /* MatchCodeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchCodeManager.swift; sourceTree = "<group>"; };
+		63357AE72CAB87BF00445CB3 /* ColorCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCodes.swift; sourceTree = "<group>"; };
 		633A4D6724DF255B00CFA355 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		633C33892C8A158F00BBDA38 /* ProductsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsManager.swift; sourceTree = "<group>"; };
-		633C338B2C8A159F00BBDA38 /* ProductsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewModel.swift; sourceTree = "<group>"; };
-		633C338D2C8A15B500BBDA38 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
-		633C338F2C8A169500BBDA38 /* ProductsDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsDatabase.swift; sourceTree = "<group>"; };
-		633C33912C8A16C400BBDA38 /* ProductCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCellView.swift; sourceTree = "<group>"; };
-		633C33922C8A16C400BBDA38 /* ProductCellViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCellViewBuilder.swift; sourceTree = "<group>"; };
 		633C33962C8A346E00BBDA38 /* MatchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesViewModel.swift; sourceTree = "<group>"; };
 		633C33982C8A353800BBDA38 /* MatchesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesManager.swift; sourceTree = "<group>"; };
 		633C339A2C8A365400BBDA38 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
@@ -184,6 +176,8 @@
 		63AAE41724C3949100B36FAD /* GameEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEndView.swift; sourceTree = "<group>"; };
 		63AB777724BA9E49009BC9CE /* GameBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBrain.swift; sourceTree = "<group>"; };
 		63AB777B24BBE923009BC9CE /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
+		63C0565D2CAECDE80025F729 /* ActiveMatchCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveMatchCellView.swift; sourceTree = "<group>"; };
+		63C0565F2CAF5AA70025F729 /* UserMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMatch.swift; sourceTree = "<group>"; };
 		63C6D48F265B4397000C3C7F /* Card Flip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Card Flip.mp3"; sourceTree = "<group>"; };
 		63C755F7268D35F8009C3AE1 /* Card Deal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Card Deal.mp3"; sourceTree = "<group>"; };
 		63DA3A0F24CB8F0000531B6F /* SwatchStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchStackView.swift; sourceTree = "<group>"; };
@@ -247,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				6311C77C2C8667F100E70312 /* UserManager.swift */,
+				63C0565F2CAF5AA70025F729 /* UserMatch.swift */,
 			);
 			path = Firestore;
 			sourceTree = "<group>";
@@ -278,13 +273,12 @@
 				632CC93224B6B15500EBD566 /* Swatch This.entitlements */,
 				632CC8FF24B6B12500EBD566 /* AppDelegate.swift */,
 				632CC90124B6B12500EBD566 /* SceneDelegate.swift */,
-				63357AE02CAA2D5B00445CB3 /* Match Codes */,
 				63AB777624BA90CB009BC9CE /* Model */,
+				63357AE02CAA2D5B00445CB3 /* Match Codes */,
 				633C33952C8A345700BBDA38 /* Matches */,
 				63AB777924BAAA58009BC9CE /* View */,
 				6311C7622C865F7200E70312 /* Authentication */,
 				6311C77B2C8667DC00E70312 /* Firestore */,
-				633C33882C8A157500BBDA38 /* Products */,
 				63DA3A1324CBBB2100531B6F /* Helpers */,
 				6311C7742C8665B700E70312 /* GoogleService-Info.plist */,
 				632CC90524B6B12600EBD566 /* Assets.xcassets */,
@@ -339,22 +333,10 @@
 			isa = PBXGroup;
 			children = (
 				63357AE22CAA2DDD00445CB3 /* MatchCode.swift */,
+				63357AE72CAB87BF00445CB3 /* ColorCodes.swift */,
 				63357AE42CAA2F0D00445CB3 /* MatchCodeManager.swift */,
 			);
 			path = "Match Codes";
-			sourceTree = "<group>";
-		};
-		633C33882C8A157500BBDA38 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				633C33892C8A158F00BBDA38 /* ProductsManager.swift */,
-				633C338B2C8A159F00BBDA38 /* ProductsViewModel.swift */,
-				633C338D2C8A15B500BBDA38 /* ProductsView.swift */,
-				633C338F2C8A169500BBDA38 /* ProductsDatabase.swift */,
-				633C33912C8A16C400BBDA38 /* ProductCellView.swift */,
-				633C33922C8A16C400BBDA38 /* ProductCellViewBuilder.swift */,
-			);
-			path = Products;
 			sourceTree = "<group>";
 		};
 		633C33952C8A345700BBDA38 /* Matches */ = {
@@ -365,6 +347,7 @@
 				633C339A2C8A365400BBDA38 /* Match.swift */,
 				6393184A2C97B39100DF3C2F /* MatchData.swift */,
 				633C339C2C8A489600BBDA38 /* MatchesView.swift */,
+				63C0565D2CAECDE80025F729 /* ActiveMatchCellView.swift */,
 			);
 			path = Matches;
 			sourceTree = "<group>";
@@ -584,7 +567,6 @@
 				63AB777824BA9E49009BC9CE /* GameBrain.swift in Sources */,
 				6311C7642C865F9000E70312 /* AuthenticationManager.swift in Sources */,
 				6311C7882C866D1E00E70312 /* SettingsViewModel.swift in Sources */,
-				633C33932C8A16C400BBDA38 /* ProductCellView.swift in Sources */,
 				633C339B2C8A365400BBDA38 /* Match.swift in Sources */,
 				63813BD424B92D6200DCA2CB /* HowToView.swift in Sources */,
 				635097EB24C7878900300F58 /* ScoreDetailView.swift in Sources */,
@@ -596,11 +578,11 @@
 				633C33972C8A346E00BBDA38 /* MatchesViewModel.swift in Sources */,
 				631B83C72516E78300FFB84D /* PenPaperView.swift in Sources */,
 				630CBDB12689331E002641BE /* HapticsHelper.swift in Sources */,
+				63C056602CAF5AA70025F729 /* UserMatch.swift in Sources */,
 				635DC55D25E5EDE800FB283F /* HowToTabletopView.swift in Sources */,
 				63AAE41824C3949100B36FAD /* GameEndView.swift in Sources */,
 				632CC90024B6B12500EBD566 /* AppDelegate.swift in Sources */,
 				6311C7732C8664D300E70312 /* AuthenticationView.swift in Sources */,
-				633C33902C8A169500BBDA38 /* ProductsDatabase.swift in Sources */,
 				6393184F2C99A63500DF3C2F /* NameColorsView.swift in Sources */,
 				63F2AADF24C4A325004897FD /* SAConfettiView.swift in Sources */,
 				632CC93424B7F1A400EBD566 /* MenuView.swift in Sources */,
@@ -614,24 +596,22 @@
 				632FE02C25DC9E7D008356B0 /* ColorsView.swift in Sources */,
 				6340481D24C92E56004F8C53 /* ViewRouter.swift in Sources */,
 				63F2AAEB24C5265D004897FD /* SwatchView.swift in Sources */,
-				633C338A2C8A158F00BBDA38 /* ProductsManager.swift in Sources */,
 				63357AE32CAA2DDD00445CB3 /* MatchCode.swift in Sources */,
 				6393184B2C97B39100DF3C2F /* MatchData.swift in Sources */,
+				63357AE82CAB87BF00445CB3 /* ColorCodes.swift in Sources */,
 				6311C7902C866DD100E70312 /* Utilities.swift in Sources */,
-				633C338C2C8A159F00BBDA38 /* ProductsViewModel.swift in Sources */,
 				63DA3A1024CB8F0000531B6F /* SwatchStackView.swift in Sources */,
 				632CC90224B6B12500EBD566 /* SceneDelegate.swift in Sources */,
 				6340481B24C92DA2004F8C53 /* SwitcherView.swift in Sources */,
+				63C0565E2CAECDE80025F729 /* ActiveMatchCellView.swift in Sources */,
 				6311C7712C8664A000E70312 /* AuthenticationViewModel.swift in Sources */,
 				63813BD224B92D3400DCA2CB /* AboutView.swift in Sources */,
 				633C33992C8A353800BBDA38 /* MatchesManager.swift in Sources */,
-				633C33942C8A16C400BBDA38 /* ProductCellViewBuilder.swift in Sources */,
 				638A59F825DE051400A0F880 /* StoreManager.swift in Sources */,
 				6397119124D5ECF300DB0405 /* TurnData.swift in Sources */,
 				63357AE52CAA2F0D00445CB3 /* MatchCodeManager.swift in Sources */,
 				63F8587F269E2F830072C19C /* TransitionSwatches.swift in Sources */,
 				632CC90424B6B12500EBD566 /* ContentView.swift in Sources */,
-				633C338E2C8A15B500BBDA38 /* ProductsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
