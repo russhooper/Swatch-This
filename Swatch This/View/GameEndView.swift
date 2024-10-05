@@ -60,7 +60,7 @@ struct GameEndView: View {
                 
                 ZStack {
                     
-                    Color.primaryTealColor
+                    Color.primaryTeal
                         .edgesIgnoringSafeArea(.all)
                         .onAppear(perform: {
                             
@@ -171,8 +171,7 @@ struct GameEndView: View {
                                            coverOpacity: self.animate1 ? 0.0 : 1.0,
                                            logoOpacity: self.animate1 ? 0.5 : 0.0,
                                            nameOpacity: self.animate1 ? 1.0 : 0.0,
-                                           fontSize: self.animate1 ? 18 : 6,
-                                           showTurns: false)
+                                           fontSize: self.animate1 ? 18 : 6)
                                     .rotationEffect(.degrees(self.animate1 ? 0 : -6))
                             }
                             
@@ -196,8 +195,7 @@ struct GameEndView: View {
                                            coverOpacity: self.animate2 ? 0.0 : 1.0,
                                            logoOpacity: self.animate2 ? 0.5 : 0.0,
                                            nameOpacity: self.animate2 ? 1.0 : 0.0,
-                                           fontSize: self.animate2 ? 18 : 6,
-                                           showTurns: false)
+                                           fontSize: self.animate2 ? 18 : 6)
                                     .rotationEffect(.degrees(0))
                             }
                         }
@@ -224,8 +222,7 @@ struct GameEndView: View {
                                            coverOpacity: self.animate3 ? 0.0 : 1.0,
                                            logoOpacity: self.animate3 ? 0.5 : 0.0,
                                            nameOpacity: self.animate3 ? 1.0 : 0.0,
-                                           fontSize: self.animate3 ? 18 : 6,
-                                           showTurns: false)
+                                           fontSize: self.animate3 ? 18 : 6)
                                     .rotationEffect(.degrees(self.animate3 ? 0 : -3))
                             }
                             
@@ -249,8 +246,7 @@ struct GameEndView: View {
                                            coverOpacity: self.animate4 ? 0.0 : 1.0,
                                            logoOpacity: self.animate4 ? 0.5 : 0.0,
                                            nameOpacity: self.animate4 ? 1.0 : 0.0,
-                                           fontSize: self.animate4 ? 18 : 6,
-                                           showTurns: false)
+                                           fontSize: self.animate4 ? 18 : 6)
                                     .rotationEffect(.degrees(self.animate4 ? 0 : 5))
                             }
                         }
@@ -412,7 +408,7 @@ struct GameEndView: View {
                 }
                 
                 
-                .accentColor(Color.tangerineTextColor)
+                .accentColor(Color.tangerineText)
 
                 
                 // show the iPad's transition view if coming here not as last player, starting as the swatches filling the screen. Yes, the iPad's, for simplicity. The iPhone's transition actually occurs in GuessColorsView
@@ -464,7 +460,7 @@ struct GameEndView: View {
                     
                     ZStack {
                         
-                        Color.mercuryColor
+                        Color.mercury
                             .edgesIgnoringSafeArea(.all)
                         
                         HStack {
@@ -549,7 +545,7 @@ struct GameEndView: View {
                             // left half of screen
                             ZStack {
                                 
-                                Color.primaryTealColor
+                                Color.primaryTeal
                                     .edgesIgnoringSafeArea(.all)
                                     .onAppear(perform: prepareHaptics)
                                 
@@ -600,8 +596,7 @@ struct GameEndView: View {
                                                        coverOpacity: self.animate1 ? 0.0 : 1.0,
                                                        logoOpacity: self.animate1 ? 0.5 : 0.0,
                                                        nameOpacity: self.animate1 ? 1.0 : 0.0,
-                                                       fontSize: self.animate1 ? 18 : 6,
-                                                       showTurns: false)
+                                                       fontSize: self.animate1 ? 18 : 6)
                                                 .rotationEffect(.degrees(self.animate1 ? 0 : -6))
                                         }
                                         
@@ -625,8 +620,7 @@ struct GameEndView: View {
                                                        coverOpacity: self.animate2 ? 0.0 : 1.0,
                                                        logoOpacity: self.animate2 ? 0.5 : 0.0,
                                                        nameOpacity: self.animate2 ? 1.0 : 0.0,
-                                                       fontSize: self.animate2 ? 18 : 6,
-                                                       showTurns: false)
+                                                       fontSize: self.animate2 ? 18 : 6)
                                                 .rotationEffect(.degrees(0))
                                         }
                                     }
@@ -653,8 +647,7 @@ struct GameEndView: View {
                                                        coverOpacity: self.animate3 ? 0.0 : 1.0,
                                                        logoOpacity: self.animate3 ? 0.5 : 0.0,
                                                        nameOpacity: self.animate3 ? 1.0 : 0.0,
-                                                       fontSize: self.animate3 ? 18 : 6,
-                                                       showTurns: false)
+                                                       fontSize: self.animate3 ? 18 : 6)
                                                 .rotationEffect(.degrees(self.animate3 ? 0 : -3))
                                         }
                                         
@@ -678,8 +671,7 @@ struct GameEndView: View {
                                                        coverOpacity: self.animate4 ? 0.0 : 1.0,
                                                        logoOpacity: self.animate4 ? 0.5 : 0.0,
                                                        nameOpacity: self.animate4 ? 1.0 : 0.0,
-                                                       fontSize: self.animate4 ? 18 : 6,
-                                                       showTurns: false)
+                                                       fontSize: self.animate4 ? 18 : 6)
                                                 .rotationEffect(.degrees(self.animate4 ? 0 : 5))
                                         }
                                     }
@@ -744,7 +736,7 @@ struct GameEndView: View {
                                                 if sortedPlayer == self.selection {
                                                     
                                                     Image(systemName: "chevron.right")
-                                                        .accentColor(Color.tangerineTextColor)
+                                                        .accentColor(Color.tangerineText)
                                                     //     .bold()
                                                         .font(Font.system(size: 20, weight: .bold))
                                                     
@@ -780,7 +772,7 @@ struct GameEndView: View {
                             .frame(width: geoWidth50)
                             
                         }
-                        .accentColor(Color.tangerineTextColor)
+                        .accentColor(Color.tangerineText)
                         .animation(Animation.easeOut(duration: 0.3))
                         
                         if self.viewRouter.onlineGame == false {   // online matches are saved so we don't need to ask about quitting in that case
@@ -931,7 +923,7 @@ struct GameEndView: View {
                     Text("/")
                         .font(.system(size: 23))
                         .fontWeight(.bold)
-                        .foregroundColor(Color.primaryTealColor)
+                        .foregroundColor(Color.primaryTeal)
                     
                     
                     Button(action: {

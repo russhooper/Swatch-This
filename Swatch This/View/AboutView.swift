@@ -88,7 +88,7 @@ struct AboutView: View {
                 
                
                 
-                Color.darkTealColor
+                Color.darkTeal
                     .edgesIgnoringSafeArea(.all)
                 
                 
@@ -128,13 +128,13 @@ struct AboutView: View {
 
                                 }
                             }
-                          //  .background(Color.moonlightColor)
+                          //  .background(Color.moonlight)
                             .frame(width: swatchHeight+swatchHeight*0.13, height: swatchHeight, alignment: .center)
                         }
                         
                         
                         
-                        SwatchStackView(swatchColor: Color.roseWineColor,
+                        SwatchStackView(swatchColor: Color.roseWine,
                                         swatchHeight: swatchHeight,
                                         text: "",
                                         textField: nil,
@@ -156,7 +156,7 @@ struct AboutView: View {
                                         }
                             }
                         
-                        SwatchStackView(swatchColor: Color.californiaBreezeColor,
+                        SwatchStackView(swatchColor: Color.californiaBreeze,
                                         swatchHeight: swatchHeight,
                                         text: "",
                                         textField: nil,
@@ -178,7 +178,7 @@ struct AboutView: View {
                                         }
                             }
                         
-                        SwatchStackView(swatchColor: Color.summerAfternoonColor,
+                        SwatchStackView(swatchColor: Color.summerAfternoon,
                                         swatchHeight: swatchHeight,
                                         text: "",
                                         textField: nil,
@@ -200,7 +200,7 @@ struct AboutView: View {
                                         }
                             }
                         
-                        SwatchStackView(swatchColor: Color.sageColor,
+                        SwatchStackView(swatchColor: Color.sage,
                                         swatchHeight: swatchHeight,
                                         text: "A game by",
                                         textField: nil,

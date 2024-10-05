@@ -95,7 +95,7 @@ struct SwatchStackView: View {
                 }
             }
         }
-        .accentColor(Color.tangerineTextColor)
+        .accentColor(Color.tangerineText)
 
     }
 }

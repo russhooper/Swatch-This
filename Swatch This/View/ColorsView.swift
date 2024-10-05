@@ -144,7 +144,7 @@ struct ColorsView: View {
             
             ZStack {
                 
-                Color.darkTealColor
+                Color.darkTeal
                     .edgesIgnoringSafeArea(.all)
                 
                 
@@ -324,14 +324,14 @@ struct ColorsView: View {
                                 
                                 Text("Unlock tons of new \(colorLocalized)s for use in Swatch This matches.")
                                     .frame(minHeight: textMinHeight)
-                                    .foregroundColor(Color.darkTealColor)
+                                    .foregroundColor(Color.darkTeal)
                                     .padding(EdgeInsets(top: 20, leading: 10, bottom: 20, trailing: 10))
                                 
                                 Spacer()
                                 
                                 VStack (alignment: .leading) {
                                     Text("Base game:")
-                                        .foregroundColor(Color.darkTealColor)
+                                        .foregroundColor(Color.darkTeal)
                                         .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
                                     
                                     HStack {
@@ -363,7 +363,7 @@ struct ColorsView: View {
                                             
                                             Image(systemName: "checkmark.square")
                                                 .font(Font.system(.largeTitle))
-                                                .foregroundColor(Color.darkTealColor)
+                                                .foregroundColor(Color.darkTeal)
                                         }
                                         
                                         
@@ -391,7 +391,7 @@ struct ColorsView: View {
                                 
                                 VStack (alignment: .leading) {
                                     Text("The Palette Pack:")
-                                        .foregroundColor(Color.darkTealColor)
+                                        .foregroundColor(Color.darkTeal)
                                         .padding(EdgeInsets(top: 20, leading: 10, bottom: 0, trailing: 10))
                                     
                                     HStack {
@@ -427,7 +427,7 @@ struct ColorsView: View {
                                             
                                             Image(systemName: "square")
                                                 .font(Font.system(.largeTitle))
-                                                .foregroundColor(Color.darkTealColor)
+                                                .foregroundColor(Color.darkTeal)
                                             //  .padding()
                                             
                                         }
@@ -452,12 +452,12 @@ struct ColorsView: View {
                                 Spacer()
                                 
                                 Text("\(gameBrain.getAvailablePalette(excludeRecentColors: false).count) \(colorLocalized)s active.")
-                                    .foregroundColor(Color.darkTealColor)
+                                    .foregroundColor(Color.darkTeal)
                                     .padding(EdgeInsets(top: 20, leading: 10, bottom: 0, trailing: 10))
                                 
                                 Text("When playing an online match, all players will have access to the same \(colorLocalized)s as the person who creates the match.")
                                     .frame(minHeight: textMinHeight * textMinHeightMultiplier)
-                                    .foregroundColor(Color.darkTealColor)
+                                    .foregroundColor(Color.darkTeal)
                                     .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
                                 
                                 
@@ -503,7 +503,7 @@ struct ColorsView: View {
             
             
         }
-        .accentColor(Color.tangerineTextColor)
+        .accentColor(Color.tangerineText)
 
     }
     

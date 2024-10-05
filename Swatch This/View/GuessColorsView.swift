@@ -267,7 +267,7 @@ struct GuessColorsView: View {
         ZStack {
             
             //  Color(red: 221/255, green: 217/255, blue: 211/255, opacity: 1.0)
-            Color.primaryTealColor
+            Color.primaryTeal
                 .edgesIgnoringSafeArea(.all)
                 .onAppear(perform: prepareHaptics)
             
@@ -349,7 +349,7 @@ struct GuessColorsView: View {
                         }) {
                             Text("Quit Game")
                                 .font(.system(size: 18))
-                                .foregroundColor(self.showQuit ? Color.primaryTealColor : .white)
+                                .foregroundColor(self.showQuit ? Color.primaryTeal : .white)
                                 .bold()
                                 .animation(.linear(duration: 0.25))
                             
@@ -528,7 +528,7 @@ struct GuessColorsView: View {
                         
                         ZStack {
                             
-                            Color.primaryTealColor
+                            Color.primaryTeal
                                 .edgesIgnoringSafeArea(.all)
                             
                             Image("Paint Stripe")
@@ -548,7 +548,7 @@ struct GuessColorsView: View {
                                 Text("Pass device to \(self.gameData.displayNames["Player \(self.gameData.currentPlayer)"] ?? "Player \(self.gameData.currentPlayer)")")
                                     .font(.system(size: 30))
                                     .fontWeight(.bold)
-                                    .foregroundColor(Color.primaryTealColor)
+                                    .foregroundColor(Color.primaryTeal)
                                     .multilineTextAlignment(.center)
                                     .frame(width: 250, alignment: .center)
                                 
@@ -632,7 +632,7 @@ struct GuessColorsView: View {
                     }
                 }
             }
-            .accentColor(Color.tangerineTextColor)
+            .accentColor(Color.tangerineText)
 
         }
     }
@@ -746,7 +746,7 @@ struct GuessColorsView: View {
                             Rectangle()
                                 .frame(width: viewWidth, height: 50, alignment: .center)
                                 .foregroundColor(.white)
-                                .overlay(Divider().background(Color.primaryTealColor), alignment: .bottom)
+                                .overlay(Divider().background(Color.primaryTeal), alignment: .bottom)
                                 .cornerRadius(5, corners: [.topLeft, .topRight])
                             
                             
@@ -905,12 +905,12 @@ struct GuessColorsView: View {
                                 /*
                                  if self.horizontalSizeClass == .regular {
                                  Text(string)
-                                 .accentColor(Color.tangerineTextColor)
+                                 .accentColor(Color.tangerineText)
                                  .frame(maxWidth: .infinity, alignment: .center)
                                  } else {
                                  */
                                 Text(string)
-                                    .accentColor(Color.tangerineTextColor)
+                                    .accentColor(Color.tangerineText)
                                 //  }
                             }.disabled(self.hasGuessed)
                         }
@@ -922,7 +922,7 @@ struct GuessColorsView: View {
                 
                 Rectangle()
                     //  .frame(width: swatchHeight+swatchHeight*0.13, height: swatchHeight+swatchHeight*0.4, alignment: .center)
-                    .foregroundColor(Color.primaryTealColor)
+                    .foregroundColor(Color.primaryTeal)
                     .edgesIgnoringSafeArea(.all)
                     .opacity(self.hudOpacity == 0 ? 1 : 0) // reverse of HUD opacity
                     .animation(.linear(duration: 0.5).delay(self.turnData.turnArray[0] == 3 ? 0 : 0.5)) // no delay if we're animating out, only for animating in
@@ -1249,7 +1249,7 @@ struct GuessColorsView: View {
                     Text("/")
                         .font(.system(size: 23))
                         .fontWeight(.bold)
-                        .foregroundColor(Color.primaryTealColor)
+                        .foregroundColor(Color.primaryTeal)
                     
                     
                     Button(action: {

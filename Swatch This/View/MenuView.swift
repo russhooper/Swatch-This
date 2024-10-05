@@ -68,7 +68,7 @@ struct MenuView: View {
         
         ZStack {
             
-            Color.primaryTealColor
+            Color.primaryTeal
                 .edgesIgnoringSafeArea(.all)
                 .onAppear(perform: {
                     prepareHaptics()
@@ -166,7 +166,7 @@ struct MenuView: View {
                         
                         if (geoHeight / geoWidth > 2) {
                             
-                            SwatchStackView(swatchColor: Color.blushColor,
+                            SwatchStackView(swatchColor: Color.blush,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -178,7 +178,7 @@ struct MenuView: View {
                             .rotationEffect(.degrees(-2))
                             
                             
-                            SwatchStackView(swatchColor: Color.tangerineColor,
+                            SwatchStackView(swatchColor: Color.tangerine,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -190,7 +190,7 @@ struct MenuView: View {
                             .rotationEffect(.degrees(2))
                             
                         } else {
-                            SwatchStackView(swatchColor: Color.blushColor,
+                            SwatchStackView(swatchColor: Color.blush,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -201,7 +201,7 @@ struct MenuView: View {
                             .offset(x: -20, y: -55 * localOffsetMultiplier)
                             .rotationEffect(.degrees(-11))
                             
-                            SwatchStackView(swatchColor: Color.tangerineColor,
+                            SwatchStackView(swatchColor: Color.tangerine,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -429,7 +429,7 @@ struct MenuView: View {
                         }
                         
                         
-                        SwatchStackView(swatchColor: Color.blushColor,
+                        SwatchStackView(swatchColor: Color.blush,
                                         swatchHeight: swatchHeight,
                                         text: "",
                                         textField: nil,
@@ -441,7 +441,7 @@ struct MenuView: View {
                         .rotationEffect(.degrees(Double.random(in: 10 ..< 14)))
                         
                         
-                        SwatchStackView(swatchColor: Color.darkGreenColor,
+                        SwatchStackView(swatchColor: Color.coatOfArms,
                                         swatchHeight: swatchHeight,
                                         text: "",
                                         textField: nil,
@@ -469,7 +469,7 @@ struct MenuView: View {
                                 .font(.system(size: 18))
                             
                             Text("\(self.numberOfPlayers)")
-                                .foregroundColor(Color.darkGreenColor)
+                                .foregroundColor(Color.coatOfArms)
                                 .font(.system(size: 70))
                                 .fontWeight(.bold)
                                 .padding()
@@ -720,7 +720,7 @@ struct MenuView: View {
                     
                     
                 }
-                .accentColor(Color.tangerineTextColor)
+                .accentColor(Color.tangerineText)
                 
                 
                 Spacer()
@@ -886,7 +886,7 @@ extension MenuView {
         
         ZStack {
             
-            SwatchStackView(swatchColor: Color.blushColor,
+            SwatchStackView(swatchColor: Color.blush,
                             swatchHeight: swatchHeight,
                             text: "",
                             textField: nil,
@@ -908,7 +908,7 @@ extension MenuView {
                 }
             }
             
-            SwatchStackView(swatchColor: Color.darkGreenColor,
+            SwatchStackView(swatchColor: Color.coatOfArms,
                             swatchHeight: swatchHeight,
                             text: "",
                             textField: nil,
@@ -929,7 +929,7 @@ extension MenuView {
                     }
                 }
             }
-            SwatchStackView(swatchColor: Color.tangerineColor,
+            SwatchStackView(swatchColor: Color.tangerine,
                             swatchHeight: swatchHeight,
                             text: "Swatch This",
                             textField: nil,

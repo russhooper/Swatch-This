@@ -35,7 +35,7 @@ struct ScoreDetailView: View {
         
         
     //    if customSplitView == true {
-    //        titleColor = Color(brightTealColor)
+    //        titleColor = Color(brightTeal)
     //    }
         
         return Group {
@@ -91,13 +91,8 @@ struct ScoreDetailView: View {
                                        colorAtIndex: round,
                                        swatchHeight: 130,
                                        colorName: gameBrain.getColorName(turn: round, indexArray: self.gameData.colorIndices),
-                                       company: "",
-                                       colorURL: "",
-                                       coverOpacity: 0.0,
-                                       logoOpacity: 0.0,
                                        nameOpacity: 1.0,
-                                       fontSize: 12,
-                                       showTurns: false)
+                                       fontSize: 12)
                                 //  .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                                 .rotationEffect(.degrees(-6))
                             
@@ -130,7 +125,7 @@ struct ScoreDetailView: View {
                 }
                 
             }
-            .accentColor(Color.tangerineTextColor)
+            .accentColor(Color.tangerineText)
             .navigationTitle(titleString)
             .navigationBarTitleDisplayMode(.inline)
             

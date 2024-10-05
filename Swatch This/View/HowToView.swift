@@ -96,7 +96,7 @@ struct HowToView: View {
                         
                         
                     }
-                    .accentColor(Color.tangerineTextColor)
+                    .accentColor(Color.tangerineText)
                     .frame(width: geoWidth)
                     
                 }
@@ -190,7 +190,7 @@ struct scrollViewContent: View {
                     Text("This isn't just \"yellow,\" it's...")
                         .font(.title2)
 
-                    SwatchStackView(swatchColor: Color.sunnySideUpColor,
+                    SwatchStackView(swatchColor: Color.sunnySideUp,
                                     swatchHeight: self.swatchHeight,
                                     text: "Sunny Side Up",
                                     textField: nil,
@@ -208,7 +208,7 @@ struct scrollViewContent: View {
                     Text("This isn't just \"pink,\" it's...")
                         .font(.title2)
 
-                    SwatchStackView(swatchColor: Color.sweetSixteenColor,
+                    SwatchStackView(swatchColor: Color.sweetSixteen,
                                     swatchHeight: self.swatchHeight,
                                     text: "Sweet Sixteen",
                                     textField: nil,
@@ -226,7 +226,7 @@ struct scrollViewContent: View {
                     Text("This isn't just \"blue,\" it's...")
                         .font(.title2)
 
-                    SwatchStackView(swatchColor: Color.jamaicaBayColor,
+                    SwatchStackView(swatchColor: Color.jamaicaBay,
                                     swatchHeight: self.swatchHeight,
                                     text: "Jamaica Bay",
                                     textField: nil,
@@ -244,7 +244,7 @@ struct scrollViewContent: View {
                     Text("Your turn! What would you call this?")
                         .font(.title2)
 
-                    SwatchStackView(swatchColor: Color.alohaColor,
+                    SwatchStackView(swatchColor: Color.aloha,
                                     swatchHeight: self.swatchHeight,
                                     text: "",
                                     textField: nil,

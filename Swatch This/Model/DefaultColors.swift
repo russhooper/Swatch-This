@@ -8,8 +8,10 @@
 
 import SwiftUI
 
+/*
 // come from colors in Assets
 extension Color {
+    
     static let darkGreenColor = Color("darkGreenColor")
     static let primaryTealColor = Color("primaryTealColor")
     static let babySealBlackColor = Color("babySealBlackColor")
@@ -37,6 +39,7 @@ extension Color {
 
 
 }
+*/
 
 extension Color {
     init(hex: UInt32) {

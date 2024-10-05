@@ -36,7 +36,7 @@ struct PenPaperView: View {
         
         ZStack {
             
-            Color.primaryTealColor
+            Color.primaryTeal
                 .edgesIgnoringSafeArea(.all)
                 .onAppear(perform: prepareHaptics)
             
@@ -110,7 +110,6 @@ struct PenPaperView: View {
                                    colorName: gameBrain.getColorName(turn: swatch.turn, indexArray: self.gameData.colorIndices),
                                    company: gameBrain.getColorCompany(turn: swatch.turn, indexArray: self.gameData.colorIndices),
                                    colorURL: gameBrain.getColorURL(turn: swatch.turn, indexArray: self.gameData.colorIndices),
-                                   coverOpacity: 0.0,
                                    logoOpacity: self.showingColor ? 0.3 : 0.0,
                                    nameOpacity: self.showingColor && self.gameData.turnArray[0] == swatch.turn ? 1.0 : 0.0,
                                    fontSize: self.fontSize,
@@ -378,7 +377,7 @@ struct PenPaperView: View {
                                     Text("/")
                                         .font(.system(size: 23))
                                         .fontWeight(.bold)
-                                        .foregroundColor(Color.primaryTealColor)
+                                        .foregroundColor(Color.primaryTeal)
                                     
                                     
                                     Button(action: {
@@ -414,7 +413,7 @@ struct PenPaperView: View {
                 
                 
             }
-            .accentColor(Color.tangerineTextColor)
+            .accentColor(Color.tangerineText)
 
         }
     }

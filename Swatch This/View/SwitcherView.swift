@@ -102,9 +102,9 @@ struct SwitcherView: View {
                 
                 // show a loading screen while the Game Center view and the data are being loaded
               //  LoadingView()
-                NavigationStack {
+              //  NavigationStack {
                     MatchesView()
-                }
+              //  }
                 
             }
             
@@ -120,7 +120,7 @@ struct SwitcherView: View {
         .alert(item: $alertId) { (alertId) -> Alert in
             return createAlert(alertId: alertId)
         }
-        .accentColor(Color.tangerineTextColor)
+        .accentColor(Color.tangerineText)
         .onReceive(presentGamePub) { output in
             self.presentGame(output)
         }

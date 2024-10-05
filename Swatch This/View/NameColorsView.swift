@@ -95,7 +95,7 @@ struct NameColorsView: View {
         ZStack {
             
             //  Color(red: 221/255, green: 217/255, blue: 211/255, opacity: 1.0)
-            Color.primaryTealColor
+            Color.primaryTeal
                 .edgesIgnoringSafeArea(.all)
                 .onAppear(perform: prepareHaptics)
             
@@ -211,7 +211,7 @@ struct NameColorsView: View {
                     
                     submitDisplayName(swatchHeight: swatchHeight, geoWidth: geoWidth, geoHeight: geoHeight)
                         .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                        .accentColor(Color.tangerineTextColor)
+                        .accentColor(Color.tangerineText)
 
                 } else {
                     
@@ -236,7 +236,7 @@ struct NameColorsView: View {
                             }) {
                                 Text("Quit Game")
                                     .font(.system(size: 18))
-                                    .foregroundColor(self.showQuit ? Color.primaryTealColor : .white)
+                                    .foregroundColor(self.showQuit ? Color.primaryTeal : .white)
                                     .bold()
                                     .animation(.linear(duration: 0.25))
 
@@ -315,7 +315,7 @@ struct NameColorsView: View {
                     .frame(width: geometry.size.width,
                            height: geometry.size.height,
                            alignment: .center) // this fixes the confusing new iOS 14 SwiftUI alignment behaviors. Alignment here should function as expected.
-                    .accentColor(Color.tangerineTextColor)
+                    .accentColor(Color.tangerineText)
 
                 }
                 
@@ -361,7 +361,7 @@ struct NameColorsView: View {
                             Text("Pass device to \(self.gameData.displayNames["Player \(self.gameData.currentPlayer)"] ?? "Player \(self.gameData.currentPlayer)")")
                                 .font(.system(size: 30))
                                 .fontWeight(.bold)
-                                .foregroundColor(Color.primaryTealColor)
+                                .foregroundColor(Color.primaryTeal)
                                 .multilineTextAlignment(.center)
                                 .frame(width: 250, alignment: .center)
                             
@@ -420,7 +420,7 @@ struct NameColorsView: View {
                         
                     }
                     .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-             .accentColor(Color.tangerineTextColor)
+             .accentColor(Color.tangerineText)
 
                     
                 } else {
@@ -589,7 +589,7 @@ struct NameColorsView: View {
             .frame(width: geometry.size.width,
                    height: geometry.size.height,
                    alignment: .center) // this fixes the confusing new iOS 14 SwiftUI alignment behaviors. Alignment here should function as expected.
-            .accentColor(Color.tangerineTextColor)
+            .accentColor(Color.tangerineText)
         }
         
         
@@ -727,7 +727,7 @@ struct NameColorsView: View {
             .frame(width: geometry.size.width,
                    height: geometry.size.height,
                    alignment: .center) // this fixes the confusing new iOS 14 SwiftUI alignment behaviors. Alignment here should function as expected.
-     .accentColor(Color.tangerineTextColor)
+     .accentColor(Color.tangerineText)
         }
         
         
@@ -741,7 +741,7 @@ struct NameColorsView: View {
             
             ZStack {
                 
-                Color.primaryTealColor
+                Color.primaryTeal
                     .edgesIgnoringSafeArea(.all)
                 
                 
@@ -765,7 +765,7 @@ struct NameColorsView: View {
                     Text("What's your name?")
                         .font(.system(size: 30))
                         .fontWeight(.bold)
-                        .foregroundColor(Color.primaryTealColor)
+                        .foregroundColor(Color.primaryTeal)
                         .multilineTextAlignment(.center)
                         .frame(alignment: .center)
                         .padding()
@@ -1084,7 +1084,7 @@ struct NameColorsView: View {
                     Text("/")
                         .font(.system(size: 23))
                         .fontWeight(.bold)
-                        .foregroundColor(Color.primaryTealColor)
+                        .foregroundColor(Color.primaryTeal)
                     
                     
                     Button(action: {

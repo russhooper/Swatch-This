@@ -60,7 +60,7 @@ struct HowToTabletopView: View {
                     ZStack {
                         
                         Rectangle()
-                            .foregroundColor(Color.primaryTealColor)
+                            .foregroundColor(Color.primaryTeal)
 
                         HStack {
                             
@@ -90,7 +90,7 @@ struct HowToTabletopView: View {
                     ZStack {
                         
                         Rectangle()
-                            .foregroundColor(Color.primaryTealColor)
+                            .foregroundColor(Color.primaryTeal)
 
                         HStack {
                             
@@ -124,7 +124,7 @@ struct HowToTabletopView: View {
                     ZStack {
                         
                         Rectangle()
-                            .foregroundColor(Color.primaryTealColor)
+                            .foregroundColor(Color.primaryTeal)
 
                         
                         HStack {

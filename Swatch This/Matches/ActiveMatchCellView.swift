@@ -28,15 +28,10 @@ struct ActiveMatchCellView: View {
                     
                     SwatchView(colorIndices: userMatch.match.colorIndices.reversed(),
                                colorAtIndex: i,
-                               swatchHeight: geoHeight, //geo.size.height
-                               colorName: "",
-                               company: "",
-                               colorURL: "",
-                               coverOpacity: 0.0,
-                               logoOpacity: 0.0,
-                               nameOpacity: 0.0,
-                               fontSize: 10,
-                               showTurns: false)
+                               swatchHeight: geoHeight*0.95,
+                               shadowOpacity: 0.35,
+                               shadowRadius: 3
+                               )
                     .rotationEffect(.degrees(rotations[i]))
                     .offset(x: CGFloat(i-1) * geoWidth / 16, y: offsetsY[i])
                 }
@@ -56,9 +51,11 @@ struct ActiveMatchCellView: View {
                     .foregroundColor(.primary)
                 // Text("Phase " + String(userMatch.match.phase ?? 0))
                 Text(userNamesArray.joined(separator: ", "))
-                    .font(.callout)
+                 //   .font(.callout)
+                    .foregroundColor(.white)
                 Text(userMatch.turnLastTakenDate != nil ? formatDate(userMatch.turnLastTakenDate!) : "No turns taken")
-                    .font(.callout)
+                  //  .font(.callout)
+                    .foregroundColor(.white)
             }
         }
     }

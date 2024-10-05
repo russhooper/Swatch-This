@@ -19,121 +19,176 @@ struct MatchesView: View {
     
     
     var body: some View {
-        List {
-            
-            // should maybe swap this out with a listener for all matches and then filter here with .filter { $0.isCompleted }
-            // though, it'll be good to have the current match listener stay active outside of this view. We don't need the completed matches
-            // listener to stay active
-            
-            Section(header: Text("Current Matches")) {
-                ForEach(viewModel.userActiveMatches, id: \.id.self) { userMatch in
+        
+        VStack {
+            HStack {
+                
+                Button(action: {
                     
-                    Button(action: {
+                 //   self.mildHaptics2()
+                                        
+                    self.viewRouter.currentPage = "menu"
                         
-                        Task {
-                            do {
-                                let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
-                                MatchesManager.shared.joinMatch(match: match)
-                                self.viewRouter.currentPage = "game"
-                                
-                            } catch {
-                                print("error joining match: \(error)")
-                            }
-                        }
-                    }, label: {
-                        ActiveMatchCellView(userMatch: userMatch, rotations: [-25, -10, 0, 10], offsetsY: [10, 0, -5, -2])
-                    })
-                    .listRowBackground(Color.gray)
-                    .frame(height: 90)
+                    
+                }) {
+                    HStack {
+                        Image(systemName: "arrowtriangle.backward")
+                        Text("Menu")
+                    }
+                    .font(.system(size: 18))
+                    .foregroundColor(Color.tangerineText)
+                    .bold()
+
                 }
+                .padding()
+                
+                
+                Spacer()
+                
             }
             
-            Section(header: Text("Join Match")) {
+            List {
                 
-                VStack {
-                    TextField("Enter match code", text: $matchPassword)
-                    //   .frame( alignment: .leading)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .autocapitalization(.none)
-                        .fontWeight(.heavy)
-                        .focused($isFocused)
-                        .modifier(Shake(animatableData: CGFloat(self.incorrectPassword)))
-                    
-                    HStack {
-                        
-                        Button("Join") {
-                            
-                            Task {
-                                do {
-                                    if let matchesForPassword = try await MatchesManager.shared.checkMatchCode(password: matchPassword) {
-                                        print("matchesForPassword: \(matchesForPassword)")
-                                        
-                                        //join the match
-                                        self.incorrectPassword = 0
-                                        MatchesManager.shared.joinMatch(match: matchesForPassword.first!) // if there are multiple, that's bad -- we'll just pick the first. Using !, which is also bad -- but can it get to this point if nil?
+                // should maybe swap this out with a listener for all matches and then filter here with .filter { $0.isCompleted }
+                // though, it'll be good to have the current match listener stay active outside of this view. We don't need the completed matches
+                // listener to stay active
+                
+                Section(header: Text("Current Matches")) {
+                    ForEach(viewModel.userActiveMatches, id: \.id.self) { userMatch in
+                       // Section(header: Text(" ")) {
+                        if #available(iOS 17.0, *) {
+                            Button(action: {
+                                
+                                Task {
+                                    do {
+                                        let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
+                                        MatchesManager.shared.joinMatch(match: match)
                                         self.viewRouter.currentPage = "game"
                                         
-                                    } else {
-                                        handleIncorrectPassword()
+                                    } catch {
+                                        print("error joining match: \(error)")
                                     }
-                                    
-                                } catch {
-                                    handleIncorrectPassword()
-                                    print("passwordCheck error")
                                 }
-                            }
-                            
-                            
-                            isFocused = false
-                            
+                            }, label: {
+                                ActiveMatchCellView(userMatch: userMatch, rotations: [-25, -10, 0, 10], offsetsY: [10, 0, -5, -2])
+                            })
+                            .frame(height: 90)
+                            .listRowBackground(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(
+                                        /*
+                                        LinearGradient(gradient: Gradient(colors: [Color.primaryTealGradient, Color.primaryTeal]), startPoint: .leading, endPoint: .trailing)
+    */
+                                        Color.primaryTeal
+                                    )
+                                
+                                    .padding(.top, 10)
+                                //  .padding(.bottom, 4)
+                            )
+                            //  .listRowSeparatorTint(Color.babySealBlack, edges: .all)
+                            .listRowSeparator(.hidden)
+                        } else {
+                            // Fallback on earlier versions
                         }
-                        .disabled(!isFocused)
+
+                        }
+                       
+                 //   }
+                }
+                
+                Section(header: Text("Join Match")) {
+                    
+                    VStack {
+                        TextField("Enter match code", text: $matchPassword)
+                        //   .frame( alignment: .leading)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .autocapitalization(.none)
+                            .fontWeight(.heavy)
+                            .focused($isFocused)
+                            .modifier(Shake(animatableData: CGFloat(self.incorrectPassword)))
                         
+                        HStack {
+                            
+                            Button("Join") {
+                                
+                                Task {
+                                    do {
+                                        if let matchesForPassword = try await MatchesManager.shared.checkMatchCode(password: matchPassword) {
+                                            print("matchesForPassword: \(matchesForPassword)")
+                                            
+                                            //join the match
+                                            self.incorrectPassword = 0
+                                            MatchesManager.shared.joinMatch(match: matchesForPassword.first!) // if there are multiple, that's bad -- we'll just pick the first. Using !, which is also bad -- but can it get to this point if nil?
+                                            self.viewRouter.currentPage = "game"
+                                            
+                                        } else {
+                                            handleIncorrectPassword()
+                                        }
+                                        
+                                    } catch {
+                                        handleIncorrectPassword()
+                                        print("passwordCheck error")
+                                    }
+                                }
+                                
+                                
+                                isFocused = false
+                                
+                            }
+                            .disabled(!isFocused)
+                            
+                            
+                            Spacer()
+                        }
                         
-                        Spacer()
                     }
                     
                 }
+                .listRowBackground(Color.softWhite)
+
                 
+                Section(header: Text("Create Match")) {
+                    
+                    HStack {
+                        Spacer()
+                        
+                        Button(action: {
+                            
+                            MatchesManager.shared.createMatch()
+                            
+                            self.viewRouter.currentPage = "game"
+                            
+                            
+                            
+                        }, label: {
+                            Image(systemName: "plus")
+                                .tint(.white)
+                                .font(.headline)
+                                .padding(.horizontal, 30)
+                        })
+                        .buttonStyle(.borderedProminent)
+                        .tint(Color.tangerineText)
+                        
+                        Spacer()
+                        
+                    }
+
+                }
+                .listRowBackground(Color.softWhite)
+
                 
-            }
-            
-            Section(header: Text("Create Match")) {
-                
-                HStack {
-                    Spacer()
-                    
-                    Button(action: {
-                        
-                        MatchesManager.shared.createMatch()
-                        
-                        self.viewRouter.currentPage = "game"
-                        
-                        
-                        
-                    }, label: {
-                        Image(systemName: "plus")
-                            .tint(.white)
-                            .font(.headline)
-                            .padding(.horizontal, 30)
-                    })
-                    .buttonStyle(.borderedProminent)
-                    .tint(Color.tangerineTextColor)
-                    
-                    Spacer()
-                    
+                Section(header: Text("Completed Matches")) {
+                    ForEach(viewModel.userCompletedMatches, id: \.id.self) { item in
+                        Text("item.isCompleted: \(item.isCompleted)")
+                    }
                 }
                 
             }
-            
-            Section(header: Text("Completed Matches")) {
-                ForEach(viewModel.userCompletedMatches, id: \.id.self) { item in
-                    Text("item.isCompleted: \(item.isCompleted)")
-                }
-            }
-            
+            .navigationTitle("Matches")
+            .scrollContentBackground(.hidden)
+            .background(Color.white)
         }
-        .navigationTitle("Matches")
+       
         .onFirstAppear {
             //  viewModel.getMatches()
             

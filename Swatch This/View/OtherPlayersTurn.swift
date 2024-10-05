@@ -100,7 +100,7 @@ struct OtherPlayersTurn: View {
             
             ZStack {
                 
-                Color.primaryTealColor
+                Color.primaryTeal
                     .edgesIgnoringSafeArea(.all)
                     .onAppear(perform: prepareHaptics)
                 
@@ -127,15 +127,7 @@ struct OtherPlayersTurn: View {
                             
                             SwatchView(colorIndices: self.colorIndices,
                                        colorAtIndex: 0,
-                                       swatchHeight: swatchHeight,
-                                       colorName: "",
-                                       company: "",
-                                       colorURL: "",
-                                       coverOpacity: 0.0,
-                                       logoOpacity: 0.0,
-                                       nameOpacity: 0.0,
-                                       fontSize: 10,
-                                       showTurns: false)
+                                       swatchHeight: swatchHeight)
                                 .rotationEffect(self.animateIn3 ? .degrees(self.rotations[3]) : .degrees(0))
                                 .opacity(self.animateIn3 ? 1 : 0)
                                 .offset(x: 0, y: self.animateIn3 ? 0 : -geoHeight/3)
@@ -152,14 +144,7 @@ struct OtherPlayersTurn: View {
                             SwatchView(colorIndices: self.colorIndices,
                                        colorAtIndex: 1,
                                        swatchHeight: swatchHeight,
-                                       colorName: "",
-                                       company: "",
-                                       colorURL: "",
-                                       coverOpacity: 0.0,
-                                       logoOpacity: 0.0,
-                                       nameOpacity: 0.0,
-                                       fontSize: 10,
-                                       showTurns: false)
+                                       fontSize: 10)
                                 .rotationEffect(self.animateIn2 ? .degrees(self.rotations[2]) : .degrees(0))
                                 .opacity(self.animateIn2 ? 1 : 0)
                                 .offset(x: 0, y: self.animateIn2 ? 0 : -geoHeight/3)
@@ -181,14 +166,7 @@ struct OtherPlayersTurn: View {
                             SwatchView(colorIndices: self.colorIndices,
                                        colorAtIndex: 2,
                                        swatchHeight: swatchHeight,
-                                       colorName: "",
-                                       company: "",
-                                       colorURL: "",
-                                       coverOpacity: 0.0,
-                                       logoOpacity: 0.0,
-                                       nameOpacity: 0.0,
-                                       fontSize: 10,
-                                       showTurns: false)
+                                       fontSize: 10)
                                 .rotationEffect(self.animateIn1 ? .degrees(self.rotations[1]) : .degrees(0))
                                 .opacity(self.animateIn1 ? 1 : 0)
                                 .offset(x: 0, y: self.animateIn1 ? 0 : -geoHeight/3)
@@ -205,14 +183,7 @@ struct OtherPlayersTurn: View {
                             SwatchView(colorIndices: self.colorIndices,
                                        colorAtIndex: 3,
                                        swatchHeight: swatchHeight,
-                                       colorName: "",
-                                       company: "",
-                                       colorURL: "",
-                                       coverOpacity: 0.0,
-                                       logoOpacity: 0.0,
-                                       nameOpacity: 0.0,
-                                       fontSize: 10,
-                                       showTurns: false)
+                                       fontSize: 10)
                                 .rotationEffect(self.animateIn0 ? .degrees(self.rotations[0]) : .degrees(0))
                                 .opacity(self.animateIn0 ? 1 : 0)
                                 .offset(x: 0, y: self.animateIn0 ? 0 : -geoHeight/3)
@@ -233,7 +204,7 @@ struct OtherPlayersTurn: View {
                         
                         ZStack {
                             
-                            SwatchStackView(swatchColor: Color.wetCementColor,
+                            SwatchStackView(swatchColor: Color.wetCement,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -245,7 +216,7 @@ struct OtherPlayersTurn: View {
                                 .rotationEffect(.degrees(-11))
                             
                             
-                            SwatchStackView(swatchColor: Color.charcoalColor,
+                            SwatchStackView(swatchColor: Color.charcoal,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -257,7 +228,7 @@ struct OtherPlayersTurn: View {
                                 .rotationEffect(.degrees(+15))
                             
                             
-                            SwatchStackView(swatchColor: Color.moonlightColor,
+                            SwatchStackView(swatchColor: Color.moonlight,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -301,7 +272,7 @@ struct OtherPlayersTurn: View {
                 
                 
             }
-            .accentColor(Color.tangerineTextColor)
+            .accentColor(Color.tangerineText)
         }
         
     }

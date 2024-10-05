@@ -16,7 +16,7 @@ struct LoadingView: View {
     var body: some View {
         ZStack {
             
-            Color.primaryTealColor
+            Color.primaryTeal
                 .edgesIgnoringSafeArea(.all)
             
 
@@ -34,7 +34,7 @@ struct LoadingView: View {
                 
                 Text("Loading")
                     .font(.system(size: 30))
-                    .foregroundColor(Color.primaryTealColor)
+                    .foregroundColor(Color.primaryTeal)
                     .multilineTextAlignment(.center)
                 
                 ActivityIndicator()
@@ -54,7 +54,7 @@ struct LoadingView: View {
                 Spacer()
             }
         }
-        .accentColor(Color.tangerineTextColor)
+        .accentColor(Color.tangerineText)
 
     }
 }
