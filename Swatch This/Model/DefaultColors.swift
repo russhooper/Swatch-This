@@ -6,17 +6,43 @@
 //  Copyright © 2024 Radio Silence. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
+
+// come from colors in Assets
+extension Color {
+    static let darkGreenColor = Color("darkGreenColor")
+    static let primaryTealColor = Color("primaryTealColor")
+    static let babySealBlackColor = Color("babySealBlackColor")
+    static let blushColor = Color("blushColor")
+    static let californiaWineColor = Color("californiaWineColor")
+    static let denimColor = Color("denimColor")
+    static let grayFlannelColor = Color("grayFlannelColor")
+    static let mercuryColor = Color("mercuryColor")
+    static let roseWineColor = Color("roseWineColor")
+    static let tangerineColor = Color("tangerineColor")
+    static let tangerineTextColor = Color("tangerineTextColor")
+    static let sunnySideUpColor = Color("sunnySideUpColor")
+    static let jamaicaBayColor = Color("jamaicaBayColor")
+    static let alohaColor = Color("alohaColor")
+    static let sweetSixteenColor = Color("sweetSixteenColor")
+    static let darkTealColor = Color("darkTealColor")
+    static let californiaBreezeColor = Color("californiaBreezeColor")
+    static let summerAfternoonColor = Color("summerAfternoonColor")
+    static let sageColor = Color("sageColor")
+    static let grayColor1 = Color("grayColor1")
+    static let grayColor2 = Color("grayColor2")
+    static let grayColor3 = Color("grayColor3")
+    static let mediumTealColor = Color("mediumTealColor")
 
 
-class DefaultColors {
-    
-    static let shared = DefaultColors() // Singleton instance
+}
+
+extension Color {
+    init(hex: UInt32) {
+        let red = Double((hex & 0xFF0000) >> 16) / 255
+        let green = Double((hex & 0x00FF00) >> 8) / 255
+        let blue = Double(hex & 0x0000FF) / 255
         
-    let swatchColor1: UInt32 = 0x130f50
-    let swatchColor2: UInt32 = 0xfcba03
-    let blushColor: UInt32 = 0xf95352
-    let tangerineColorText: UInt32 = 0xFA9343
-    let mercuryColor: UInt32 = 0xEBEBEB
-        
+        self.init(red: red, green: green, blue: blue)
+    }
 }

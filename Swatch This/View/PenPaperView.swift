@@ -36,7 +36,7 @@ struct PenPaperView: View {
         
         ZStack {
             
-            Color(brightTealColor)
+            Color.primaryTealColor
                 .edgesIgnoringSafeArea(.all)
                 .onAppear(perform: prepareHaptics)
             
@@ -378,7 +378,7 @@ struct PenPaperView: View {
                                     Text("/")
                                         .font(.system(size: 23))
                                         .fontWeight(.bold)
-                                        .foregroundColor(Color(brightTealColor))
+                                        .foregroundColor(Color.primaryTealColor)
                                     
                                     
                                     Button(action: {
@@ -414,8 +414,8 @@ struct PenPaperView: View {
                 
                 
             }
-            .accentColor(Color(DefaultColors.shared.tangerineColorText))
-            
+            .accentColor(Color.tangerineTextColor)
+
         }
     }
     

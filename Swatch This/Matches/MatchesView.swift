@@ -43,6 +43,7 @@ struct MatchesView: View {
                     }, label: {
                         ActiveMatchCellView(userMatch: userMatch, rotations: [-25, -10, 0, 10], offsetsY: [10, 0, -5, -2])
                     })
+                    .listRowBackground(Color.gray)
                     .frame(height: 90)
                 }
             }
@@ -117,7 +118,7 @@ struct MatchesView: View {
                             .padding(.horizontal, 30)
                     })
                     .buttonStyle(.borderedProminent)
-                    .tint(Color(DefaultColors.shared.tangerineColorText))
+                    .tint(Color.tangerineTextColor)
                     
                     Spacer()
                     

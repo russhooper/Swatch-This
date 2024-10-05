@@ -49,11 +49,7 @@ struct GameEndView: View {
     
     @State var showTransition = true
     
-    
-    let blushColor: UInt32 = 0xf95352
-    let mediumTealColor: UInt32 = 0x54A5B6
-    let mercuryColor: UInt32 = 0xEBEBEB
-    
+        
     
     var body: some View {
         
@@ -64,7 +60,7 @@ struct GameEndView: View {
                 
                 ZStack {
                     
-                    Color(brightTealColor)
+                    Color.primaryTealColor
                         .edgesIgnoringSafeArea(.all)
                         .onAppear(perform: {
                             
@@ -416,8 +412,8 @@ struct GameEndView: View {
                 }
                 
                 
-                .accentColor(Color(DefaultColors.shared.tangerineColorText))
-                
+                .accentColor(Color.tangerineTextColor)
+
                 
                 // show the iPad's transition view if coming here not as last player, starting as the swatches filling the screen. Yes, the iPad's, for simplicity. The iPhone's transition actually occurs in GuessColorsView
                 if showTransition == true {
@@ -468,7 +464,7 @@ struct GameEndView: View {
                     
                     ZStack {
                         
-                        Color(mercuryColor)
+                        Color.mercuryColor
                             .edgesIgnoringSafeArea(.all)
                         
                         HStack {
@@ -553,7 +549,7 @@ struct GameEndView: View {
                             // left half of screen
                             ZStack {
                                 
-                                Color(brightTealColor)
+                                Color.primaryTealColor
                                     .edgesIgnoringSafeArea(.all)
                                     .onAppear(perform: prepareHaptics)
                                 
@@ -748,7 +744,7 @@ struct GameEndView: View {
                                                 if sortedPlayer == self.selection {
                                                     
                                                     Image(systemName: "chevron.right")
-                                                        .foregroundColor(Color(DefaultColors.shared.tangerineColorText))
+                                                        .accentColor(Color.tangerineTextColor)
                                                     //     .bold()
                                                         .font(Font.system(size: 20, weight: .bold))
                                                     
@@ -784,7 +780,7 @@ struct GameEndView: View {
                             .frame(width: geoWidth50)
                             
                         }
-                        .accentColor(Color(DefaultColors.shared.tangerineColorText))
+                        .accentColor(Color.tangerineTextColor)
                         .animation(Animation.easeOut(duration: 0.3))
                         
                         if self.viewRouter.onlineGame == false {   // online matches are saved so we don't need to ask about quitting in that case
@@ -845,8 +841,8 @@ struct GameEndView: View {
                 
                 ForEach(self.transitionSwatches.swatches) { swatch in
                     
-                    SwatchStackView(color: gameBrain.getColorHex(turn: swatch.turn,
-                                                                 indexArray: self.gameData.colorIndices),
+                    SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: swatch.turn,
+                                                                 indexArray: self.gameData.colorIndices)),
                                     swatchHeight: swatchHeight,
                                     text: "",
                                     textField: nil,
@@ -935,7 +931,7 @@ struct GameEndView: View {
                     Text("/")
                         .font(.system(size: 23))
                         .fontWeight(.bold)
-                        .foregroundColor(Color(brightTealColor))
+                        .foregroundColor(Color.primaryTealColor)
                     
                     
                     Button(action: {

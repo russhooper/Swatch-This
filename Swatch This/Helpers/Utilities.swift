@@ -47,3 +47,4 @@ func formatDate(_ date: Date) -> String {
     formatter.timeStyle = .short
     return formatter.string(from: date)
 }
+

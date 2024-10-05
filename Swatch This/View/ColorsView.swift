@@ -21,25 +21,6 @@ struct ColorsView: View {
     @State private var engine: CHHapticEngine?
     
     
-    let swatchColor1: UInt32 = 0x130f50
-    let swatchColor2: UInt32 = 0xfcba03
-    let swatchColor3: UInt32 = 0x487eb0
-    let swatchColor4: UInt32 = 0xe84118
-    let swatchColor5: UInt32 = 0xB21B2F
-    let swatchColor6: UInt32 = 0x78888E
-    let swatchColor7: UInt32 = 0xA4A085
-    let moonriseColor1: UInt32 = 0xFCD16C
-    let moonriseColor2: UInt32 = 0x88D4E2
-    let moonriseColor3: UInt32 = 0x759F89
-    let moonriseColor4: UInt32 = 0xE0A295
-    let denimColor: UInt32 = 0x4F98C3
-    let babySealBlack: UInt32 = 0x474B51
-    let grayFlannel: UInt32 = 0x585861
-    let californiaWineColor: UInt32 = 0xC94B66
-    let lightPinkColor: UInt32 = 0xE0A295
-    let blushColor: UInt32 = 0xf95352
-    
-    
     @State var userColorName: String = ""
     
     
@@ -163,7 +144,7 @@ struct ColorsView: View {
             
             ZStack {
                 
-                Color(darkTealColor)
+                Color.darkTealColor
                     .edgesIgnoringSafeArea(.all)
                 
                 
@@ -175,7 +156,7 @@ struct ColorsView: View {
                         
                         ForEach(hexes.indices, id: \.self) { i in
                             
-                            SwatchStackView(color: hexes[i],
+                            SwatchStackView(swatchColor: Color(hex: hexes[i]),
                                             swatchHeight: 120,
                                             text: "",
                                             textField: nil,
@@ -343,14 +324,14 @@ struct ColorsView: View {
                                 
                                 Text("Unlock tons of new \(colorLocalized)s for use in Swatch This matches.")
                                     .frame(minHeight: textMinHeight)
-                                    .foregroundColor(Color(darkTealColor))
+                                    .foregroundColor(Color.darkTealColor)
                                     .padding(EdgeInsets(top: 20, leading: 10, bottom: 20, trailing: 10))
                                 
                                 Spacer()
                                 
                                 VStack (alignment: .leading) {
                                     Text("Base game:")
-                                        .foregroundColor(Color(darkTealColor))
+                                        .foregroundColor(Color.darkTealColor)
                                         .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
                                     
                                     HStack {
@@ -382,7 +363,7 @@ struct ColorsView: View {
                                             
                                             Image(systemName: "checkmark.square")
                                                 .font(Font.system(.largeTitle))
-                                                .foregroundColor(Color(darkTealColor))
+                                                .foregroundColor(Color.darkTealColor)
                                         }
                                         
                                         
@@ -410,7 +391,7 @@ struct ColorsView: View {
                                 
                                 VStack (alignment: .leading) {
                                     Text("The Palette Pack:")
-                                        .foregroundColor(Color(darkTealColor))
+                                        .foregroundColor(Color.darkTealColor)
                                         .padding(EdgeInsets(top: 20, leading: 10, bottom: 0, trailing: 10))
                                     
                                     HStack {
@@ -446,7 +427,7 @@ struct ColorsView: View {
                                             
                                             Image(systemName: "square")
                                                 .font(Font.system(.largeTitle))
-                                                .foregroundColor(Color(darkTealColor))
+                                                .foregroundColor(Color.darkTealColor)
                                             //  .padding()
                                             
                                         }
@@ -471,12 +452,12 @@ struct ColorsView: View {
                                 Spacer()
                                 
                                 Text("\(gameBrain.getAvailablePalette(excludeRecentColors: false).count) \(colorLocalized)s active.")
-                                    .foregroundColor(Color(darkTealColor))
+                                    .foregroundColor(Color.darkTealColor)
                                     .padding(EdgeInsets(top: 20, leading: 10, bottom: 0, trailing: 10))
                                 
                                 Text("When playing an online match, all players will have access to the same \(colorLocalized)s as the person who takes the first turn.")
                                     .frame(minHeight: textMinHeight * textMinHeightMultiplier)
-                                    .foregroundColor(Color(darkTealColor))
+                                    .foregroundColor(Color.darkTealColor)
                                     .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
                                 
                                 
@@ -522,8 +503,8 @@ struct ColorsView: View {
             
             
         }
-        .accentColor(Color(DefaultColors.shared.tangerineColorText))
-        
+        .accentColor(Color.tangerineTextColor)
+
     }
     
     

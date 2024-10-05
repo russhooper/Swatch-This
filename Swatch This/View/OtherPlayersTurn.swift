@@ -37,13 +37,8 @@ struct OtherPlayersTurn: View {
     private let dealDelay3: TimeInterval = 0.3
     
     var rotations: [Double]
-    
-    let gray1: UInt32 = 0xD8DCDD
-    let gray2: UInt32 = 0x585861
-    let gray3: UInt32 = 0x41414B
-    let blushColor: UInt32 = 0xf95352
-    
-    
+
+
     
     
     var body: some View {
@@ -105,7 +100,7 @@ struct OtherPlayersTurn: View {
             
             ZStack {
                 
-                Color(brightTealColor)
+                Color.primaryTealColor
                     .edgesIgnoringSafeArea(.all)
                     .onAppear(perform: prepareHaptics)
                 
@@ -238,7 +233,7 @@ struct OtherPlayersTurn: View {
                         
                         ZStack {
                             
-                            SwatchStackView(color: self.gray2,
+                            SwatchStackView(swatchColor: Color.grayColor2,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -250,7 +245,7 @@ struct OtherPlayersTurn: View {
                                 .rotationEffect(.degrees(-11))
                             
                             
-                            SwatchStackView(color: self.gray3,
+                            SwatchStackView(swatchColor: Color.grayColor3,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -262,7 +257,7 @@ struct OtherPlayersTurn: View {
                                 .rotationEffect(.degrees(+15))
                             
                             
-                            SwatchStackView(color: self.gray1,
+                            SwatchStackView(swatchColor: Color.grayColor1,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -306,7 +301,7 @@ struct OtherPlayersTurn: View {
                 
                 
             }
-            .accentColor(Color(DefaultColors.shared.tangerineColorText))
+            .accentColor(Color.tangerineTextColor)
         }
         
     }

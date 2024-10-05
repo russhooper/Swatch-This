@@ -33,9 +33,7 @@ struct GuessColorsView: View {
     @State private var paintOffsetX: CGFloat = 0
     @State private var transitionOpacity: CGFloat = 0
     @State private var showQuit = false
-    
-    let blushColor: UInt32 = 0xf95352
-    
+        
     
     
     // for the dealing animation at the begininning
@@ -269,7 +267,7 @@ struct GuessColorsView: View {
         ZStack {
             
             //  Color(red: 221/255, green: 217/255, blue: 211/255, opacity: 1.0)
-            Color(brightTealColor)
+            Color.primaryTealColor
                 .edgesIgnoringSafeArea(.all)
                 .onAppear(perform: prepareHaptics)
             
@@ -351,7 +349,7 @@ struct GuessColorsView: View {
                         }) {
                             Text("Quit Game")
                                 .font(.system(size: 18))
-                                .foregroundColor(self.showQuit ? Color(brightTealColor) : .white)
+                                .foregroundColor(self.showQuit ? Color.primaryTealColor : .white)
                                 .bold()
                                 .animation(.linear(duration: 0.25))
                             
@@ -372,8 +370,8 @@ struct GuessColorsView: View {
                     ZStack {
                         
                         
-                        SwatchStackView(color: gameBrain.getColorHex(turn: 3,
-                                                                     indexArray: self.gameData.colorIndices),
+                        SwatchStackView(swatchColor: Color(hex:  gameBrain.getColorHex(turn: 3,
+                                                                     indexArray: self.gameData.colorIndices)),
                                         swatchHeight: swatchHeight,
                                         text: self.hasGuessed && turnData.turnArray[0] == 3 ? gameBrain.getColorName(turn: 3, indexArray: self.gameData.colorIndices) : "",
                                         textField: nil,
@@ -406,8 +404,8 @@ struct GuessColorsView: View {
                                 
                             }
                         
-                        SwatchStackView(color: gameBrain.getColorHex(turn: 2,
-                                                                     indexArray: self.gameData.colorIndices),
+                        SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 2,
+                                                                     indexArray: self.gameData.colorIndices)),
                                         swatchHeight: swatchHeight,
                                         text: self.hasGuessed  && turnData.turnArray[0] == 2 ? gameBrain.getColorName(turn: 2, indexArray: self.gameData.colorIndices) : "",
                                         textField: nil,
@@ -434,8 +432,8 @@ struct GuessColorsView: View {
                                 
                             }
                         
-                        SwatchStackView(color: gameBrain.getColorHex(turn: 1,
-                                                                     indexArray: self.gameData.colorIndices),
+                        SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 1,
+                                                                     indexArray: self.gameData.colorIndices)),
                                         swatchHeight: swatchHeight,
                                         text: self.hasGuessed  && turnData.turnArray[0] == 1 ? gameBrain.getColorName(turn: 1, indexArray: self.gameData.colorIndices) : "",
                                         textField: nil,
@@ -463,8 +461,8 @@ struct GuessColorsView: View {
                                 
                             }
                         
-                        SwatchStackView(color: gameBrain.getColorHex(turn: 0,
-                                                                     indexArray: self.gameData.colorIndices),
+                        SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0,
+                                                                     indexArray: self.gameData.colorIndices)),
                                         swatchHeight: swatchHeight,
                                         text: self.hasGuessed  && turnData.turnArray[0] == 0 ? gameBrain.getColorName(turn: 0, indexArray: self.gameData.colorIndices) : "",
                                         textField: nil,
@@ -530,7 +528,7 @@ struct GuessColorsView: View {
                         
                         ZStack {
                             
-                            Color(brightTealColor)
+                            Color.primaryTealColor
                                 .edgesIgnoringSafeArea(.all)
                             
                             Image("Paint Stripe")
@@ -550,7 +548,7 @@ struct GuessColorsView: View {
                                 Text("Pass device to \(self.gameData.displayNames["Player \(self.gameData.currentPlayer)"] ?? "Player \(self.gameData.currentPlayer)")")
                                     .font(.system(size: 30))
                                     .fontWeight(.bold)
-                                    .foregroundColor(Color(brightTealColor))
+                                    .foregroundColor(Color.primaryTealColor)
                                     .multilineTextAlignment(.center)
                                     .frame(width: 250, alignment: .center)
                                 
@@ -634,8 +632,8 @@ struct GuessColorsView: View {
                     }
                 }
             }
-            .accentColor(Color(DefaultColors.shared.tangerineColorText))
-            
+            .accentColor(Color.tangerineTextColor)
+
         }
     }
     
@@ -748,7 +746,7 @@ struct GuessColorsView: View {
                             Rectangle()
                                 .frame(width: viewWidth, height: 50, alignment: .center)
                                 .foregroundColor(.white)
-                                .overlay(Divider().background(Color(brightTealColor)), alignment: .bottom)
+                                .overlay(Divider().background(Color.primaryTealColor), alignment: .bottom)
                                 .cornerRadius(5, corners: [.topLeft, .topRight])
                             
                             
@@ -907,12 +905,12 @@ struct GuessColorsView: View {
                                 /*
                                  if self.horizontalSizeClass == .regular {
                                  Text(string)
-                                 .foregroundColor(Color(tangerineColorText))
+                                 .accentColor(Color.tangerineTextColor)
                                  .frame(maxWidth: .infinity, alignment: .center)
                                  } else {
                                  */
                                 Text(string)
-                                    .foregroundColor(Color(DefaultColors.shared.tangerineColorText))
+                                    .accentColor(Color.tangerineTextColor)
                                 //  }
                             }.disabled(self.hasGuessed)
                         }
@@ -924,7 +922,7 @@ struct GuessColorsView: View {
                 
                 Rectangle()
                     //  .frame(width: swatchHeight+swatchHeight*0.13, height: swatchHeight+swatchHeight*0.4, alignment: .center)
-                    .foregroundColor(Color(brightTealColor))
+                    .foregroundColor(Color.primaryTealColor)
                     .edgesIgnoringSafeArea(.all)
                     .opacity(self.hudOpacity == 0 ? 1 : 0) // reverse of HUD opacity
                     .animation(.linear(duration: 0.5).delay(self.turnData.turnArray[0] == 3 ? 0 : 0.5)) // no delay if we're animating out, only for animating in
@@ -962,8 +960,8 @@ struct GuessColorsView: View {
             ZStack {
                 
                 
-                SwatchStackView(color: gameBrain.getColorHex(turn: 0,
-                                                             indexArray: self.gameData.colorIndices),
+                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0,
+                                                             indexArray: self.gameData.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -985,8 +983,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(color: gameBrain.getColorHex(turn: 1,
-                                                             indexArray: self.gameData.colorIndices),
+                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 1,
+                                                             indexArray: self.gameData.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1008,8 +1006,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(color: gameBrain.getColorHex(turn: 2,
-                                                             indexArray: self.gameData.colorIndices),
+                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 2,
+                                                             indexArray: self.gameData.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1031,8 +1029,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(color: gameBrain.getColorHex(turn: 3,
-                                                             indexArray: self.gameData.colorIndices),
+                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 3,
+                                                             indexArray: self.gameData.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1054,8 +1052,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(color: gameBrain.getColorHex(turn: 0,
-                                                             indexArray: self.gameData.colorIndices),
+                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0,
+                                                             indexArray: self.gameData.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1077,8 +1075,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(color: gameBrain.getColorHex(turn: 1,
-                                                             indexArray: self.gameData.colorIndices),
+                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 1,
+                                                             indexArray: self.gameData.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1100,8 +1098,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(color: gameBrain.getColorHex(turn: 2,
-                                                             indexArray: self.gameData.colorIndices),
+                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 2,
+                                                             indexArray: self.gameData.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1157,8 +1155,8 @@ struct GuessColorsView: View {
                 
                 ForEach(self.transitionSwatches.swatches) { swatch in
                     
-                    SwatchStackView(color: gameBrain.getColorHex(turn: swatch.turn,
-                                                                 indexArray: self.gameData.colorIndices),
+                    SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: swatch.turn,
+                                                                 indexArray: self.gameData.colorIndices)),
                                     swatchHeight: swatchHeight,
                                     text: "",
                                     textField: nil,
@@ -1251,7 +1249,7 @@ struct GuessColorsView: View {
                     Text("/")
                         .font(.system(size: 23))
                         .fontWeight(.bold)
-                        .foregroundColor(Color(brightTealColor))
+                        .foregroundColor(Color.primaryTealColor)
                     
                     
                     Button(action: {

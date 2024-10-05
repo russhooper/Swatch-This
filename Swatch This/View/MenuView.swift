@@ -10,26 +10,9 @@ import SwiftUI
 import GameKit
 import CoreHaptics
 
-let brightTealColor: UInt32 = 0x69BAC9
-let darkTealColor: UInt32 = 0x395865
-
 
 struct MenuView: View {
-    
-    
-    let swatchColor1: UInt32 = 0x0984e3
-    let swatchColor2: UInt32 = 0xfcba03
-    let swatchColor3: UInt32 = 0xe17055
-    let swatchColor4: UInt32 = 0x00cec9
-    let swatchColor5: UInt32 = 0x00c7e1
-    let tangerineColor: UInt32 = 0xFF9B54
-    let swatchColor7: UInt32 = 0x005493
-    let blushColor: UInt32 = 0xf95352
-    let darkBlueColor: UInt32 = 0x2a82b4
-    let darkGrayColor: UInt32 = 0x46515d
-    let darkGreenColor: UInt32 = 0x395865
-    let moonriseColor1: UInt32 = 0xFCD16C
-    
+   
     
     let localPlayer = GKLocalPlayer.local
     
@@ -85,7 +68,7 @@ struct MenuView: View {
         
         ZStack {
             
-            Color(brightTealColor)
+            Color.primaryTealColor
                 .edgesIgnoringSafeArea(.all)
                 .onAppear(perform: {
                     prepareHaptics()
@@ -183,7 +166,7 @@ struct MenuView: View {
                         
                         if (geoHeight / geoWidth > 2) {
                             
-                            SwatchStackView(color: self.blushColor,
+                            SwatchStackView(swatchColor: Color.blushColor,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -195,7 +178,7 @@ struct MenuView: View {
                             .rotationEffect(.degrees(-2))
                             
                             
-                            SwatchStackView(color: self.tangerineColor,
+                            SwatchStackView(swatchColor: Color.tangerineColor,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -207,7 +190,7 @@ struct MenuView: View {
                             .rotationEffect(.degrees(2))
                             
                         } else {
-                            SwatchStackView(color: self.blushColor,
+                            SwatchStackView(swatchColor: Color.blushColor,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -218,7 +201,7 @@ struct MenuView: View {
                             .offset(x: -20, y: -55 * localOffsetMultiplier)
                             .rotationEffect(.degrees(-11))
                             
-                            SwatchStackView(color: self.tangerineColor,
+                            SwatchStackView(swatchColor: Color.tangerineColor,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -363,7 +346,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 7) {
                             
-                            SwatchStackView(color: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)]),
+                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -377,7 +360,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 6) {
                             
-                            SwatchStackView(color: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)]),
+                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -391,7 +374,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 5) {
                             
-                            SwatchStackView(color: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)]),
+                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -405,7 +388,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 4) {
                             
-                            SwatchStackView(color: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)]),
+                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -419,7 +402,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 3) {
                             
-                            SwatchStackView(color: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)]),
+                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -433,7 +416,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 2) {
                             
-                            SwatchStackView(color: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)]),
+                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -446,7 +429,7 @@ struct MenuView: View {
                         }
                         
                         
-                        SwatchStackView(color: self.blushColor,
+                        SwatchStackView(swatchColor: Color.blushColor,
                                         swatchHeight: swatchHeight,
                                         text: "",
                                         textField: nil,
@@ -458,7 +441,7 @@ struct MenuView: View {
                         .rotationEffect(.degrees(Double.random(in: 10 ..< 14)))
                         
                         
-                        SwatchStackView(color: self.darkGreenColor,
+                        SwatchStackView(swatchColor: Color.darkGreenColor,
                                         swatchHeight: swatchHeight,
                                         text: "",
                                         textField: nil,
@@ -486,7 +469,7 @@ struct MenuView: View {
                                 .font(.system(size: 18))
                             
                             Text("\(self.numberOfPlayers)")
-                                .foregroundColor(Color(self.darkGreenColor))
+                                .foregroundColor(Color.darkGreenColor)
                                 .font(.system(size: 70))
                                 .fontWeight(.bold)
                                 .padding()
@@ -737,7 +720,7 @@ struct MenuView: View {
                     
                     
                 }
-                .accentColor(Color(DefaultColors.shared.tangerineColorText))
+                .accentColor(Color.tangerineTextColor)
                 
                 
                 Spacer()
@@ -903,7 +886,7 @@ extension MenuView {
         
         ZStack {
             
-            SwatchStackView(color: self.blushColor,
+            SwatchStackView(swatchColor: Color.blushColor,
                             swatchHeight: swatchHeight,
                             text: "",
                             textField: nil,
@@ -925,7 +908,7 @@ extension MenuView {
                 }
             }
             
-            SwatchStackView(color: self.darkGreenColor,
+            SwatchStackView(swatchColor: Color.darkGreenColor,
                             swatchHeight: swatchHeight,
                             text: "",
                             textField: nil,
@@ -946,7 +929,7 @@ extension MenuView {
                     }
                 }
             }
-            SwatchStackView(color: self.tangerineColor,
+            SwatchStackView(swatchColor: Color.tangerineColor,
                             swatchHeight: swatchHeight,
                             text: "Swatch This",
                             textField: nil,

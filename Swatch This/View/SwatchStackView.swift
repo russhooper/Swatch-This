@@ -11,7 +11,7 @@ import UIKit
 
 struct SwatchStackView: View {
     
-    let color: UInt32
+    let swatchColor: Color
     let swatchHeight: CGFloat
     let text: String
     var textField: Binding<String>?
@@ -20,8 +20,6 @@ struct SwatchStackView: View {
     let inGame: Bool
     let turnNumber: Int
     
-    let blushColor: UInt32 = 0xf95352
-
     
     var body: some View {
         
@@ -45,7 +43,7 @@ struct SwatchStackView: View {
                         
                         RoundedRectangle(cornerRadius: 2)
                             .frame(width: self.swatchHeight, height: self.swatchHeight, alignment: .center)
-                            .foregroundColor(hexColor(self.color))
+                            .foregroundColor(swatchColor)
                             .padding(EdgeInsets(top: self.swatchHeight*0.13/2, leading: 0, bottom: 0, trailing: 0))
                         
                         if inGame == true {
@@ -97,7 +95,7 @@ struct SwatchStackView: View {
                 }
             }
         }
-        .accentColor(Color(DefaultColors.shared.tangerineColorText))
+        .accentColor(Color.tangerineTextColor)
 
     }
 }

@@ -11,11 +11,6 @@ import SwiftUI
 struct HowToTabletopView: View {
 
     
-    let tangerineColor: UInt32 = 0xFF9B54
-    let blushColor: UInt32 = 0xf95352
-    let darkGreenColor: UInt32 = 0x395865
-    
-    
     let instructionsArray = [
         "Pick the person wearing the most \(colorLocalized)ful clothes to be leader for the first round.",
         "Keeping the \(colorLocalized) name hidden, the leader will show all the players the \(colorLocalized) in the first swatch.",
@@ -65,7 +60,7 @@ struct HowToTabletopView: View {
                     ZStack {
                         
                         Rectangle()
-                            .foregroundColor(Color(brightTealColor))
+                            .foregroundColor(Color.primaryTealColor)
 
                         HStack {
                             
@@ -95,7 +90,7 @@ struct HowToTabletopView: View {
                     ZStack {
                         
                         Rectangle()
-                            .foregroundColor(Color(brightTealColor))
+                            .foregroundColor(Color.primaryTealColor)
 
                         HStack {
                             
@@ -129,7 +124,7 @@ struct HowToTabletopView: View {
                     ZStack {
                         
                         Rectangle()
-                            .foregroundColor(Color(brightTealColor))
+                            .foregroundColor(Color.primaryTealColor)
 
                         
                         HStack {

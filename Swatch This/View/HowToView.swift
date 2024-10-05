@@ -98,7 +98,7 @@ struct HowToView: View {
                         
                         
                     }
-                    .accentColor(Color(DefaultColors.shared.tangerineColorText))
+                    .accentColor(Color.tangerineTextColor)
                     .frame(width: geoWidth)
                     
                 }
@@ -152,14 +152,6 @@ struct scrollViewContent: View {
     let swatchHeight: CGFloat
     let geoWidth: CGFloat
 
-    let sunnySideUp: UInt32 = 0xF9AB1D
-    let sweetSixteen: UInt32 = 0xF29FAB
-    let jamaicaBay: UInt32 = 0x34A3B6
-    let babySealBlack: UInt32 = 0x474B51
-    let grayFlannel: UInt32 = 0x585861
-    let darkGreenColor: UInt32 = 0x395865
-    let alohaColor: UInt32 = 0x20B396
-    
     
     var rand1 = Double.random(in: -6 ..< -3)
 
@@ -199,7 +191,7 @@ struct scrollViewContent: View {
                     Text("This isn't just \"yellow,\" it's...")
                         .font(.title3)
 
-                    SwatchStackView(color: self.sunnySideUp,
+                    SwatchStackView(swatchColor: Color.sunnySideUpColor,
                                     swatchHeight: self.swatchHeight,
                                     text: "Sunny Side Up",
                                     textField: nil,
@@ -217,7 +209,7 @@ struct scrollViewContent: View {
                     Text("This isn't just \"pink,\" it's...")
                         .font(.title3)
 
-                    SwatchStackView(color: self.sweetSixteen,
+                    SwatchStackView(swatchColor: Color.sweetSixteenColor,
                                     swatchHeight: self.swatchHeight,
                                     text: "Sweet Sixteen",
                                     textField: nil,
@@ -235,7 +227,7 @@ struct scrollViewContent: View {
                     Text("This isn't just \"blue,\" it's...")
                         .font(.title3)
 
-                    SwatchStackView(color: self.jamaicaBay,
+                    SwatchStackView(swatchColor: Color.jamaicaBayColor,
                                     swatchHeight: self.swatchHeight,
                                     text: "Jamaica Bay",
                                     textField: nil,
@@ -253,7 +245,7 @@ struct scrollViewContent: View {
                     Text("Your turn! What would you call this?")
                         .font(.title3)
 
-                    SwatchStackView(color: self.alohaColor,
+                    SwatchStackView(swatchColor: Color.alohaColor,
                                     swatchHeight: self.swatchHeight,
                                     text: "",
                                     textField: nil,

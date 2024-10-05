@@ -851,6 +851,7 @@
 				DEVELOPMENT_TEAM = KRY6K4CUHC;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Swatch This/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Swatch This";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -876,6 +877,7 @@
 				DEVELOPMENT_TEAM = KRY6K4CUHC;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Swatch This/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Swatch This";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (

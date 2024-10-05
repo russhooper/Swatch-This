@@ -120,7 +120,7 @@ struct SwitcherView: View {
         .alert(item: $alertId) { (alertId) -> Alert in
             return createAlert(alertId: alertId)
         }
-        .accentColor(Color(DefaultColors.shared.tangerineColorText))
+        .accentColor(Color.tangerineTextColor)
         .onReceive(presentGamePub) { output in
             self.presentGame(output)
         }

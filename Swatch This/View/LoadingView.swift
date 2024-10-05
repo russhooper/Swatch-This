@@ -12,13 +12,11 @@ struct LoadingView: View {
     
     @EnvironmentObject var viewRouter: ViewRouter
    
-    let blushColor: UInt32 = 0xf95352
-
     
     var body: some View {
         ZStack {
             
-            Color(brightTealColor)
+            Color.primaryTealColor
                 .edgesIgnoringSafeArea(.all)
             
 
@@ -36,7 +34,7 @@ struct LoadingView: View {
                 
                 Text("Loading")
                     .font(.system(size: 30))
-                    .foregroundColor(Color(brightTealColor))
+                    .foregroundColor(Color.primaryTealColor)
                     .multilineTextAlignment(.center)
                 
                 ActivityIndicator()
@@ -56,7 +54,7 @@ struct LoadingView: View {
                 Spacer()
             }
         }
-        .accentColor(Color(DefaultColors.shared.tangerineColorText))
+        .accentColor(Color.tangerineTextColor)
 
     }
 }

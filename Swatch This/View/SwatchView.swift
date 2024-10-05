@@ -22,7 +22,6 @@ struct SwatchView: View {
     let fontSize: CGFloat
     let showTurns: Bool
     
-    let blushColor: UInt32 = 0xf95352
 
     
     var body: some View {
@@ -122,7 +121,7 @@ struct SwatchView: View {
                 .foregroundColor(.white)
                 .opacity(self.coverOpacity)
         }
-        .accentColor(Color(DefaultColors.shared.tangerineColorText))
+        .accentColor(Color.tangerineTextColor)
 
     }
 }

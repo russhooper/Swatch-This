@@ -16,16 +16,6 @@ struct AboutView: View {
     
     @State private var engine: CHHapticEngine?
 
-    
-    let moonriseColor1: UInt32 = 0xFCD16C
-    let moonriseColor2: UInt32 = 0x88D4E2
-    let moonriseColor3: UInt32 = 0x759F89
-    let moonriseColor4: UInt32 = 0xE0A295
-    let denimColor: UInt32 = 0x4F98C3
-    let babySealBlack: UInt32 = 0x474B51
-    let grayFlannel: UInt32 = 0x585861
-    let californiaWineColor: UInt32 = 0xC94B66
-    let lightPinkColor: UInt32 = 0xE0A295
 
     
     @State var userColorName: String = ""
@@ -98,7 +88,7 @@ struct AboutView: View {
                 
                
                 
-                Color(darkTealColor)
+                Color.darkTealColor
                     .edgesIgnoringSafeArea(.all)
                 
                 
@@ -144,7 +134,7 @@ struct AboutView: View {
                         
                         
                         
-                        SwatchStackView(color: self.lightPinkColor,
+                        SwatchStackView(swatchColor: Color.roseWineColor,
                                         swatchHeight: swatchHeight,
                                         text: "",
                                         textField: nil,
@@ -166,7 +156,7 @@ struct AboutView: View {
                                         }
                             }
                         
-                        SwatchStackView(color: self.moonriseColor2,
+                        SwatchStackView(swatchColor: Color.californiaBreezeColor,
                                         swatchHeight: swatchHeight,
                                         text: "",
                                         textField: nil,
@@ -188,7 +178,7 @@ struct AboutView: View {
                                         }
                             }
                         
-                        SwatchStackView(color: self.moonriseColor1,
+                        SwatchStackView(swatchColor: Color.summerAfternoonColor,
                                         swatchHeight: swatchHeight,
                                         text: "",
                                         textField: nil,
@@ -210,7 +200,7 @@ struct AboutView: View {
                                         }
                             }
                         
-                        SwatchStackView(color: self.moonriseColor3,
+                        SwatchStackView(swatchColor: Color.sageColor,
                                         swatchHeight: swatchHeight,
                                         text: "A game by",
                                         textField: nil,

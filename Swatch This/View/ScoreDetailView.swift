@@ -15,10 +15,7 @@ struct ScoreDetailView: View {
     let onlineGame: Bool
     let customSplitView: Bool
     
-    
-    let blushColor: UInt32 = 0xf95352
-    let mediumTealColor: UInt32 = 0x54A5B6
-    
+        
     
     var body: some View {
             
@@ -133,7 +130,7 @@ struct ScoreDetailView: View {
                 }
                 
             }
-            .accentColor(Color(DefaultColors.shared.tangerineColorText))
+            .accentColor(Color.tangerineTextColor)
             .navigationTitle(titleString)
             .navigationBarTitleDisplayMode(.inline)
             
