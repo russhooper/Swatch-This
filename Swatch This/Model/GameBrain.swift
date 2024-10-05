@@ -826,6 +826,46 @@ struct GameBrain {
     }
     
     
+    func determineGameState(localPlayerID: String, match: Match) -> (phase: Int, canTakeAction: Bool) {
+        
+        // first check if the user has submitted colors
+        // for now, users must submit all 4 colors before the game will update Firebase
+        
+        // will return:
+        // (0, false) if error
+        // (1, true) if user can submit colors
+        // (1, false) if user has submitted colors but not every player has
+        // (2, true) if user can guess colors
+        // (2, false) if user has guess colors but not every player has
+        // (3, false) if game end
+        
+     //   var matchState: (Int, Bool) = (0, false)
+                
+        if let createdNames = match.createdNames {
+            for colorNameDict in createdNames {
+                guard let colorName = colorNameDict[localPlayerID] else {
+                    return (1, true) // if no color name, then user can submit colors
+                }
+            }
+            
+            // if we've gotten to this point, then there must be color names for the user
+            // next check if every other player has submitted their names
+            for colorNameDict in createdNames {
+                if colorNameDict.count < match.playerCount {
+                    return (1, false)
+                }
+            }
+        } else {
+            return (1, true) // if no createdNames array, then user can submit colors
+        }
+        
+        // if we've gotten to this point, then there must be color names for all players
+                
+        return (2, true) // user can guess colors
+        
+    }
+    
+    
     func checkAnswer(turn: Int, colorGuessed: String, colorIndices: [Int]) -> Bool {
         
         let actualName = self.getColorName(turn: turn, indexArray: colorIndices)

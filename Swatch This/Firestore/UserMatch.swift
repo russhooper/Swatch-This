@@ -17,6 +17,7 @@ struct UserMatch: Identifiable, Codable, Equatable {
     var isCompleted: Bool
     let match: Match
     var turnLastTakenDate: Date? // need this here in addition to Match because Firebase can only query on top-level info
+    var canTakeTurn: Bool?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -24,6 +25,7 @@ struct UserMatch: Identifiable, Codable, Equatable {
         case isCompleted
         case match
         case turnLastTakenDate
+        case canTakeTurn
     }
     
     static func ==(lhs: UserMatch, rhs: UserMatch) -> Bool {

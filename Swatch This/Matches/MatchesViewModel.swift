@@ -31,6 +31,8 @@ final class MatchesViewModel: ObservableObject {
                 
             } receiveValue: { [weak self] activeMatches in
                 self?.userActiveMatches = activeMatches
+                // should this save the canTakeTurn?
+                
                 // ["[weak self]" allows self to be optional (denoted by "?"), meaning that if the completion handler gets called here but self is deallocated, then we just get a nil result that we ignore
                 
             }

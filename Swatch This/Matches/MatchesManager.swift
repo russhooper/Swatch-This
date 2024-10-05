@@ -40,6 +40,7 @@ final class MatchesManager {
         guard let authDataResult: AuthDataResultModel = try? AuthenticationManager.shared
             .getAuthenticatedUser() else { return }
         
+        // store appropriate stuff from retrieved Match into MatchData and LocalUser
         MatchData.shared.localPlayerID = authDataResult.uid
         MatchData.shared.onlineGame = true
         MatchData.shared.match = match
@@ -52,9 +53,14 @@ final class MatchesManager {
                     MatchData.shared.match.playerDisplayNames = [playerID: localDisplayName]
                 }
             }
-        }
+            
+            // determine what to show player (color submission, guess colors, other player's turn, game end)
+            let gameState = GameBrain().determineGameState(localPlayerID: playerID, match: MatchData.shared.match)
 
+            print("gameState: \(gameState.phase) \(gameState.canTakeAction)")
+        }
         
+      
     }
     
     func createMatch() { // should differentiate between online and local and not upload online at this point

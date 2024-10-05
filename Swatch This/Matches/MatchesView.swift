@@ -21,31 +21,8 @@ struct MatchesView: View {
     var body: some View {
         
         VStack {
-            HStack {
-                
-                Button(action: {
-                    
-                 //   self.mildHaptics2()
-                                        
-                    self.viewRouter.currentPage = "menu"
-                        
-                    
-                }) {
-                    HStack {
-                        Image(systemName: "arrowtriangle.backward")
-                        Text("Menu")
-                    }
-                    .font(.system(size: 18))
-                    .foregroundColor(Color.tangerineText)
-                    .bold()
-
-                }
-                .padding()
-                
-                
-                Spacer()
-                
-            }
+            
+            backToMenuSection()
             
             List {
                 
@@ -53,129 +30,12 @@ struct MatchesView: View {
                 // though, it'll be good to have the current match listener stay active outside of this view. We don't need the completed matches
                 // listener to stay active
                 
-                Section(header: Text("Current Matches")) {
-                    ForEach(viewModel.userActiveMatches, id: \.id.self) { userMatch in
-                       // Section(header: Text(" ")) {
-                        if #available(iOS 17.0, *) {
-                            Button(action: {
-                                
-                                Task {
-                                    do {
-                                        let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
-                                        MatchesManager.shared.joinMatch(match: match)
-                                        self.viewRouter.currentPage = "game"
-                                        
-                                    } catch {
-                                        print("error joining match: \(error)")
-                                    }
-                                }
-                            }, label: {
-                                ActiveMatchCellView(userMatch: userMatch, rotations: [-25, -10, 0, 10], offsetsY: [10, 0, -5, -2])
-                            })
-                            .frame(height: 90)
-                            .listRowBackground(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(
-                                        /*
-                                        LinearGradient(gradient: Gradient(colors: [Color.primaryTealGradient, Color.primaryTeal]), startPoint: .leading, endPoint: .trailing)
-    */
-                                        Color.primaryTeal
-                                    )
-                                
-                                    .padding(.top, 10)
-                                //  .padding(.bottom, 4)
-                            )
-                            //  .listRowSeparatorTint(Color.babySealBlack, edges: .all)
-                            .listRowSeparator(.hidden)
-                        } else {
-                            // Fallback on earlier versions
-                        }
-
-                        }
-                       
-                 //   }
-                }
+                currentMatchesSection()
                 
-                Section(header: Text("Join Match")) {
-                    
-                    VStack {
-                        TextField("Enter match code", text: $matchPassword)
-                        //   .frame( alignment: .leading)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .autocapitalization(.none)
-                            .fontWeight(.heavy)
-                            .focused($isFocused)
-                            .modifier(Shake(animatableData: CGFloat(self.incorrectPassword)))
-                        
-                        HStack {
-                            
-                            Button("Join") {
-                                
-                                Task {
-                                    do {
-                                        if let matchesForPassword = try await MatchesManager.shared.checkMatchCode(password: matchPassword) {
-                                            print("matchesForPassword: \(matchesForPassword)")
-                                            
-                                            //join the match
-                                            self.incorrectPassword = 0
-                                            MatchesManager.shared.joinMatch(match: matchesForPassword.first!) // if there are multiple, that's bad -- we'll just pick the first. Using !, which is also bad -- but can it get to this point if nil?
-                                            self.viewRouter.currentPage = "game"
-                                            
-                                        } else {
-                                            handleIncorrectPassword()
-                                        }
-                                        
-                                    } catch {
-                                        handleIncorrectPassword()
-                                        print("passwordCheck error")
-                                    }
-                                }
-                                
-                                
-                                isFocused = false
-                                
-                            }
-                            .disabled(!isFocused)
-                            
-                            
-                            Spacer()
-                        }
-                        
-                    }
-                    
-                }
-                .listRowBackground(Color.softWhite)
-
+                joinMatchSection()
                 
-                Section(header: Text("Create Match")) {
-                    
-                    HStack {
-                        Spacer()
-                        
-                        Button(action: {
-                            
-                            MatchesManager.shared.createMatch()
-                            
-                            self.viewRouter.currentPage = "game"
-                            
-                            
-                            
-                        }, label: {
-                            Image(systemName: "plus")
-                                .tint(.white)
-                                .font(.headline)
-                                .padding(.horizontal, 30)
-                        })
-                        .buttonStyle(.borderedProminent)
-                        .tint(Color.tangerineText)
-                        
-                        Spacer()
-                        
-                    }
-
-                }
-                .listRowBackground(Color.softWhite)
-
+                createMatchSection()
+                
                 
                 Section(header: Text("Completed Matches")) {
                     ForEach(viewModel.userCompletedMatches, id: \.id.self) { item in
@@ -186,9 +46,9 @@ struct MatchesView: View {
             }
             .navigationTitle("Matches")
             .scrollContentBackground(.hidden)
-            .background(Color.white)
+            .background(Color.listBackground)
         }
-       
+        
         .onFirstAppear {
             //  viewModel.getMatches()
             
@@ -198,6 +58,177 @@ struct MatchesView: View {
         }
     }
     
+    
+    func backToMenuSection() -> some View {
+        
+        return Group {
+            
+            HStack {
+                
+                Button(action: {
+                    
+                    //   self.mildHaptics2()
+                    
+                    self.viewRouter.currentPage = "menu"
+                    
+                    
+                }) {
+                    HStack {
+                        Image(systemName: "arrowtriangle.backward.fill")
+                        Text("Menu")
+                    }
+                    .font(.system(size: 18))
+                    .foregroundColor(Color.tangerineText)
+                    .bold()
+                    
+                }
+                .padding()
+                
+                
+                Spacer()
+                
+            }
+        }
+    }
+    
+    func currentMatchesSection() -> some View {
+        
+     //   let canTakeTurn = GameBrain().determineGameState(localPlayerID: LocalUser.shared.userID, match: userMatch.match).canTakeAction
+        let canTakeTurn = false
+        
+        return Group {
+            
+            Section(header: Text("Current Matches")) {
+                ForEach(viewModel.userActiveMatches, id: \.id.self) { userMatch in
+                    Button(action: {
+                        
+                        Task {
+                            do {
+                                let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
+                                MatchesManager.shared.joinMatch(match: match)
+                                self.viewRouter.currentPage = "game"
+                                
+                            } catch {
+                                print("error joining match: \(error)")
+                            }
+                        }
+                    }, label: {
+                        ActiveMatchCellView(userMatch: userMatch, rotations: [-25, -10, 0, 10], offsetsY: [10, 0, -5, -2])
+                    })
+                    .frame(height: 90)
+                    .listRowBackground(
+                        // The background with gradient fill
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(
+                                
+                                LinearGradient(gradient:
+                                                Gradient(colors: canTakeTurn ? [Color.tangerineText, Color.tangerineGradient] : [Color.primaryTeal, Color.primaryTealGradient]),
+                                               startPoint: .leading,
+                                               endPoint: .topTrailing)
+                            )
+                            .padding(.top, 10)
+                    )
+                    /*
+                     .overlay(
+                     RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(Color.babySealBlack, lineWidth: 1)
+                     .frame(height: 100)
+                     .padding(.top, 10)
+                     )
+                     */
+                    .listRowSeparator(.hidden)
+                    
+                }
+            }
+        }
+    }
+    
+    func joinMatchSection() -> some View {
+        return Group {
+            
+            Section(header: Text("Join Match")) {
+                
+                VStack {
+                    TextField("Enter match code", text: $matchPassword)
+                    //   .frame( alignment: .leading)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocapitalization(.none)
+                        .fontWeight(.heavy)
+                        .focused($isFocused)
+                        .modifier(Shake(animatableData: CGFloat(self.incorrectPassword)))
+                    
+                    HStack {
+                        
+                        Button("Join") {
+                            
+                            Task {
+                                do {
+                                    if let matchesForPassword = try await MatchesManager.shared.checkMatchCode(password: matchPassword) {
+                                        print("matchesForPassword: \(matchesForPassword)")
+                                        
+                                        //join the match
+                                        self.incorrectPassword = 0
+                                        MatchesManager.shared.joinMatch(match: matchesForPassword.first!) // if there are multiple, that's bad -- we'll just pick the first. Using !, which is also bad -- but can it get to this point if nil?
+                                        self.viewRouter.currentPage = "game"
+                                        
+                                    } else {
+                                        handleIncorrectPassword()
+                                    }
+                                    
+                                } catch {
+                                    handleIncorrectPassword()
+                                    print("passwordCheck error")
+                                }
+                            }
+                            
+                            
+                            isFocused = false
+                            
+                        }
+                        .disabled(!isFocused || matchPassword.containsProfanity() || matchPassword.count < 2)
+                        
+                        
+                        Spacer()
+                    }
+                    
+                }
+                
+            }
+            .listRowBackground(Color.softWhite)
+        }
+    }
+    
+    func createMatchSection() -> some View {
+        return Group {
+            Section(header: Text("Create Match")) {
+                
+                HStack {
+                    Spacer()
+                    
+                    Button(action: {
+                        
+                        MatchesManager.shared.createMatch()
+                        
+                        self.viewRouter.currentPage = "game"
+                        
+                        
+                        
+                    }, label: {
+                        Image(systemName: "plus")
+                            .tint(.white)
+                            .font(.headline)
+                            .padding(.horizontal, 30)
+                    })
+                    .buttonStyle(.borderedProminent)
+                    .tint(Color.tangerineText)
+                    
+                    Spacer()
+                    
+                }
+                
+            }
+            .listRowBackground(Color.softWhite)
+        }
+    }
     
     // Helper function to handle incorrect password logic
     func handleIncorrectPassword() {

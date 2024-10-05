@@ -14,6 +14,8 @@ struct ActiveMatchCellView: View {
                 
                 textView(userMatch: userMatch)
                     .frame(width: geo.size.width * 1 / 2, alignment: .trailing) // Ensures the text is aligned to the right
+                
+              //  Image(systemName: "arrowtriangle.forward.fill").tint(Color.tangerine)
             }
         }
     }
