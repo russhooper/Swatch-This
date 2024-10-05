@@ -29,10 +29,11 @@ extension Color {
     static let californiaBreezeColor = Color("californiaBreezeColor")
     static let summerAfternoonColor = Color("summerAfternoonColor")
     static let sageColor = Color("sageColor")
-    static let grayColor1 = Color("grayColor1")
-    static let grayColor2 = Color("grayColor2")
-    static let grayColor3 = Color("grayColor3")
+    static let moonlightColor = Color("moonlightColor")
+    static let wetCementColor = Color("wetCementColor")
+    static let charcoalColor = Color("charcoalColor")
     static let mediumTealColor = Color("mediumTealColor")
+    static let howToColor = Color("howToColor")
 
 
 }

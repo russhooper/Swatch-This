@@ -455,7 +455,7 @@ struct ColorsView: View {
                                     .foregroundColor(Color.darkTealColor)
                                     .padding(EdgeInsets(top: 20, leading: 10, bottom: 0, trailing: 10))
                                 
-                                Text("When playing an online match, all players will have access to the same \(colorLocalized)s as the person who takes the first turn.")
+                                Text("When playing an online match, all players will have access to the same \(colorLocalized)s as the person who creates the match.")
                                     .frame(minHeight: textMinHeight * textMinHeightMultiplier)
                                     .foregroundColor(Color.darkTealColor)
                                     .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))

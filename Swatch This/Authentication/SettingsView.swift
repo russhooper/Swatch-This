@@ -14,6 +14,9 @@ struct SettingsView: View {
     @Binding var showSignInView: Bool
     @State var displayName: String = (LocalUser.shared.displayName ?? "")
     @FocusState private var isFocused: Bool
+    
+    let appIcons: [String] = ["AppIcon"] // from Assets
+
 
     var body: some View {
         
@@ -91,6 +94,18 @@ struct SettingsView: View {
             
             if settingsViewModel.authUser?.isAnonymous == true {
                 anonymousSection
+            }
+            
+            Section(header: Text("App icon")) {
+                HStack {
+                    ForEach(appIcons, id: \.self) { name in
+                        Button {
+                            UIApplication.shared.setAlternateIconName(name)
+                        } label: {
+                            Image("AppIcon")
+                        }
+                    }
+                }
             }
             
         }

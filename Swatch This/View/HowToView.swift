@@ -51,8 +51,6 @@ struct HowToView: View {
       
 
         
-        
-        
         return Group {
             
             ZStack {
@@ -68,7 +66,7 @@ struct HowToView: View {
                     .edgesIgnoringSafeArea(.all)
                 */
                 
-                Color(.white)
+                Color(.howTo)
                     .edgesIgnoringSafeArea(.all)
 
                 
@@ -168,17 +166,18 @@ struct scrollViewContent: View {
                 Image("Blue Paint")
                 
                 Text("How to play Swatch This")
-                    .font(.title)
-                    .fontWeight(.bold)
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
                     .foregroundColor(.white)
-                    .padding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
+               //     .padding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
+                    .padding()
                     .frame(width: geoWidth, height: 150, alignment: .center)
 
             }
             
             
             Text("Have you ever looked at paint \(colorLocalized) names?")
-                .font(.title3)
+                .font(.title2)
                 .padding()
             
             
@@ -189,7 +188,7 @@ struct scrollViewContent: View {
                     
                     
                     Text("This isn't just \"yellow,\" it's...")
-                        .font(.title3)
+                        .font(.title2)
 
                     SwatchStackView(swatchColor: Color.sunnySideUpColor,
                                     swatchHeight: self.swatchHeight,
@@ -207,7 +206,7 @@ struct scrollViewContent: View {
                 Group {
                     
                     Text("This isn't just \"pink,\" it's...")
-                        .font(.title3)
+                        .font(.title2)
 
                     SwatchStackView(swatchColor: Color.sweetSixteenColor,
                                     swatchHeight: self.swatchHeight,
@@ -225,7 +224,7 @@ struct scrollViewContent: View {
                 Group {
                     
                     Text("This isn't just \"blue,\" it's...")
-                        .font(.title3)
+                        .font(.title2)
 
                     SwatchStackView(swatchColor: Color.jamaicaBayColor,
                                     swatchHeight: self.swatchHeight,
@@ -243,7 +242,7 @@ struct scrollViewContent: View {
                 Group {
                     
                     Text("Your turn! What would you call this?")
-                        .font(.title3)
+                        .font(.title2)
 
                     SwatchStackView(swatchColor: Color.alohaColor,
                                     swatchHeight: self.swatchHeight,
@@ -270,19 +269,18 @@ struct scrollViewContent: View {
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .padding()
-                    .frame(width: geoWidth, height: 250, alignment: .center)
+                    .frame(width: geoWidth, height: 200, alignment: .center)
 
             }
             
            
             
-            Text("All players will be shown the same \(colorLocalized) swatch, with its real name hidden. Everyone will make up a name they think describes the \(colorLocalized). Then a list of these (with the real name included) will be shown. Guess the real name and you'll get points. And should someone guess your \(colorLocalized) name, you’ll get points for that too!")
+            Text("All players will be shown the same \(colorLocalized) swatch, with its real name hidden.\n\nEveryone will make up a name they think describes the \(colorLocalized). Then a list of these will be shown, with the real name mixed in.\n\nGuess the real name and you'll get points. And should someone guess your \(colorLocalized) name, you’ll get points for that too!")
                 .font(.body)
                 .padding()
             
-            Text("Game Center is used for online matches. To play with a specific person online, add them as a friend in Game Center.")
-                .font(.body)
-                .padding()
+            
+            
 
         }
     }

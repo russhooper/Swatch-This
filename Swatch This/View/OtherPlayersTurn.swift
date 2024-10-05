@@ -233,7 +233,7 @@ struct OtherPlayersTurn: View {
                         
                         ZStack {
                             
-                            SwatchStackView(swatchColor: Color.grayColor2,
+                            SwatchStackView(swatchColor: Color.wetCementColor,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -245,7 +245,7 @@ struct OtherPlayersTurn: View {
                                 .rotationEffect(.degrees(-11))
                             
                             
-                            SwatchStackView(swatchColor: Color.grayColor3,
+                            SwatchStackView(swatchColor: Color.charcoalColor,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -257,7 +257,7 @@ struct OtherPlayersTurn: View {
                                 .rotationEffect(.degrees(+15))
                             
                             
-                            SwatchStackView(swatchColor: Color.grayColor1,
+                            SwatchStackView(swatchColor: Color.moonlightColor,
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,

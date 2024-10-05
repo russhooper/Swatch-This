@@ -128,7 +128,7 @@ struct AboutView: View {
 
                                 }
                             }
-                            
+                          //  .background(Color.moonlightColor)
                             .frame(width: swatchHeight+swatchHeight*0.13, height: swatchHeight, alignment: .center)
                         }
                         
