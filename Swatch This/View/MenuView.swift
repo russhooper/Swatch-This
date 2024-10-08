@@ -604,7 +604,7 @@ struct MenuView: View {
                              self.viewRouter.playerCount = self.numberOfPlayers
                              
                              
-                             self.viewRouter.currentPage = "loading"
+                             self.viewRouter.currentPage = "onlineMatchesView"
                              
                              
                              } else {
@@ -621,7 +621,7 @@ struct MenuView: View {
                              */
                             
                             self.viewRouter.onlineGame = true
-                            self.viewRouter.currentPage = "loading"
+                            self.viewRouter.currentPage = "onlineMatchesView"
                             
                             
                         }) {

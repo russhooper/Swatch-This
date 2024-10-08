@@ -342,9 +342,9 @@ struct OtherPlayersTurn: View {
                             
                             self.mildHaptics2()
                             
-                            self.viewRouter.currentPage = "menu"
+                            self.viewRouter.currentPage = "onlineMatchesView"
                         }) {
-                            Text("Return to Menu")
+                            Text("Return to list of matches")
                                 .font(.title2)
                                 .bold()
                                 .padding()
@@ -419,9 +419,9 @@ struct OtherPlayersTurn: View {
                         
                         self.mildHaptics2()
                         
-                        self.viewRouter.currentPage = "menu"
+                        self.viewRouter.currentPage = "onlineMatchesView"
                     }) {
-                        Text("Return to Menu")
+                        Text("Return to list of matches")
                             .font(.title2)
                             .bold()
                             .padding()

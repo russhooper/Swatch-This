@@ -44,6 +44,7 @@ struct SwitcherView: View {
     @State private var showingGameCenterAlert: Bool = false
     @State private var showSignInView: Bool = false
 
+    @AppStorage("userPrefersDarkMode") var userPrefersDarkMode: Bool = false
     
     @State var alertId: AlertId?
     
@@ -98,7 +99,7 @@ struct SwitcherView: View {
                 
             }
             
-            else if self.viewRouter.currentPage == "loading" {
+            else if self.viewRouter.currentPage == "onlineMatchesView" {
                 
                 // show a loading screen while the Game Center view and the data are being loaded
               //  LoadingView()
@@ -110,7 +111,7 @@ struct SwitcherView: View {
             
             else if self.viewRouter.currentPage == "otherTurn" { // cannot take turn. Triggered here if user tries to enter game before it's their first turn
                 
-                OtherPlayersTurn(colorIndices: self.gameData.colorIndices, rotations: self.gameBrain.generate4Angles())
+                OtherPlayersTurn(colorIndices: MatchData.shared.match.colorIndices, rotations: self.gameBrain.generate4Angles())
                     .environmentObject(ViewRouter.sharedInstance)
                    // .transition(.move(edge: .trailing))
                 
@@ -121,6 +122,7 @@ struct SwitcherView: View {
             return createAlert(alertId: alertId)
         }
         .accentColor(Color.tangerineText)
+        .preferredColorScheme(userPrefersDarkMode ? .dark : .light)
         .onReceive(presentGamePub) { output in
             self.presentGame(output)
         }
@@ -406,7 +408,7 @@ struct SwitcherView: View {
                 GameKitHelper.sharedInstance.canTakeTurnForCurrentMatch == false &&
                 self.gameData.matchID == match.matchID) ||
             (self.viewRouter.currentPage == "otherTurn" && self.gameData.matchID == match.matchID) ||
-            self.viewRouter.currentPage == "loading" {
+            self.viewRouter.currentPage == "onlineMatchesView" {
             
             self.loadAndDisplay(loadedMatch: match)
             

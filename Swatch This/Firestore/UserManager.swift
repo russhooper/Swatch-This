@@ -172,7 +172,7 @@ final class UserManager {
                                          match: userMatch.match,
                                          turnLastTakenDate: Date())
         
-        // encode the match's colors array using Firestore.Encoder
+        // encode the UserMatch using Firestore.Encoder
         guard let encodedData = try? Firestore.Encoder().encode(updatedUserMatch) else {
             print("UserMatch update encoding error")
             throw URLError(.badURL)
@@ -184,7 +184,11 @@ final class UserManager {
         
         do {
             // update the document with the encoded data
-            try await userMatchDocument(userID: userID, matchID: userMatch.matchID).updateData(dict)
+         //   try await userMatchDocument(userID: userID, matchID: userMatch.matchID).updateData(dict)
+            
+            // update the document with the encoded data (the whole thing, to include stuff like created color names
+            try await userMatchDocument(userID: userID, matchID: userMatch.matchID).setData(encodedData, merge: true)
+
         } catch {
             print("UserMatch update error: \(error)")
         }

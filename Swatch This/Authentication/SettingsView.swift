@@ -14,7 +14,8 @@ struct SettingsView: View {
     @Binding var showSignInView: Bool
     @State var displayName: String = (LocalUser.shared.displayName ?? "")
     @FocusState private var isFocused: Bool
-    
+    @AppStorage("userPrefersDarkMode") var userPrefersDarkMode: Bool = false
+
     let appIcons: [String] = ["AppIcon"] // from Assets
 
 
@@ -105,6 +106,12 @@ struct SettingsView: View {
                             Image("AppIcon")
                         }
                     }
+                }
+            }
+            
+            Section(header: Text("Dark mode")) {
+                HStack {
+                    Toggle("Dark Mode", isOn: $userPrefersDarkMode)
                 }
             }
             

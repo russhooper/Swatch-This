@@ -13,7 +13,7 @@ struct ActiveMatchCellView: View {
                 Spacer() // This pushes the textView to the right
                 
                 textView(userMatch: userMatch)
-                    .frame(width: geo.size.width * 1 / 2, alignment: .trailing) // Ensures the text is aligned to the right
+                    .frame(width: geo.size.width * 1 / 2, height: geo.size.height, alignment: .trailing)
                 
               //  Image(systemName: "arrowtriangle.forward.fill").tint(Color.tangerine)
             }
@@ -46,11 +46,23 @@ struct ActiveMatchCellView: View {
         // Initialize userNamesArray with an empty array by default
         let userNamesArray: [String] = userMatch.match.playerDisplayNames?.values.map { $0 } ?? []
         
+        var actionText: String = ""
+        if let canTakeTurn = userMatch.canTakeTurn {
+            if canTakeTurn == true {
+                actionText = "Your turn!"
+            } else {
+                actionText = "Another player's turn"
+            }
+        }
+        
         return Group {
             VStack(alignment: .trailing, spacing: 4) {  // Right alignment
-                Text(userMatch.turnLastTakenDate != nil ? formatDate(userMatch.turnLastTakenDate!) : "No turns taken")
+                
+                Text(userMatch.canTakeTurn != nil ? actionText : "Your turn!")
                     .font(.headline)
+                    .multilineTextAlignment(.trailing)
                     .foregroundColor(.primary)
+                    .fixedSize(horizontal: false, vertical: true)
                 // Text("Phase " + String(userMatch.match.phase ?? 0))
                 Text(userNamesArray.joined(separator: ", "))
                  //   .font(.callout)
@@ -58,6 +70,9 @@ struct ActiveMatchCellView: View {
                 Text(userMatch.turnLastTakenDate != nil ? formatDate(userMatch.turnLastTakenDate!) : "No turns taken")
                   //  .font(.callout)
                     .foregroundColor(.white)
+                    .padding(.bottom)
+                
+                Spacer()
             }
         }
     }

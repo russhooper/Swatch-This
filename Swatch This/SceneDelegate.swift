@@ -21,15 +21,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
     
-    
-    
-    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
-        
+
         let productIDs = [
             "swatchthis.IAP.palettepack1"
             ]
@@ -57,6 +54,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
           
             window.rootViewController = UIHostingController(rootView:
                                                                 SwitcherView()
+                                                                
+
                                                             //    AnimationPlayground5()
                                                                 .environmentObject(TransitionSwatches())
 
@@ -111,6 +110,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
           
             
             self.window = window
+            
             
             //set the tintColor to be applied globally
             //  self.window?.tintColor = UIColor.red
@@ -210,11 +210,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
         
+        /*
         // if in the Game Center loading screen, will cause the app to get stuck upon resume. So, move to menu
-        
         if ViewRouter.sharedInstance.currentPage == "loading" {
             ViewRouter.sharedInstance.currentPage = "menu"
         }
+         */
     }
     
     

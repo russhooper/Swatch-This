@@ -30,15 +30,55 @@ final class MatchesViewModel: ObservableObject {
             .sink { completion in
                 
             } receiveValue: { [weak self] activeMatches in
-                self?.userActiveMatches = activeMatches
-                // should this save the canTakeTurn?
+                guard let self = self else { return }
                 
-                // ["[weak self]" allows self to be optional (denoted by "?"), meaning that if the completion handler gets called here but self is deallocated, then we just get a nil result that we ignore
+                self.userActiveMatches = activeMatches
                 
+                Task {
+                    // Iterate over each match and update asynchronously
+                    for (index, userMatch) in activeMatches.enumerated() {
+                        do {
+                            // retrieve Match so that we can determine if the local user can take their turn
+                            let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
+                            
+                            // update the userMatch
+                            self.userActiveMatches[index].canTakeTurn = GameBrain().determineGameState(
+                                localPlayerID: authDataResult.uid,
+                                match: userMatch.match)
+                            .canTakeAction
+                            
+                        } catch {
+                            print("Failed to update match details: \(error)")
+                        }
+                    }
+                }
             }
             .store(in: &cancellables)
     }
     
+    /*
+    func getMatchStates(userID: String, userMatches: [UserMatch]) async throws -> [UserMatch] {
+        
+        var updatedUserMatches: [UserMatch] = []
+        
+        for userMatch in userMatches {
+            // modify each match
+            var updatedMatch = userMatch
+            
+            // retrieve Match so that we can determine if the local user can take their turn
+            
+            let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
+            
+            updatedMatch.canTakeTurn = GameBrain().determineGameState(localPlayerID: userID, match: match).canTakeAction
+            
+            updatedUserMatches.append(updatedMatch)
+            
+        }
+        
+        return updatedUserMatches
+        
+    }
+    */
     
     func addListenerForCompletedMatches() {
         

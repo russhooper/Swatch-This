@@ -20,33 +20,43 @@ struct MatchesView: View {
     
     var body: some View {
         
-        VStack {
+        ZStack(alignment: .top) {
+            
+            VStack {
+                                
+                List {
+                    
+                     //   Spacer()
+                    //        .frame(height: 30)
+                    
+                    Image("Blue Paint 2")
+                    // should maybe swap this out with a listener for all matches and then filter here with .filter { $0.isCompleted }
+                    // though, it'll be good to have the current match listener stay active outside of this view. We don't need the completed matches
+                    // listener to stay active
+                    
+                    currentMatchesSection()
+                    
+                    joinMatchSection()
+                    
+                    createMatchSection()
+                    
+                    
+                    Section(header: Text("Completed Matches")) {
+                        ForEach(viewModel.userCompletedMatches, id: \.id.self) { item in
+                            Text("item.isCompleted: \(item.isCompleted)")
+                        }
+                    }
+                    
+                }
+                .navigationTitle("Matches")
+                .scrollContentBackground(.hidden)
+                .background(Color.listBackground)
+            }
+            
             
             backToMenuSection()
-            
-            List {
-                
-                // should maybe swap this out with a listener for all matches and then filter here with .filter { $0.isCompleted }
-                // though, it'll be good to have the current match listener stay active outside of this view. We don't need the completed matches
-                // listener to stay active
-                
-                currentMatchesSection()
-                
-                joinMatchSection()
-                
-                createMatchSection()
-                
-                
-                Section(header: Text("Completed Matches")) {
-                    ForEach(viewModel.userCompletedMatches, id: \.id.self) { item in
-                        Text("item.isCompleted: \(item.isCompleted)")
-                    }
-                }
-                
-            }
-            .navigationTitle("Matches")
-            .scrollContentBackground(.hidden)
-            .background(Color.listBackground)
+               // .frame(height: 60)
+                .background(.thinMaterial)
         }
         
         .onFirstAppear {
@@ -92,26 +102,31 @@ struct MatchesView: View {
     }
     
     func currentMatchesSection() -> some View {
-        
-     //   let canTakeTurn = GameBrain().determineGameState(localPlayerID: LocalUser.shared.userID, match: userMatch.match).canTakeAction
-        let canTakeTurn = false
-        
+                
         return Group {
             
             Section(header: Text("Current Matches")) {
                 ForEach(viewModel.userActiveMatches, id: \.id.self) { userMatch in
                     Button(action: {
                         
-                        Task {
-                            do {
-                                let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
-                                MatchesManager.shared.joinMatch(match: match)
-                                self.viewRouter.currentPage = "game"
-                                
-                            } catch {
-                                print("error joining match: \(error)")
+                        if userMatch.canTakeTurn == true {
+                            Task {
+                                do {
+                                    let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
+                                    MatchesManager.shared.joinMatch(match: match)
+                                    viewRouter.currentPage = "game"
+                                    
+                                } catch {
+                                    print("error joining match: \(error)")
+                                }
                             }
+                        } else {
+                            
+                            MatchData.shared.match = userMatch.match
+                            viewRouter.currentPage = "otherTurn"
                         }
+                        
+                        
                     }, label: {
                         ActiveMatchCellView(userMatch: userMatch, rotations: [-25, -10, 0, 10], offsetsY: [10, 0, -5, -2])
                     })
@@ -122,7 +137,7 @@ struct MatchesView: View {
                             .fill(
                                 
                                 LinearGradient(gradient:
-                                                Gradient(colors: canTakeTurn ? [Color.tangerineText, Color.tangerineGradient] : [Color.primaryTeal, Color.primaryTealGradient]),
+                                                Gradient(colors: (userMatch.canTakeTurn ?? false) ? [Color.tangerineText, Color.tangerineGradient] : [Color.primaryTeal, Color.primaryTeal]),
                                                startPoint: .leading,
                                                endPoint: .topTrailing)
                             )
@@ -185,15 +200,15 @@ struct MatchesView: View {
                             
                         }
                         .disabled(!isFocused || matchPassword.containsProfanity() || matchPassword.count < 2)
-                        
-                        
+                        .bold()
+
                         Spacer()
                     }
                     
                 }
                 
             }
-            .listRowBackground(Color.softWhite)
+            .listRowBackground(Color.pinkDamask)
         }
     }
     
@@ -226,7 +241,7 @@ struct MatchesView: View {
                 }
                 
             }
-            .listRowBackground(Color.softWhite)
+            .listRowBackground(Color.pinkDamask)
         }
     }
     
