@@ -346,7 +346,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 7) {
                             
-                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
+                            SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -360,7 +360,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 6) {
                             
-                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
+                            SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -374,7 +374,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 5) {
                             
-                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
+                            SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -388,7 +388,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 4) {
                             
-                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
+                            SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -402,7 +402,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 3) {
                             
-                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
+                            SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -416,7 +416,7 @@ struct MenuView: View {
                         
                         if (self.numberOfPlayers > 2) {
                             
-                            SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
+                            SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 0, indexArray: [Int.random(in: 0...palette.masterPalette.count-1)])),
                                             swatchHeight: swatchHeight,
                                             text: "",
                                             textField: nil,
@@ -685,7 +685,7 @@ struct MenuView: View {
                             ColorsView(isPresented: self.$showingColors,
                                        hexes: self.setUpPalettePackColors().hex,
                                        rotations: self.setUpPalettePackColors().rotation,
-                                       baseGameHexes: gameBrain.getBaseGameColors().shuffled())
+                                       baseGameHexes: GameBrain().getBaseGameColors().shuffled())
                         }
                         
                         
@@ -859,7 +859,7 @@ struct MenuView: View {
     
     func setUpPalettePackColors() -> (hex: [UInt32], rotation: [Double]) {
         
-        let paletteColors = gameBrain.getIAPColors().shuffled()
+        let paletteColors = GameBrain().getIAPColors().shuffled()
         
         var rotationArray: [Double] = [Double.random(in: -5 ..< 5)]
         

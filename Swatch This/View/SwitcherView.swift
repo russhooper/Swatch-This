@@ -89,11 +89,15 @@ struct SwitcherView: View {
               //  GameEndView(gameData: self.gameData, turnData: self.turnData, selection: nil)
                 
                 
-            } else if self.viewRouter.currentPage == "tabletop" {
+            }
+            /*
+            else if self.viewRouter.currentPage == "tabletop" {
                 
                 tabletopGroup()
                 
-            } else if self.viewRouter.currentPage == "game" {
+            }
+             */
+            else if self.viewRouter.currentPage == "game" {
                 
                 gameGroup()
                 
@@ -111,7 +115,7 @@ struct SwitcherView: View {
             
             else if self.viewRouter.currentPage == "otherTurn" { // cannot take turn. Triggered here if user tries to enter game before it's their first turn
                 
-                OtherPlayersTurn(colorIndices: MatchData.shared.match.colorIndices, rotations: self.gameBrain.generate4Angles())
+                OtherPlayersTurn(colorIndices: MatchData.shared.match.colorIndices, rotations: GameBrain().generate4Angles())
                     .environmentObject(ViewRouter.sharedInstance)
                    // .transition(.move(edge: .trailing))
                 
@@ -163,7 +167,7 @@ struct SwitcherView: View {
         
     }
     
-    
+    /*
     func tabletopGroup() -> some View {
         
         return Group {
@@ -200,14 +204,35 @@ struct SwitcherView: View {
             }
         }
     }
-    
+    */
     
     
     func gameGroup() -> some View {
         
         return Group {
             
-            if self.gameData.isComplete == true {
+            // in color creation phase
+        if GameBrain().determineGameState(localPlayerID: LocalUser.shared.userID, match: MatchData.shared.match).phase == 1 {
+            
+                NameColorsView(turnData: self.turnData,
+                            playerCount: self.viewRouter.playerCount,
+                            playDealAnimation: true) // should match onlineGame
+                
+                
+            } else {    // in guess color phase
+                
+                GuessColorsView(matchData: MatchData.shared,
+                                turnData: self.turnData,
+                                playerCount: self.viewRouter.playerCount,
+                                viewRouter: self._viewRouter)
+               //     .environmentObject(TransitionSwatches())
+
+                
+            }
+            
+            
+            /*
+            if MatchData.shared.match.isCompleted == true {
                 
                 // set default selection, but only in a split view (which occurs in the .regular size)
                 if self.horizontalSizeClass == .regular {
@@ -232,18 +257,15 @@ struct SwitcherView: View {
                     
                     if self.gameData.colorIndices == [0,0,0,0] { // if the data is the defaults, we'll create a new game
                        
-                        ContentView(gameData: self.generateNewGameDataReturn(indiciesCount: 4, localRematch: false),
-                                    turnData: self.resetTurnData(),
+                        NameColorsView(turnData: self.turnData,
                                     playerCount: self.viewRouter.playerCount,
-                                    onlineGame: false,
-                                    colorIndices: self.gameData.colorIndices,
-                                    playDealAnimation: false)   // should match onlineGame
+                                    playDealAnimation: false) // should match onlineGame
                         
                     } else { // if there is non-default data, we assume it was from this game (since it should've been reset otherwise) and we'll resume
                         
                         
                         
-                        if gameBrain.isSubmissionEnd(roundsFinished: self.turnData.turnArray[1],
+                        if GameBrain().isSubmissionEnd(roundsFinished: self.turnData.turnArray[1],
                                                      playerCount: self.viewRouter.playerCount)  {
                             
                             // color submissions are done
@@ -259,11 +281,8 @@ struct SwitcherView: View {
                             
                             // submission stage of the match
                             
-                            ContentView(gameData: self.gameData,
-                                        turnData: self.turnData,
+                            NameColorsView(turnData: self.turnData,
                                         playerCount: self.viewRouter.playerCount,
-                                        onlineGame: false,
-                                        colorIndices: self.gameData.colorIndices,
                                         playDealAnimation: false) // should match onlineGame
                             
                         }
@@ -277,20 +296,16 @@ struct SwitcherView: View {
                  //   if self.turnData.showingTransition == true {
                         
                         // in color creation phase
-                        if gameBrain.isSubmissionEnd(roundsFinished: self.gameData.turnArray[1],
-                                                     playerCount: self.viewRouter.playerCount) == false {
-                            
-                            
+                    if GameBrain().determineGameState(localPlayerID: LocalUser.shared.userID, match: MatchData.shared.match).phase == 1 {
+                        
                             NameColorsView(turnData: self.turnData,
                                         playerCount: self.viewRouter.playerCount,
                                         playDealAnimation: true) // should match onlineGame
                             
                             
-                            
-                            
                         } else {    // in guess color phase
                             
-                            GuessColorsView(gameData: self.gameData,
+                            GuessColorsView(matchData: MatchData.shared.match,
                                             turnData: self.turnData,
                                             playerCount: self.viewRouter.playerCount,
                                             viewRouter: self._viewRouter)
@@ -304,7 +319,7 @@ struct SwitcherView: View {
                     } else {    // cannot take turn
                         
                         
-                        OtherPlayersTurn(colorIndices: self.gameData.colorIndices, rotations: self.gameBrain.generate4Angles())
+                        OtherPlayersTurn(colorIndices: self.gameData.colorIndices, rotations: GameBrain().generate4Angles())
                             .environmentObject(ViewRouter.sharedInstance)
                           //  .transition(.move(edge: .trailing))
                         
@@ -314,7 +329,7 @@ struct SwitcherView: View {
                 
                 
             }
-            
+            */
             
             
             
@@ -384,7 +399,7 @@ struct SwitcherView: View {
     func generateNewGameData(indiciesCount: Int) {
         
         
-        self.gameData.colorIndices = self.gameBrain.generateNIndices(count: indiciesCount)
+        self.gameData.colorIndices = GameBrain().generateNIndices(count: indiciesCount)
         
     }
     
@@ -552,7 +567,7 @@ struct SwitcherView: View {
                 // error, so just reset (is this the best choice?)
                 self.resetData()
                 self.viewRouter.playerCount = loadedMatch.participants.count
-                self.gameData.colorIndices = self.gameBrain.generateNIndices(count: 4)
+                self.gameData.colorIndices = GameBrain().generateNIndices(count: 4)
                 self.viewRouter.currentPage = "game"
                 
             }

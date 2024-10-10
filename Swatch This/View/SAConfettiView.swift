@@ -125,7 +125,7 @@ public class SAConfettiView: UIView {
             
             confettiAlreadyShown = true
             
-            gameBrain.playWinSoundEffect()
+            GameBrain().playWinSoundEffect()
             
             intensity = 1.0
             

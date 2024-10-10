@@ -33,7 +33,7 @@ struct Match: Identifiable, Codable, Equatable {
     var phaseByPlayer: [String: Int]?
     var playerDisplayNames: [String: String]? // optional dictionary of player display names keyed to player IDs
     let playerCount: Int
-    let isCompleted: Bool
+    var isCompleted: Bool
     
     enum CodingKeys: String, CodingKey {
         case id

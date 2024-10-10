@@ -15,7 +15,7 @@ struct GuessColorsView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
-    var gameData: GameData
+    var matchData: MatchData
     var turnData: TurnData
     let playerCount: Int
     @EnvironmentObject var viewRouter: ViewRouter
@@ -273,6 +273,7 @@ struct GuessColorsView: View {
             
             
             GeometryReader(content: geometricView(with:))
+            
             /*
              .onAppear {
              let baseAnimation = Animation.linear(duration: 0.5)
@@ -370,10 +371,10 @@ struct GuessColorsView: View {
                     ZStack {
                         
                         
-                        SwatchStackView(swatchColor: Color(hex:  gameBrain.getColorHex(turn: 3,
-                                                                     indexArray: self.gameData.colorIndices)),
+                        SwatchStackView(swatchColor: Color(hex:  GameBrain().getColorHex(turn: 3,
+                                                                     indexArray: matchData.match.colorIndices)),
                                         swatchHeight: swatchHeight,
-                                        text: self.hasGuessed && turnData.turnArray[0] == 3 ? gameBrain.getColorName(turn: 3, indexArray: self.gameData.colorIndices) : "",
+                                        text: self.hasGuessed && turnData.turnArray[0] == 3 ? GameBrain().getColorName(turn: 3, indexArray: matchData.match.colorIndices) : "",
                                         textField: nil,
                                         subtext: "",
                                         fontSize: 18,
@@ -386,14 +387,14 @@ struct GuessColorsView: View {
                             .onAppear { // controls deal animation
                                 let baseAnimation = Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: self.dealDuration)
                                 
-                                if gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
+                                if GameBrain().isGameEnd(roundsFinished: self.turnData.turnArray[1],
                                                         playerCount: self.playerCount) == false {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + self.dealDelay3) {
                                         return withAnimation(baseAnimation) {
                                             
                                             if animationState3 == .notAppeared {
-                                                gameBrain.playDealSoundEffect() // this only plays for the first player, so we call it again later in the passToNextPlayer toggle section
+                                                GameBrain().playDealSoundEffect() // this only plays for the first player, so we call it again later in the passToNextPlayer toggle section
                                             }
                                             
                                             animationState3 = .appeared
@@ -404,10 +405,10 @@ struct GuessColorsView: View {
                                 
                             }
                         
-                        SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 2,
-                                                                     indexArray: self.gameData.colorIndices)),
+                        SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 2,
+                                                                     indexArray: matchData.match.colorIndices)),
                                         swatchHeight: swatchHeight,
-                                        text: self.hasGuessed  && turnData.turnArray[0] == 2 ? gameBrain.getColorName(turn: 2, indexArray: self.gameData.colorIndices) : "",
+                                        text: self.hasGuessed  && turnData.turnArray[0] == 2 ? GameBrain().getColorName(turn: 2, indexArray: matchData.match.colorIndices) : "",
                                         textField: nil,
                                         subtext: "",
                                         fontSize: 18,
@@ -420,7 +421,7 @@ struct GuessColorsView: View {
                             .onAppear { // controls deal animation
                                 let baseAnimation = Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: self.flingDuration)
                                 
-                                if gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
+                                if GameBrain().isGameEnd(roundsFinished: self.turnData.turnArray[1],
                                                         playerCount: self.playerCount) == false {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + self.dealDelay2) {
@@ -432,10 +433,10 @@ struct GuessColorsView: View {
                                 
                             }
                         
-                        SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 1,
-                                                                     indexArray: self.gameData.colorIndices)),
+                        SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 1,
+                                                                     indexArray: matchData.match.colorIndices)),
                                         swatchHeight: swatchHeight,
-                                        text: self.hasGuessed  && turnData.turnArray[0] == 1 ? gameBrain.getColorName(turn: 1, indexArray: self.gameData.colorIndices) : "",
+                                        text: self.hasGuessed  && turnData.turnArray[0] == 1 ? GameBrain().getColorName(turn: 1, indexArray: matchData.match.colorIndices) : "",
                                         textField: nil,
                                         subtext: "",
                                         fontSize: 18,
@@ -448,7 +449,7 @@ struct GuessColorsView: View {
                             .onAppear { // controls deal animation
                                 let baseAnimation = Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: self.dealDuration)
                                 
-                                if gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
+                                if GameBrain().isGameEnd(roundsFinished: self.turnData.turnArray[1],
                                                         playerCount: self.playerCount) == false {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + self.dealDelay1) {
@@ -461,10 +462,10 @@ struct GuessColorsView: View {
                                 
                             }
                         
-                        SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0,
-                                                                     indexArray: self.gameData.colorIndices)),
+                        SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 0,
+                                                                     indexArray: matchData.match.colorIndices)),
                                         swatchHeight: swatchHeight,
-                                        text: self.hasGuessed  && turnData.turnArray[0] == 0 ? gameBrain.getColorName(turn: 0, indexArray: self.gameData.colorIndices) : "",
+                                        text: self.hasGuessed  && turnData.turnArray[0] == 0 ? GameBrain().getColorName(turn: 0, indexArray: matchData.match.colorIndices) : "",
                                         textField: nil,
                                         subtext: "",
                                         fontSize: 18,
@@ -476,7 +477,7 @@ struct GuessColorsView: View {
                             .onAppear { // controls deal animation
                                 let baseAnimation = Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: self.dealDuration)
                                 
-                                if gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
+                                if GameBrain().isGameEnd(roundsFinished: self.turnData.turnArray[1],
                                                         playerCount: self.playerCount) == false {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + self.dealDelay0) {
@@ -510,7 +511,7 @@ struct GuessColorsView: View {
                 
                 
                 
-                if self.isGameEnd == true || gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
+                if self.isGameEnd == true || GameBrain().isGameEnd(roundsFinished: self.turnData.turnArray[1],
                                                                  playerCount: self.playerCount) {
                                         
                     if self.horizontalSizeClass == .regular {   // iPad with large dimensions has a different transition animation
@@ -544,14 +545,14 @@ struct GuessColorsView: View {
                                 
                                 Spacer()
                                 
-                                
-                                Text("Pass device to \(self.gameData.displayNames["Player \(self.gameData.currentPlayer)"] ?? "Player \(self.gameData.currentPlayer)")")
+                                /*
+                                Text("Pass device to \(matchData.match.displayNames["Player \(matchData.match.currentPlayer)"] ?? "Player \(matchData.match.currentPlayer)")")
                                     .font(.system(size: 30))
                                     .fontWeight(.bold)
                                     .foregroundColor(Color.primaryTeal)
                                     .multilineTextAlignment(.center)
                                     .frame(width: 250, alignment: .center)
-                                
+                                */
                                 Button(action: {
                                     
                                     self.strongHaptics2()
@@ -565,7 +566,7 @@ struct GuessColorsView: View {
                                         
                                         // play deal animations for next player
                                         
-                                        gameBrain.playDealSoundEffect()
+                                        GameBrain().playDealSoundEffect()
                                         
                                         
                                         DispatchQueue.main.asyncAfter(deadline: .now() + self.dealDelay3) {
@@ -625,7 +626,7 @@ struct GuessColorsView: View {
                         
                     } else {
                         
-                        OtherPlayersTurn(colorIndices: self.gameData.colorIndices, rotations: gameBrain.generate4Angles())
+                        OtherPlayersTurn(colorIndices: matchData.match.colorIndices, rotations: GameBrain().generate4Angles())
                             .environmentObject(ViewRouter.sharedInstance)
                          //   .transition(.move(edge: .trailing))
 
@@ -642,11 +643,11 @@ struct GuessColorsView: View {
         
         
         // GuessColorsView gets called a lot on iPad due to the transition. This if statement is to protect against progressing the game when it's already game end
-        if (gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
+        if (GameBrain().isGameEnd(roundsFinished: self.turnData.turnArray[1],
                                 playerCount: self.playerCount) == false) {
             
-            self.turnData.turnArray = gameBrain.advanceGame(turnArray: self.turnData.turnArray,
-                                                            indexArray: self.gameData.colorIndices,
+            self.turnData.turnArray = GameBrain().advanceGame(turnArray: self.turnData.turnArray,
+                                                            indexArray: matchData.match.colorIndices,
                                                             playerCount: self.playerCount)
         }
         
@@ -658,7 +659,7 @@ struct GuessColorsView: View {
         
         
         
-        if (gameBrain.isGameEnd(roundsFinished: self.turnData.turnArray[1],
+        if (GameBrain().isGameEnd(roundsFinished: self.turnData.turnArray[1],
                                playerCount: self.playerCount) || self.isGameEnd == true) {
             
             if self.horizontalSizeClass == .regular {   // iPad with large dimensions needs to prep its transition animation
@@ -667,43 +668,38 @@ struct GuessColorsView: View {
             
             self.isGameEnd = true
             
-            if self.gameData.currentPlayer < self.playerCount {
-                self.gameData.currentPlayer += 1
+            /*
+            if matchData.match.currentPlayer < self.playerCount {
+                matchData.match.currentPlayer += 1
             } else {
-                self.gameData.currentPlayer = 1
+                matchData.match.currentPlayer = 1
             }
-            
-            self.gameData.turnArray = self.turnData.turnArray
+            */
+            matchData.turnArray = self.turnData.turnArray
             
             
             if self.viewRouter.onlineGame == true {
-                
-                // update the displayNames dictionary with usernames so we can show that instead of Player 1, Player 2, etc.
-                self.gameData.displayNames = GameKitHelper.sharedInstance.getPlayerUserNames(displayNames: self.gameData.displayNames, sortedPlayersArray: self.gameData.sortedPlayersArray)
-                
+                                
                 // will also save match to history in GameEnd
-                gameBrain.endOnlineGame(gameData: self.gameData)
+                GameBrain().endOnlineGame(matchData: matchData)
             }
-        } else if gameBrain.isPlayerEnd(turnArray: self.turnData.turnArray) {
+        } else if GameBrain().isPlayerEnd(turnArray: self.turnData.turnArray) {
             
             print("toggle playerEnd")
             
-            
-            if self.gameData.currentPlayer < self.playerCount {
-                self.gameData.currentPlayer += 1
+            /*
+            if matchData.match.currentPlayer < self.playerCount {
+                matchData.match.currentPlayer += 1
             } else {
-                self.gameData.currentPlayer = 1
+                matchData.match.currentPlayer = 1
             }
+            */
             
             if self.viewRouter.onlineGame == true {
                 
-                self.gameData.turnArray = self.turnData.turnArray
+                matchData.turnArray = self.turnData.turnArray
                 
-                if let appVersion = Float(UIApplication.appVersion!) {
-                    self.gameData.appVersion = appVersion
-                }
-                
-                gameBrain.endOnlineTurn(gameData: self.gameData)
+                GameBrain().endOnlineTurn(matchData: matchData)
             }
             
             
@@ -734,148 +730,68 @@ struct GuessColorsView: View {
             viewWidth = 500
         }
         
+        var nameList: [String] = []
+        
+        if let nameDict = matchData.match.createdNames {
+            
+            nameList = Array(nameDict[self.turnData.turnArray[0]].values).sorted()
+        }
+                
         return Group {
             
             ZStack {
                 
                 VStack(alignment: .center, spacing: vStackSpacingLocal) {
                     
-                    ZStack {
-                        
-                        if largeScreen == true {
-                            Rectangle()
-                                .frame(width: viewWidth, height: 50, alignment: .center)
-                                .foregroundColor(.white)
-                                .overlay(Divider().background(Color.primaryTeal), alignment: .bottom)
-                                .cornerRadius(5, corners: [.topLeft, .topRight])
-                            
-                            
-                        } else {
-                            Rectangle()
-                                .frame(width: viewWidth, height: 50, alignment: .center)
-                                .foregroundColor(.white)
-                        }
-                        
-                        
-                        if self.hasGuessed == false {
-                            
-                            Text("Swatch ya think? Which is the actual name?")
-                                .font(.system(size: 18))
-                                //  .fontWeight(.bold)
-                                // .foregroundColor(.white)
-                                .multilineTextAlignment(.center)
-                                .frame(height: 50, alignment: .center)
-                            //   .padding()
-                            
-                            
-                        } else {
-                            
-                            Button(action: {
-                                
-                                self.mildHaptics()
-                                gameBrain.playSlideSoundEffect()
-                                
-                                
-                                self.hasGuessed = false
-                                self.showConfetti = false
-                                
-                                // fling the swatch off screen after it's submitted
-                                if self.turnData.turnArray[0] == 0 { animationState0 = .flung }
-                                if self.turnData.turnArray[0] == 1 { animationState1 = .flung }
-                                if self.turnData.turnArray[0] == 2 { animationState2 = .flung }
-                                if self.turnData.turnArray[0] == 3 {
-                                    
-                                    animationState3 = .flung
-                                    hudOpacity = 0
-                                    
-                                }
-                                
-                                if self.turnData.turnArray[0] == 3 {    // we need a delay for the last turn, to allow its swatch to be flung before the turn moves on
-                                    
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + self.flingDuration) { // to allow time for last swatch fling animation
-                                        processTurn(geoWidth: geoWidth, geoHeight: geoHeight)
-                                    }
-                                    
-                                } else {
-                                    
-                                    processTurn(geoWidth: geoWidth, geoHeight: geoHeight)
-                                    
-                                }
-                                
-                                
-                                
-                            }) {
-                                Text("Next")
-                                    .bold()
-                                    .font(.system(size: 24))
-                                    .frame(height: 50, alignment: .center)
-                                // .padding()
-                                
-                            }
-                        }
-                    }
+                    nextView(geoWidth: geoWidth, viewWidth: viewWidth, geoHeight: geoHeight, largeScreen: largeScreen)
                     
                     //  present a list of the submitted color names, including the real one, in alphabetical order
-                    List(self.gameData.submittedColorNames[self.turnData.turnArray[0]].sorted(), id: \.self) { string in
+                    List(nameList, id: \.self) { string in
                         
-                        if gameBrain.isPlayersOwnColor(playersByRound: self.gameData.playersByRound,
-                                                       turn: self.turnData.turnArray[0],
-                                                       currentPlayer: self.gameData.currentPlayer,
-                                                       colorName: string) {
+                        if matchData.match.createdNames?[self.turnData.turnArray[0]][LocalUser.shared.userID] == string {
                             // the player's own submission
-                            /*
-                             if self.horizontalSizeClass == .regular {
-                             Text(string)
-                             .frame(maxWidth: .infinity, alignment: .center)
-                             } else {
-                             */
+                           
                             Text(string)
-                            //   }
                             
                         } else {
                             
                             
                             Button(action: {
-                                
-                                
-                                //   print("\(string) pressed")
-                                
-                                //  print("Submissions: \(self.gameData.submissionsByPlayer)")
-                                //   print("Player \(self.gameData.currentPlayer)")
+                                                    
                                 
                                 if  self.hasGuessed == false {
                                     
                                     
-                                    let correctGuess = gameBrain.checkAnswer(turn: self.turnData.turnArray[0], colorGuessed: string, colorIndices: self.gameData.colorIndices)
+                                    let correctGuess = GameBrain().checkAnswer(turn: self.turnData.turnArray[0], colorGuessed: string, colorIndices: matchData.match.colorIndices)
                                     //  print("Correct: \(correctGuess)")
                                     
                                     if  correctGuess == true {
                                         
                                         self.correctGuessHaptics()
                                         
-                                        gameBrain.playCorrectSoundEffect()
+                                        GameBrain().playCorrectSoundEffect()
 
-                                        
+                                        /*
                                         // give this player points!
-                                        self.gameData.players["Player \(self.gameData.currentPlayer)"]! += gameBrain.calculateCorrectGuessPoints(numberOfPlayers: self.gameData.players.count)
-                                        
+                                        matchData.match.players["Player \(matchData.match.currentPlayer)"]! += GameBrain().calculateCorrectGuessPoints(numberOfPlayers: matchData.match.players.count)
+                                        */
                                         self.showConfetti = true
                                         
                                         
                                         
-                                        //    print("\(self.gameData.currentPlayer): \(self.gameData.players["Player \(self.gameData.currentPlayer)"]!)")
+                                        //    print("\(matchData.match.currentPlayer): \(matchData.match.players["Player \(matchData.match.currentPlayer)"]!)")
                                     } else {
                                         
                                         self.incorrectGuessHaptics()
                                         
                                         self.showConfetti = false
                                         
-                                        
+                                        /*
                                         // give points to the player that created that name
-                                        if (self.gameData.submissionsByPlayer[string] != nil) {
-                                            self.gameData.players[self.gameData.submissionsByPlayer[string]!]! += 15
+                                        if (matchData.match.submissionsByPlayer[string] != nil) {
+                                            matchData.match.players[matchData.match.submissionsByPlayer[string]!]! += 15
                                         }
-                                        
+                                        */
                                         
                                         
                                         
@@ -883,35 +799,28 @@ struct GuessColorsView: View {
                                     }
                                     
                                     
-                                    
+                                    /*
                                     // playersByRound[what turn are we on?][what player is this? (considering arrays start at 0)][get "Guessed" key] = set to guessed color name
-                                    self.gameData.playersByRound[self.turnData.turnArray[0]][self.gameData.currentPlayer-1]["Guessed"] = string
-                                    
+                                    matchData.match.playersByRound[self.turnData.turnArray[0]][matchData.match.currentPlayer-1]["Guessed"] = string
+                                    */
                                     
                                     self.hasGuessed = true
                                     
-                                    
+                                    /*
                                     // sort the players to have an up-to-date list
-                                    self.gameData.sortedPlayersArray = gameBrain.orderPlayersByPoints(playersDict: self.gameData.players)
+                                    matchData.match.sortedPlayersArray = GameBrain().orderPlayersByPoints(playersDict: matchData.match.players)
                                     
                                     
                                     // create the ordered points list
-                                    self.gameData.finalPointsArray = gameBrain.createFinalPoints(playersDict: self.gameData.players)
-                                    
+                                    matchData.match.finalPointsArray = GameBrain().createFinalPoints(playersDict: matchData.match.players)
+                                    */
                                 }
                                 
                                 
                             }) {
-                                /*
-                                 if self.horizontalSizeClass == .regular {
-                                 Text(string)
-                                 .accentColor(Color.tangerineText)
-                                 .frame(maxWidth: .infinity, alignment: .center)
-                                 } else {
-                                 */
+                               
                                 Text(string)
                                     .accentColor(Color.tangerineText)
-                                //  }
                             }.disabled(self.hasGuessed)
                         }
                     }
@@ -940,6 +849,87 @@ struct GuessColorsView: View {
         
     }
     
+    func nextView(geoWidth: CGFloat, viewWidth: CGFloat, geoHeight: CGFloat, largeScreen: Bool) -> some View {
+        
+        return Group {
+            
+            ZStack {
+                
+                if largeScreen == true {
+                    Rectangle()
+                        .frame(width: viewWidth, height: 50, alignment: .center)
+                        .foregroundColor(.white)
+                        .overlay(Divider().background(Color.primaryTeal), alignment: .bottom)
+                        .cornerRadius(5, corners: [.topLeft, .topRight])
+                    
+                    
+                } else {
+                    Rectangle()
+                        .frame(width: viewWidth, height: 50, alignment: .center)
+                        .foregroundColor(.white)
+                }
+                
+                
+                if self.hasGuessed == false {
+                    
+                    Text("Swatch ya think? Which is the actual name?")
+                        .font(.system(size: 18))
+                        //  .fontWeight(.bold)
+                        // .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .frame(height: 50, alignment: .center)
+                    //   .padding()
+                    
+                    
+                } else {
+                    
+                    Button(action: {
+                        
+                        self.mildHaptics()
+                        GameBrain().playSlideSoundEffect()
+                        
+                        
+                        self.hasGuessed = false
+                        self.showConfetti = false
+                        
+                        // fling the swatch off screen after it's submitted
+                        if self.turnData.turnArray[0] == 0 { animationState0 = .flung }
+                        if self.turnData.turnArray[0] == 1 { animationState1 = .flung }
+                        if self.turnData.turnArray[0] == 2 { animationState2 = .flung }
+                        if self.turnData.turnArray[0] == 3 {
+                            
+                            animationState3 = .flung
+                            hudOpacity = 0
+                            
+                        }
+                        
+                        if self.turnData.turnArray[0] == 3 {    // we need a delay for the last turn, to allow its swatch to be flung before the turn moves on
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + self.flingDuration) { // to allow time for last swatch fling animation
+                                processTurn(geoWidth: geoWidth, geoHeight: geoHeight)
+                            }
+                            
+                        } else {
+                            
+                            processTurn(geoWidth: geoWidth, geoHeight: geoHeight)
+                            
+                        }
+                        
+                        
+                        
+                    }) {
+                        Text("Next")
+                            .bold()
+                            .font(.system(size: 24))
+                            .frame(height: 50, alignment: .center)
+                        // .padding()
+                        
+                    }
+                }
+            }
+        }
+    }
+    
     
     func gameEndTransitionView(geoWidth: CGFloat) -> some View {
         
@@ -960,8 +950,8 @@ struct GuessColorsView: View {
             ZStack {
                 
                 
-                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0,
-                                                             indexArray: self.gameData.colorIndices)),
+                SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 0,
+                                                             indexArray: matchData.match.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -983,8 +973,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 1,
-                                                             indexArray: self.gameData.colorIndices)),
+                SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 1,
+                                                             indexArray: matchData.match.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1006,8 +996,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 2,
-                                                             indexArray: self.gameData.colorIndices)),
+                SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 2,
+                                                             indexArray: matchData.match.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1029,8 +1019,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 3,
-                                                             indexArray: self.gameData.colorIndices)),
+                SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 3,
+                                                             indexArray: matchData.match.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1052,8 +1042,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 0,
-                                                             indexArray: self.gameData.colorIndices)),
+                SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 0,
+                                                             indexArray: matchData.match.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1075,8 +1065,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 1,
-                                                             indexArray: self.gameData.colorIndices)),
+                SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 1,
+                                                             indexArray: matchData.match.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1098,8 +1088,8 @@ struct GuessColorsView: View {
                     }
                 
                 
-                SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: 2,
-                                                             indexArray: self.gameData.colorIndices)),
+                SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: 2,
+                                                             indexArray: matchData.match.colorIndices)),
                                 swatchHeight: swatchHeight,
                                 text: "",
                                 textField: nil,
@@ -1155,8 +1145,8 @@ struct GuessColorsView: View {
                 
                 ForEach(self.transitionSwatches.swatches) { swatch in
                     
-                    SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: swatch.turn,
-                                                                 indexArray: self.gameData.colorIndices)),
+                    SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: swatch.turn,
+                                                                 indexArray: matchData.match.colorIndices)),
                                     swatchHeight: swatchHeight,
                                     text: "",
                                     textField: nil,
@@ -1203,7 +1193,8 @@ struct GuessColorsView: View {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             
-            self.gameData.isComplete = true
+            matchData.match.isCompleted = true
+            // need to upload match
                         
             self.viewRouter.currentPage = "game"
             

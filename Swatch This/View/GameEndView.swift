@@ -67,7 +67,7 @@ struct GameEndView: View {
                             prepareHaptics()
                             
                             // save in UserDefaults (checks if we need to save it. If we do also saves lifetime points, lifetime games won, lifetime fooled)
-                            gameBrain.saveMatchToHistory(gameData: self.gameData)
+                            GameBrain().saveMatchToHistory(gameData: self.gameData)
                         })
                     
                     GeometryReader(content: geometricView(with:))
@@ -86,7 +86,7 @@ struct GameEndView: View {
                     prepareHaptics()
                     
                     // save in UserDefaults (checks if we need to save it. If we do also saves lifetime points, lifetime games won, lifetime fooled)
-                    gameBrain.saveMatchToHistory(gameData: self.gameData)
+                    GameBrain().saveMatchToHistory(gameData: self.gameData)
                 })
         }
         
@@ -165,9 +165,9 @@ struct GameEndView: View {
                                 SwatchView(colorIndices: self.gameData.colorIndices,
                                            colorAtIndex: 0,
                                            swatchHeight: self.animate1 ? geometry.size.width/1.8 : geoWidth/3.8,
-                                           colorName: gameBrain.getColorName(turn: 0, indexArray: self.gameData.colorIndices),
-                                           company: gameBrain.getColorCompany(turn: 0, indexArray: self.gameData.colorIndices),
-                                           colorURL: gameBrain.getColorURL(turn: 0, indexArray: self.gameData.colorIndices),
+                                           colorName: GameBrain().getColorName(turn: 0, indexArray: self.gameData.colorIndices),
+                                           company: GameBrain().getColorCompany(turn: 0, indexArray: self.gameData.colorIndices),
+                                           colorURL: GameBrain().getColorURL(turn: 0, indexArray: self.gameData.colorIndices),
                                            coverOpacity: self.animate1 ? 0.0 : 1.0,
                                            logoOpacity: self.animate1 ? 0.5 : 0.0,
                                            nameOpacity: self.animate1 ? 1.0 : 0.0,
@@ -189,9 +189,9 @@ struct GameEndView: View {
                                 SwatchView(colorIndices: self.gameData.colorIndices,
                                            colorAtIndex: 1,
                                            swatchHeight: self.animate2 ? geoWidth/1.8 : geoWidth/3.8,
-                                           colorName: gameBrain.getColorName(turn: 1, indexArray: self.gameData.colorIndices),
-                                           company: gameBrain.getColorCompany(turn: 1, indexArray: self.gameData.colorIndices),
-                                           colorURL: gameBrain.getColorURL(turn: 1, indexArray: self.gameData.colorIndices),
+                                           colorName: GameBrain().getColorName(turn: 1, indexArray: self.gameData.colorIndices),
+                                           company: GameBrain().getColorCompany(turn: 1, indexArray: self.gameData.colorIndices),
+                                           colorURL: GameBrain().getColorURL(turn: 1, indexArray: self.gameData.colorIndices),
                                            coverOpacity: self.animate2 ? 0.0 : 1.0,
                                            logoOpacity: self.animate2 ? 0.5 : 0.0,
                                            nameOpacity: self.animate2 ? 1.0 : 0.0,
@@ -216,9 +216,9 @@ struct GameEndView: View {
                                 SwatchView(colorIndices: self.gameData.colorIndices,
                                            colorAtIndex: 2,
                                            swatchHeight: self.animate3 ? geoWidth/1.8 : geoWidth/3.8,
-                                           colorName: gameBrain.getColorName(turn: 2, indexArray: self.gameData.colorIndices),
-                                           company: gameBrain.getColorCompany(turn: 2, indexArray: self.gameData.colorIndices),
-                                           colorURL: gameBrain.getColorURL(turn: 2, indexArray: self.gameData.colorIndices),
+                                           colorName: GameBrain().getColorName(turn: 2, indexArray: self.gameData.colorIndices),
+                                           company: GameBrain().getColorCompany(turn: 2, indexArray: self.gameData.colorIndices),
+                                           colorURL: GameBrain().getColorURL(turn: 2, indexArray: self.gameData.colorIndices),
                                            coverOpacity: self.animate3 ? 0.0 : 1.0,
                                            logoOpacity: self.animate3 ? 0.5 : 0.0,
                                            nameOpacity: self.animate3 ? 1.0 : 0.0,
@@ -240,9 +240,9 @@ struct GameEndView: View {
                                 SwatchView(colorIndices: self.gameData.colorIndices,
                                            colorAtIndex: 3,
                                            swatchHeight: self.animate4 ? geoWidth/1.8 : geoWidth/3.8,
-                                           colorName: gameBrain.getColorName(turn: 3, indexArray: self.gameData.colorIndices),
-                                           company: gameBrain.getColorCompany(turn: 3, indexArray: self.gameData.colorIndices),
-                                           colorURL: gameBrain.getColorURL(turn: 3, indexArray: self.gameData.colorIndices),
+                                           colorName: GameBrain().getColorName(turn: 3, indexArray: self.gameData.colorIndices),
+                                           company: GameBrain().getColorCompany(turn: 3, indexArray: self.gameData.colorIndices),
+                                           colorURL: GameBrain().getColorURL(turn: 3, indexArray: self.gameData.colorIndices),
                                            coverOpacity: self.animate4 ? 0.0 : 1.0,
                                            logoOpacity: self.animate4 ? 0.5 : 0.0,
                                            nameOpacity: self.animate4 ? 1.0 : 0.0,
@@ -346,7 +346,7 @@ struct GameEndView: View {
                             
                             else {
                                 self.viewRouter.currentPage = "menu"
-                                gameBrain.considerShowingReviewPrompt()
+                                GameBrain().considerShowingReviewPrompt()
                             }
                             
                         }) {
@@ -476,7 +476,7 @@ struct GameEndView: View {
                                 
                                 else {
                                     self.viewRouter.currentPage = "menu"
-                                    gameBrain.considerShowingReviewPrompt()
+                                    GameBrain().considerShowingReviewPrompt()
                                 }
                                 
                             }) {
@@ -590,9 +590,9 @@ struct GameEndView: View {
                                             SwatchView(colorIndices: self.gameData.colorIndices,
                                                        colorAtIndex: 0,
                                                        swatchHeight: self.animate1 ? geoWidth50/2.1 : geoWidth50/3.8,
-                                                       colorName: gameBrain.getColorName(turn: 0, indexArray: self.gameData.colorIndices),
-                                                       company: gameBrain.getColorCompany(turn: 0, indexArray: self.gameData.colorIndices),
-                                                       colorURL: gameBrain.getColorURL(turn: 0, indexArray: self.gameData.colorIndices),
+                                                       colorName: GameBrain().getColorName(turn: 0, indexArray: self.gameData.colorIndices),
+                                                       company: GameBrain().getColorCompany(turn: 0, indexArray: self.gameData.colorIndices),
+                                                       colorURL: GameBrain().getColorURL(turn: 0, indexArray: self.gameData.colorIndices),
                                                        coverOpacity: self.animate1 ? 0.0 : 1.0,
                                                        logoOpacity: self.animate1 ? 0.5 : 0.0,
                                                        nameOpacity: self.animate1 ? 1.0 : 0.0,
@@ -614,9 +614,9 @@ struct GameEndView: View {
                                             SwatchView(colorIndices: self.gameData.colorIndices,
                                                        colorAtIndex: 1,
                                                        swatchHeight: self.animate2 ? geoWidth50/2.1 : geoWidth50/3.8,
-                                                       colorName: gameBrain.getColorName(turn: 1, indexArray: self.gameData.colorIndices),
-                                                       company: gameBrain.getColorCompany(turn: 1, indexArray: self.gameData.colorIndices),
-                                                       colorURL: gameBrain.getColorURL(turn: 1, indexArray: self.gameData.colorIndices),
+                                                       colorName: GameBrain().getColorName(turn: 1, indexArray: self.gameData.colorIndices),
+                                                       company: GameBrain().getColorCompany(turn: 1, indexArray: self.gameData.colorIndices),
+                                                       colorURL: GameBrain().getColorURL(turn: 1, indexArray: self.gameData.colorIndices),
                                                        coverOpacity: self.animate2 ? 0.0 : 1.0,
                                                        logoOpacity: self.animate2 ? 0.5 : 0.0,
                                                        nameOpacity: self.animate2 ? 1.0 : 0.0,
@@ -641,9 +641,9 @@ struct GameEndView: View {
                                             SwatchView(colorIndices: self.gameData.colorIndices,
                                                        colorAtIndex: 2,
                                                        swatchHeight: self.animate3 ? geoWidth50/2.1 : geoWidth50/3.8,
-                                                       colorName: gameBrain.getColorName(turn: 2, indexArray: self.gameData.colorIndices),
-                                                       company: gameBrain.getColorCompany(turn: 2, indexArray: self.gameData.colorIndices),
-                                                       colorURL: gameBrain.getColorURL(turn: 2, indexArray: self.gameData.colorIndices),
+                                                       colorName: GameBrain().getColorName(turn: 2, indexArray: self.gameData.colorIndices),
+                                                       company: GameBrain().getColorCompany(turn: 2, indexArray: self.gameData.colorIndices),
+                                                       colorURL: GameBrain().getColorURL(turn: 2, indexArray: self.gameData.colorIndices),
                                                        coverOpacity: self.animate3 ? 0.0 : 1.0,
                                                        logoOpacity: self.animate3 ? 0.5 : 0.0,
                                                        nameOpacity: self.animate3 ? 1.0 : 0.0,
@@ -665,9 +665,9 @@ struct GameEndView: View {
                                             SwatchView(colorIndices: self.gameData.colorIndices,
                                                        colorAtIndex: 3,
                                                        swatchHeight: self.animate4 ? geoWidth50/2.1 : geoWidth50/3.8,
-                                                       colorName: gameBrain.getColorName(turn: 3, indexArray: self.gameData.colorIndices),
-                                                       company: gameBrain.getColorCompany(turn: 3, indexArray: self.gameData.colorIndices),
-                                                       colorURL: gameBrain.getColorURL(turn: 3, indexArray: self.gameData.colorIndices),
+                                                       colorName: GameBrain().getColorName(turn: 3, indexArray: self.gameData.colorIndices),
+                                                       company: GameBrain().getColorCompany(turn: 3, indexArray: self.gameData.colorIndices),
+                                                       colorURL: GameBrain().getColorURL(turn: 3, indexArray: self.gameData.colorIndices),
                                                        coverOpacity: self.animate4 ? 0.0 : 1.0,
                                                        logoOpacity: self.animate4 ? 0.5 : 0.0,
                                                        nameOpacity: self.animate4 ? 1.0 : 0.0,
@@ -833,7 +833,7 @@ struct GameEndView: View {
                 
                 ForEach(self.transitionSwatches.swatches) { swatch in
                     
-                    SwatchStackView(swatchColor: Color(hex: gameBrain.getColorHex(turn: swatch.turn,
+                    SwatchStackView(swatchColor: Color(hex: GameBrain().getColorHex(turn: swatch.turn,
                                                                  indexArray: self.gameData.colorIndices)),
                                     swatchHeight: swatchHeight,
                                     text: "",
@@ -930,7 +930,7 @@ struct GameEndView: View {
                         
                         self.mildHaptics2()
                         self.viewRouter.currentPage = "menu"
-                        gameBrain.considerShowingReviewPrompt()
+                        GameBrain().considerShowingReviewPrompt()
                         
                         
                     }) {

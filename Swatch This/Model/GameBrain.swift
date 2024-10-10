@@ -378,11 +378,13 @@ struct GameBrain {
         
         print("turnArray A: \(turnData.turnArray)")
         
+        let updatedTurnArray = advanceGame(turnArray: turnData.turnArray,
+                                           indexArray: MatchData.shared.match.colorIndices,
+                                           playerCount: playerCount)
+        
         
         // advance the game
-        return gameBrain.advanceGame(turnArray: turnData.turnArray,
-                                     indexArray: MatchData.shared.match.colorIndices,
-                                     playerCount: playerCount)
+        return updatedTurnArray
         
         
     }
@@ -429,7 +431,7 @@ struct GameBrain {
                 } else {
                     
                     // check that the user didn't actually create the real name
-                    if trimmedName.capitalized == gameBrain.getColorName(turn: turn, indexArray: MatchData.shared.match.colorIndices).capitalized {
+                    if trimmedName.capitalized == getColorName(turn: turn, indexArray: MatchData.shared.match.colorIndices).capitalized {
                         
                         // make it not technically match the real one by adding a space at the end
                         trimmedName.append(" ")
@@ -491,7 +493,7 @@ struct GameBrain {
     
     
     
-    mutating func advanceGame(turnArray: [Int], indexArray: [Int], playerCount: Int) -> [Int] {
+    func advanceGame(turnArray: [Int], indexArray: [Int], playerCount: Int) -> [Int] {
         
         print("advanceGame: \(turnArray)")
         

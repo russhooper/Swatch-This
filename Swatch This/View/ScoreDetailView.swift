@@ -72,14 +72,14 @@ struct ScoreDetailView: View {
                         // ForEach(0..<2) { column in
                         
                         // playersByRound[round][what player is this?][get "Created" key]
-                        let created = self.gameData.playersByRound[round][gameBrain.getPlayerInt(playerString: self.playerString) - 1]["Created"]!
+                        let created = self.gameData.playersByRound[round][GameBrain().getPlayerInt(playerString: self.playerString) - 1]["Created"]!
                         
                         // playersByRound[round][what player is this?][get "Guessed" key]
-                        let guessed = self.gameData.playersByRound[round][gameBrain.getPlayerInt(playerString: self.playerString) - 1]["Guessed"]!
+                        let guessed = self.gameData.playersByRound[round][GameBrain().getPlayerInt(playerString: self.playerString) - 1]["Guessed"]!
                            
                         
-                        let scoreDetailArray: [String]? = gameBrain.getScoreDetailList(created: created, guessed: guessed,
-                                                                                       actual: gameBrain.getColorName(turn: round, indexArray: self.gameData.colorIndices),
+                        let scoreDetailArray: [String]? = GameBrain().getScoreDetailList(created: created, guessed: guessed,
+                                                                                       actual: GameBrain().getColorName(turn: round, indexArray: self.gameData.colorIndices),
                                                                                        playersThisRound: self.gameData.playersByRound[round],
                                                                                        userNames: self.gameData.displayNames)
                         
@@ -90,7 +90,7 @@ struct ScoreDetailView: View {
                             SwatchView(colorIndices: self.gameData.colorIndices,
                                        colorAtIndex: round,
                                        swatchHeight: 130,
-                                       colorName: gameBrain.getColorName(turn: round, indexArray: self.gameData.colorIndices),
+                                       colorName: GameBrain().getColorName(turn: round, indexArray: self.gameData.colorIndices),
                                        nameOpacity: 1.0,
                                        fontSize: 12)
                                 //  .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -107,7 +107,7 @@ struct ScoreDetailView: View {
                                         
                                         Text(scoreDetailArray![counter])
                                         /*
-                                            .foregroundColor(scoreDetailArray![counter].prefix(1) == "+" ? Color(gameBrain.getColorHexForScoreDetail(turn: round, indexArray: self.gameData.colorIndices)) : .black)
+                                            .foregroundColor(scoreDetailArray![counter].prefix(1) == "+" ? Color(GameBrain().getColorHexForScoreDetail(turn: round, indexArray: self.gameData.colorIndices)) : .black)
                                         */
                                     }
                                     .listStyle(.plain)

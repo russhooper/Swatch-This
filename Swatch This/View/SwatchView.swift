@@ -76,7 +76,7 @@ struct SwatchView: View {
                             
                             RoundedRectangle(cornerRadius: 2)
                                 .frame(width: swatchHeight, height: swatchHeight, alignment: .center)
-                                .foregroundColor(hexColor(gameBrain.getColorHex(turn: colorAtIndex,
+                                .foregroundColor(hexColor(GameBrain().getColorHex(turn: colorAtIndex,
                                                                                 indexArray: colorIndices)))
                                 .padding(EdgeInsets(top: swatchHeight*0.13/2, leading: 0, bottom: 0, trailing: 0))
                             

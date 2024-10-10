@@ -190,7 +190,7 @@ struct NameColorsView: View {
             
         }
         
-        let shouldShowUsernameEntry = gameBrain.shouldShowUsernameEntry(turnData: self.turnData.turnArray,
+        let shouldShowUsernameEntry = GameBrain().shouldShowUsernameEntry(turnData: self.turnData.turnArray,
                                                                         displayNames: MatchData.shared.match.playerDisplayNames,
                                                                         onlineGame: MatchData.shared.onlineGame ?? false,
                                                                         showUsernameToggle: self.showUsernameToggle)
@@ -378,7 +378,7 @@ struct NameColorsView: View {
                                     
                                     self.showUsernameToggle = true
                                     
-                                    if gameBrain.isSubmissionEnd(roundsFinished: self.turnData.turnArray[1],
+                                    if GameBrain().isSubmissionEnd(roundsFinished: self.turnData.turnArray[1],
                                                                  playerCount: self.playerCount) || self.isSubmissionEnd == true {
                                         self.isSubmissionEnd = true
                                     }
@@ -425,7 +425,7 @@ struct NameColorsView: View {
                     
                 } else {
                     
-                    OtherPlayersTurn(colorIndices: MatchData.shared.colorIndices, rotations: gameBrain.generate4Angles())
+                    OtherPlayersTurn(colorIndices: MatchData.shared.colorIndices, rotations: GameBrain().generate4Angles())
                         .environmentObject(ViewRouter.sharedInstance)
                     //    .transition(.move(edge: .trailing))
 
@@ -500,7 +500,7 @@ struct NameColorsView: View {
                         .opacity(self.opacity3)
                         .onAppear {
                             
-                            gameBrain.playDealSoundEffect()
+                            GameBrain().playDealSoundEffect()
                             
                             let baseAnimation = Animation.timingCurve(0.02, 0.95, 0.4, 0.95, duration: self.dealDuration)
                             
@@ -785,7 +785,7 @@ struct NameColorsView: View {
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // to allow time for paint animation
                             
-                            MatchData.shared.match.playerDisplayNames = gameBrain.updateDisplayName(round: self.turnData.turnArray[1], userName: self.enteredPlayerName, displayNames: MatchData.shared.match.playerDisplayNames)
+                            MatchData.shared.match.playerDisplayNames = GameBrain().updateDisplayName(round: self.turnData.turnArray[1], userName: self.enteredPlayerName, displayNames: MatchData.shared.match.playerDisplayNames)
                             
                             self.showUsernameToggle = false
                             
@@ -847,7 +847,7 @@ struct NameColorsView: View {
         
         let fontSize: CGFloat = 15
         
-        let swatchColor = hexColor(gameBrain.getColorHex(turn: turnNumber,
+        let swatchColor = hexColor(GameBrain().getColorHex(turn: turnNumber,
                                                          indexArray: MatchData.shared.match.colorIndices))
         
         let player = self.turnData.turnArray[1]+1
@@ -932,7 +932,7 @@ struct NameColorsView: View {
                             Button(action: {
                                 
                                 self.mildHaptics()
-                                gameBrain.playSlideSoundEffect()
+                                GameBrain().playSlideSoundEffect()
                                 
                                 createdName = self.userColorName
                                 
@@ -941,7 +941,7 @@ struct NameColorsView: View {
                                     self.flingLastSwatch = true // this tells the last swatch it should fling
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + self.flingDuration) { // to allow time for last swatch fling animation
-                                        self.turnData.turnArray = gameBrain.processTurn(userColorName: createdName, turnData: turnData, playerCount: playerCount)
+                                        self.turnData.turnArray = GameBrain().processTurn(userColorName: createdName, turnData: turnData, playerCount: playerCount)
                                         self.prepLastSwatch = false
                                         self.flingLastSwatch = false
                                         self.viewRouter.currentPage = "onlineMatchesView"
@@ -955,7 +955,7 @@ struct NameColorsView: View {
                                     }
                                     
                                     
-                                    self.turnData.turnArray = gameBrain.processTurn(userColorName: createdName, turnData: turnData, playerCount: playerCount)
+                                    self.turnData.turnArray = GameBrain().processTurn(userColorName: createdName, turnData: turnData, playerCount: playerCount)
                                     
                                     print("turnArray B: \(turnData.turnArray)")
 
@@ -999,7 +999,7 @@ struct NameColorsView: View {
         
         
         // store the submitted color name
-        MatchData.shared.submittedColorNames = gameBrain.storeUserColorName(turnArray: self.turnData.turnArray,
+        MatchData.shared.submittedColorNames = GameBrain().storeUserColorName(turnArray: self.turnData.turnArray,
                                                                          userColor: userColorName.localizedCapitalized, // capitalize all first letters of words to try to disguise entries
                                                                          indexArray: MatchData.shared.colorIndices,
                                                                          submittedColors: MatchData.shared.submittedColorNames)
@@ -1020,7 +1020,7 @@ struct NameColorsView: View {
         
         
         // advance the game
-        self.turnData.turnArray = gameBrain.advanceGame(turnArray: self.turnData.turnArray,
+        self.turnData.turnArray = GameBrain().advanceGame(turnArray: self.turnData.turnArray,
                                                         indexArray: MatchData.shared.colorIndices,
                                                         playerCount: self.playerCount)
         
@@ -1032,7 +1032,7 @@ struct NameColorsView: View {
         
         
         // toggle the "pass to next player" screen if we need to
-        if gameBrain.isPlayerEnd(turnArray: self.turnData.turnArray) {
+        if GameBrain().isPlayerEnd(turnArray: self.turnData.turnArray) {
             
             if MatchData.shared.currentPlayer < self.playerCount {
                 MatchData.shared.currentPlayer += 1

@@ -451,7 +451,7 @@ struct ColorsView: View {
                                 }
                                 Spacer()
                                 
-                                Text("\(gameBrain.getAvailablePalette(excludeRecentColors: false).count) \(colorLocalized)s active.")
+                                Text("\(GameBrain().getAvailablePalette(excludeRecentColors: false).count) \(colorLocalized)s active.")
                                     .foregroundColor(Color.darkTeal)
                                     .padding(EdgeInsets(top: 20, leading: 10, bottom: 0, trailing: 10))
                                 

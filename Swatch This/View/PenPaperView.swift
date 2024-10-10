@@ -9,7 +9,7 @@
 import SwiftUI
 import CoreHaptics
 
-
+/*
 struct PenPaperView: View {
     
     var gameData: GameData
@@ -492,7 +492,7 @@ struct PenPaperView: View {
     }
     
 }
-
+*/
 
 class SwipeObserver: ObservableObject {
     
