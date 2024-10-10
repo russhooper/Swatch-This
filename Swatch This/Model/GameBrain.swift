@@ -514,15 +514,7 @@ struct GameBrain {
                             do {
                                 MatchData.shared.match.turnLastTakenDate = Date()
                                 try await MatchesManager.shared.updateMatch(match: MatchData.shared.match)
-                                                                
-                                let userMatch: UserMatch = UserMatch(id: MatchData.shared.match.matchID,
-                                                                     matchID: MatchData.shared.match.matchID,
-                                                                     isCompleted: isGameEnd,
-                                                                     match: MatchData.shared.match,
-                                                                     turnLastTakenDate: Date())
-                                
-                                try await UserManager.shared.updateUserMatch(userMatch: userMatch, userID: LocalUser.shared.userID, isGameEnd: isGameEnd)
-                                
+                                    
                             } catch {
                                 print("update match error: \(error)")
                             }
@@ -825,7 +817,7 @@ struct GameBrain {
         
     }
     
-    
+    // determine if the player can take a turn
     func determineGameState(localPlayerID: String, match: Match) -> (phase: Int, canTakeAction: Bool) {
         
         // first check if the user has submitted colors

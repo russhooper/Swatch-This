@@ -8,6 +8,8 @@
 
 import Foundation
 import FirebaseFirestore
+import Combine
+
 
 final class MatchesManager {
     
@@ -17,24 +19,24 @@ final class MatchesManager {
     var gameData: GameData = GameData()
     
     private let matchesCollection = Firestore.firestore().collection("Matches")
-
+    
     private func matchDocument(id: String) -> DocumentReference {
         let docRef = matchesCollection.document(id)
         print("matchDocument ref: \(docRef)")
         return docRef
     }
     
-    
     func getMatch(matchID: String) async throws -> Match {
         try await matchDocument(id: matchID).getDocument(as: Match.self)
     }
-    
-    
-    
+        
     private func getAllMatchesQuery() -> Query {
         matchesCollection
     }
     
+    
+    // MARK: - Match Creation, Joining, Updating
+
     
     func joinMatch(match: Match) {
         guard let authDataResult: AuthDataResultModel = try? AuthenticationManager.shared
@@ -133,16 +135,12 @@ final class MatchesManager {
                                                phase: 1, // 1 is name creation, 2 is guessing, 3 is complete
                                                phaseByPlayer: phaseByPlayer,
                                                playerDisplayNames: displayNameArray,
-                                               playerCount: playerCount)
+                                               playerCount: playerCount,
+                                               isCompleted: MatchData.shared.match.isCompleted)
                 
                 MatchData.shared.match = match
                 
                 try? await uploadMatch(match: MatchData.shared.match)
-                
-                
-                try await addMatchToUser(match: match,
-                                         userID: userID)
-                
                 
                 print("success: \(MatchData.shared.match.id)")
             } catch {
@@ -155,22 +153,6 @@ final class MatchesManager {
         try matchDocument(id: String(match.id)).setData(from: match, merge: false)
     }
     
-    
-    func addMatchToUser(match: Match, userID: String) async throws {
-        
-        let userMatch: UserMatch = UserMatch(id: match.matchID,
-                                             matchID: match.matchID,
-                                             isCompleted: false,
-                                             match: match,
-                                             turnLastTakenDate: Date())
-        
-        do {
-            try await UserManager.shared.createUserMatch(userMatch: userMatch, userID: userID)
-        } catch {
-            print("UserMatch creation error: \(error)")
-        }
-        
-    }
     
     func updateMatch(match: Match) async throws {
                         
@@ -230,6 +212,8 @@ final class MatchesManager {
      }
      */
     
+    // MARK: - Match Codes
+    
     private func generateCode() async throws -> String? {
         
         if let code = try await MatchCodeManager().getRandomCode() {
@@ -258,7 +242,7 @@ final class MatchesManager {
         }
     }
     
-    
+    // MARK: - Match Retreival
     
     private func getAllMatchesForCode(password: String) -> Query {
         matchesCollection
@@ -312,6 +296,41 @@ final class MatchesManager {
     func getAllMatchesCount() async throws -> Int {
         try await matchesCollection.aggregateCount()
     }
+    
+    
+    // MARK: - Listeners
+    
+    private var activeMatchesListener: ListenerRegistration? = nil
+    private var completedMatchesListener: ListenerRegistration? = nil
+
+    func addListenerForMatches(userID: String, isCompleted: Bool) -> AnyPublisher<[Match], Error> {
+                
+        let (publisher, listener) = matchesCollection
+            .whereField(Match.CodingKeys.isCompleted.rawValue, isEqualTo: isCompleted)
+            .whereField(Match.CodingKeys.playerIDs.rawValue, arrayContains: userID)
+            //.order(by: Match.CodingKeys.dateCreated.rawValue, descending: true)
+            .addSnapshotListener(as: Match.self)
+        
+        if  (isCompleted == true) {
+            self.completedMatchesListener = listener
+        } else {
+            self.activeMatchesListener = listener
+        }
+        
+        return publisher
+    }
+    
+    func removeListenerForCompletedMatches() {
+        self.completedMatchesListener?.remove()
+    }
+    
+    func removeListenerForActiveMatches() {
+        self.activeMatchesListener?.remove()
+    }
+
+    
+
+    
     
 }
 

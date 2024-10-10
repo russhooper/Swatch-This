@@ -88,18 +88,7 @@ final class UserManager {
     
    
     
-    private func userMatchesCollection(userID: String) -> CollectionReference {
-        let collectionRef = userDocument(userID: userID).collection("UserMatches")
-        print("collectionRef: \(collectionRef)")
-        return collectionRef
-    }
-    
-    
-    private func userMatchDocument(userID: String, matchID: String) -> DocumentReference {
-        let matchDoc = userMatchesCollection(userID: userID).document(matchID)
-        print("matchDoc: \(matchDoc)")
-        return matchDoc
-    }
+ 
     
     
     func loadCurrentUser() async throws {
@@ -107,8 +96,6 @@ final class UserManager {
         LocalUser.shared = try await getUser(userID: authDataResult.uid)
     }
         
-    private var userActiveMatchesListener: ListenerRegistration? = nil
-    private var userCompletedMatchesListener: ListenerRegistration? = nil
 
         
     func createNewUser(user: LocalUser) async throws {
@@ -153,104 +140,6 @@ final class UserManager {
         
         try await userDocument(userID: authDataResult.uid).updateData(data)
     }
-    
-    
-    func getAllUserMatches(userID: String) async throws -> [UserMatch] {
-        try await userMatchesCollection(userID: userID).getDocuments(as: UserMatch.self)
-    }
-    
-    // add a match as a UserMatches document
-    func createUserMatch(userMatch: UserMatch, userID: String) async throws {
-        try userMatchDocument(userID: userID, matchID: userMatch.matchID).setData(from: userMatch, merge: false)
-    }
-    
-    func updateUserMatch(userMatch: UserMatch, userID: String, isGameEnd: Bool) async throws {
-        
-        let updatedUserMatch = UserMatch(id: userID,
-                                         matchID: userMatch.matchID,
-                                         isCompleted: isGameEnd,
-                                         match: userMatch.match,
-                                         turnLastTakenDate: Date())
-        
-        // encode the UserMatch using Firestore.Encoder
-        guard let encodedData = try? Firestore.Encoder().encode(updatedUserMatch) else {
-            print("UserMatch update encoding error")
-            throw URLError(.badURL)
-        }
-        
-        let dict: [String: Any] = [
-            "isCompleted": encodedData["isCompleted"] ?? []  // properly encoded array of Round objects
-        ]
-        
-        do {
-            // update the document with the encoded data
-         //   try await userMatchDocument(userID: userID, matchID: userMatch.matchID).updateData(dict)
-            
-            // update the document with the encoded data (the whole thing, to include stuff like created color names
-            try await userMatchDocument(userID: userID, matchID: userMatch.matchID).setData(encodedData, merge: true)
-
-        } catch {
-            print("UserMatch update error: \(error)")
-        }
-        
-        
-    }
-    
-    func removeListenerForCompletedUserMatches() {
-        self.userCompletedMatchesListener?.remove()
-    }
-    
-    func removeListenerForActiveUserMatches() {
-        self.userActiveMatchesListener?.remove()
-    }
-
-
-    /*
-    private func getAllActiveUserMatches(userID: String) -> Query {
-        userMatchesCollection(userID: userID).whereField(UserMatch.CodingKeys.isCompleted.rawValue, isEqualTo: true)
-    }
-    
-    func getAllUserMatches(active isActive: Bool?,
-                        lastDocument: DocumentSnapshot?)
-    async throws -> (
-        matches: [UserMatch],
-        lastDocument: DocumentSnapshot?
-    ) {
-        
-        var query: Query = getAllMatchesQuery()
-        
-        if let isActive {
-            query = getAllUserMatches(active: isActive, lastDocument: <#T##DocumentSnapshot?#>)(descending: descending, category: category)
-        } else {
-            query = getAllProductsForCategoryQuery(category: category)
-        }
-        
-        return try await query
-            .startOptionally(afterDocument: lastDocument)
-            .getDocumentsWithSnapshot(as: Product.self)
-        
-    }
-    */
-   
-    
-        
-    func addListenerForAllUserMatches(userID: String, isCompleted: Bool) -> AnyPublisher<[UserMatch], Error> {
-                
-        let (publisher, listener) = userMatchesCollection(userID: userID)
-            .whereField(UserMatch.CodingKeys.isCompleted.rawValue, isEqualTo: isCompleted)
-            //.order(by: Match.CodingKeys.dateCreated.rawValue, descending: true)
-            .addSnapshotListener(as: UserMatch.self)
-        
-        if  (isCompleted == true) {
-            self.userCompletedMatchesListener = listener
-        } else {
-            self.userActiveMatchesListener = listener
-        }
-        
-        return publisher
-    }
-    
-    
     
 }
 

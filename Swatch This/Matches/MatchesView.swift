@@ -26,10 +26,10 @@ struct MatchesView: View {
                                 
                 List {
                     
-                     //   Spacer()
+                        Spacer()
                     //        .frame(height: 30)
                     
-                    Image("Blue Paint 2")
+                //    Image("Blue Paint 2")
                     // should maybe swap this out with a listener for all matches and then filter here with .filter { $0.isCompleted }
                     // though, it'll be good to have the current match listener stay active outside of this view. We don't need the completed matches
                     // listener to stay active
@@ -106,29 +106,23 @@ struct MatchesView: View {
         return Group {
             
             Section(header: Text("Current Matches")) {
-                ForEach(viewModel.userActiveMatches, id: \.id.self) { userMatch in
+                ForEach(viewModel.userActiveMatches, id: \.id.self) { match in
                     Button(action: {
                         
-                        if userMatch.canTakeTurn == true {
-                            Task {
-                                do {
-                                    let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
-                                    MatchesManager.shared.joinMatch(match: match)
-                                    viewRouter.currentPage = "game"
+                        MatchData.shared.match = match
+
+                        if GameBrain().determineGameState(localPlayerID: LocalUser.shared.userID, match: match).canTakeAction == true {
+                            
+                            viewRouter.currentPage = "game"
                                     
-                                } catch {
-                                    print("error joining match: \(error)")
-                                }
-                            }
                         } else {
                             
-                            MatchData.shared.match = userMatch.match
                             viewRouter.currentPage = "otherTurn"
                         }
                         
                         
                     }, label: {
-                        ActiveMatchCellView(userMatch: userMatch, rotations: [-25, -10, 0, 10], offsetsY: [10, 0, -5, -2])
+                        ActiveMatchCellView(match: match, rotations: [-25, -10, 0, 10], offsetsY: [10, 0, -5, -2])
                     })
                     .frame(height: 90)
                     .listRowBackground(
@@ -137,7 +131,10 @@ struct MatchesView: View {
                             .fill(
                                 
                                 LinearGradient(gradient:
-                                                Gradient(colors: (userMatch.canTakeTurn ?? false) ? [Color.tangerineText, Color.tangerineGradient] : [Color.primaryTeal, Color.primaryTeal]),
+                                                Gradient(colors:
+                                                            (GameBrain().determineGameState(localPlayerID:
+                                                                                                LocalUser.shared.userID,
+                                                                                            match: match).canTakeAction) ? [Color.tangerineText, Color.tangerineGradient] : [Color.primaryTeal, Color.primaryTeal]),
                                                startPoint: .leading,
                                                endPoint: .topTrailing)
                             )

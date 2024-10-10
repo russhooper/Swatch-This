@@ -33,6 +33,7 @@ struct Match: Identifiable, Codable, Equatable {
     var phaseByPlayer: [String: Int]?
     var playerDisplayNames: [String: String]? // optional dictionary of player display names keyed to player IDs
     let playerCount: Int
+    let isCompleted: Bool
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -49,6 +50,7 @@ struct Match: Identifiable, Codable, Equatable {
         case phaseByPlayer
         case playerDisplayNames
         case playerCount
+        case isCompleted
     }
     
     static func ==(lhs: Match, rhs: Match) -> Bool {

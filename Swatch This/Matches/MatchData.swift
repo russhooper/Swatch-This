@@ -87,7 +87,8 @@ class MatchData {   // should this be a struct?
                            phase: nil,
                            phaseByPlayer: nil,
                            playerDisplayNames: nil,
-                           playerCount: 2)
+                           playerCount: 2,
+                           isCompleted: false)
         
     }
     

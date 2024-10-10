@@ -62,8 +62,8 @@
             filePath = "Swatch This/Model/GameBrain.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "660"
-            endingLineNumber = "660"
+            startingLineNumber = "652"
+            endingLineNumber = "652"
             landmarkName = "getColorHexForScoreDetail(turn:indexArray:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,8 +142,8 @@
             filePath = "Swatch This/Model/GameBrain.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1069"
-            endingLineNumber = "1069"
+            startingLineNumber = "1061"
+            endingLineNumber = "1061"
             landmarkName = "saveMatchToHistory(gameData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -222,10 +222,10 @@
             filePath = "Swatch This/Model/GameBrain.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "939"
-            endingLineNumber = "939"
-            landmarkName = "endOnlineTurn(gameData:)"
-            landmarkType = "7">
+            startingLineNumber = "931"
+            endingLineNumber = "931"
+            landmarkName = "GameBrain"
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -350,8 +350,8 @@
             filePath = "Swatch This/Model/GameBrain.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1309"
-            endingLineNumber = "1309"
+            startingLineNumber = "1301"
+            endingLineNumber = "1301"
             landmarkName = "calculateFooledCount(localPlayer:playersByRound:playerCount:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -366,25 +366,9 @@
             filePath = "Swatch This/Model/GameBrain.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1311"
-            endingLineNumber = "1311"
+            startingLineNumber = "1303"
+            endingLineNumber = "1303"
             landmarkName = "calculateFooledCount(localPlayer:playersByRound:playerCount:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EEF040DF-1D1B-4957-AEA4-C56E447B8D8E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Swatch This/Firestore/UserManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
-            landmarkName = "addListenerForAllUserMatches(userID:isCompleted:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -574,8 +558,8 @@
             filePath = "Swatch This/Matches/MatchesManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
             landmarkName = "updateMatch(match:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -590,8 +574,8 @@
             filePath = "Swatch This/Matches/MatchesManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
             landmarkName = "updateMatch(match:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -606,8 +590,8 @@
             filePath = "Swatch This/Matches/MatchesManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
             landmarkName = "updateMatch(match:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -622,8 +606,8 @@
             filePath = "Swatch This/Matches/MatchesManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
             landmarkName = "updateMatch(match:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -686,8 +670,8 @@
             filePath = "Swatch This/Matches/MatchesManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "updateMatch(match:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -718,8 +702,8 @@
             filePath = "Swatch This/Matches/MatchesView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
             landmarkName = "currentMatchesSection()"
             landmarkType = "7">
          </BreakpointContent>
@@ -734,8 +718,8 @@
             filePath = "Swatch This/Matches/MatchesViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
             landmarkName = "addListenerForActiveMatches()"
             landmarkType = "7">
          </BreakpointContent>
@@ -752,38 +736,6 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "516"
             endingLineNumber = "516"
-            landmarkName = "advanceGame(turnArray:indexArray:playerCount:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F3B308B8-72A5-4292-BAA8-1A8A37A9675C"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Swatch This/Model/GameBrain.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "518"
-            endingLineNumber = "518"
-            landmarkName = "advanceGame(turnArray:indexArray:playerCount:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "34BD083C-36B5-438A-A702-8BBA3394C6A4"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Swatch This/Model/GameBrain.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "524"
-            endingLineNumber = "524"
             landmarkName = "advanceGame(turnArray:indexArray:playerCount:)"
             landmarkType = "7">
          </BreakpointContent>

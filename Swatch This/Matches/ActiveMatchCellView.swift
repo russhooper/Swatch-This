@@ -1,18 +1,18 @@
 import SwiftUI
 
 struct ActiveMatchCellView: View {
-    let userMatch: UserMatch
+    let match: Match
     var rotations: [Double]
     let offsetsY: [Double]
     
     var body: some View {
         GeometryReader { geo in
             HStack(alignment: .center) {
-                swatchesView(userMatch: userMatch, geoWidth: geo.size.width, geoHeight: geo.size.height)
+                swatchesView(match: match, geoWidth: geo.size.width, geoHeight: geo.size.height)
                 
                 Spacer() // This pushes the textView to the right
                 
-                textView(userMatch: userMatch)
+                textView(match: match)
                     .frame(width: geo.size.width * 1 / 2, height: geo.size.height, alignment: .trailing)
                 
               //  Image(systemName: "arrowtriangle.forward.fill").tint(Color.tangerine)
@@ -20,15 +20,15 @@ struct ActiveMatchCellView: View {
         }
     }
     
-    func swatchesView(userMatch: UserMatch, geoWidth: CGFloat, geoHeight: CGFloat) -> some View {
+    func swatchesView(match: Match, geoWidth: CGFloat, geoHeight: CGFloat) -> some View {
         
         return Group {
             
             ZStack {
                 
-                ForEach(0 ..< userMatch.match.colorIndices.count, id: \.self) { i in
+                ForEach(0 ..< match.colorIndices.count, id: \.self) { i in
                     
-                    SwatchView(colorIndices: userMatch.match.colorIndices.reversed(),
+                    SwatchView(colorIndices: match.colorIndices.reversed(),
                                colorAtIndex: i,
                                swatchHeight: geoHeight*0.95,
                                shadowOpacity: 0.35,
@@ -41,33 +41,31 @@ struct ActiveMatchCellView: View {
         }
     }
     
-    func textView(userMatch: UserMatch) -> some View {
+    func textView(match: Match) -> some View {
         
         // Initialize userNamesArray with an empty array by default
-        let userNamesArray: [String] = userMatch.match.playerDisplayNames?.values.map { $0 } ?? []
+        let userNamesArray: [String] = match.playerDisplayNames?.values.map { $0 } ?? []
         
         var actionText: String = ""
-        if let canTakeTurn = userMatch.canTakeTurn {
-            if canTakeTurn == true {
-                actionText = "Your turn!"
-            } else {
-                actionText = "Another player's turn"
-            }
+        let canTakeTurn = GameBrain().determineGameState(localPlayerID: LocalUser.shared.userID, match: match).canTakeAction
+        if canTakeTurn == true {
+            actionText = "Your turn!"
+        } else {
+            actionText = "Another player's turn"
         }
         
         return Group {
             VStack(alignment: .trailing, spacing: 4) {  // Right alignment
                 
-                Text(userMatch.canTakeTurn != nil ? actionText : "Your turn!")
+                Text(actionText)
                     .font(.headline)
                     .multilineTextAlignment(.trailing)
                     .foregroundColor(.primary)
                     .fixedSize(horizontal: false, vertical: true)
-                // Text("Phase " + String(userMatch.match.phase ?? 0))
                 Text(userNamesArray.joined(separator: ", "))
                  //   .font(.callout)
                     .foregroundColor(.white)
-                Text(userMatch.turnLastTakenDate != nil ? formatDate(userMatch.turnLastTakenDate!) : "No turns taken")
+                Text(match.turnLastTakenDate != nil ? formatDate(match.turnLastTakenDate!) : "No turns taken")
                   //  .font(.callout)
                     .foregroundColor(.white)
                     .padding(.bottom)

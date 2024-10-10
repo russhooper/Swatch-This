@@ -13,10 +13,10 @@ import Combine
 @MainActor
 final class MatchesViewModel: ObservableObject {
     
-    @Published private(set) var userActiveMatches: [UserMatch] = []
-    @Published private(set) var userCompletedMatches: [UserMatch] = []
+    @Published private(set) var userActiveMatches: [Match] = []
+    @Published private(set) var userCompletedMatches: [Match] = []
 
-    @Published private(set) var match: [UserMatch] = []
+    @Published private(set) var match: [Match] = []
 
     
     private var cancellables = Set<AnyCancellable>()
@@ -26,7 +26,7 @@ final class MatchesViewModel: ObservableObject {
         guard let authDataResult = try? AuthenticationManager.shared
             .getAuthenticatedUser() else { return }
         
-        UserManager.shared.addListenerForAllUserMatches(userID: authDataResult.uid, isCompleted: false)
+        MatchesManager.shared.addListenerForMatches(userID: authDataResult.uid, isCompleted: false)
             .sink { completion in
                 
             } receiveValue: { [weak self] activeMatches in
@@ -34,12 +34,13 @@ final class MatchesViewModel: ObservableObject {
                 
                 self.userActiveMatches = activeMatches
                 
+                /*
                 Task {
                     // Iterate over each match and update asynchronously
-                    for (index, userMatch) in activeMatches.enumerated() {
+                    for (index, match) in activeMatches.enumerated() {
                         do {
                             // retrieve Match so that we can determine if the local user can take their turn
-                            let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
+                            let match = try await MatchesManager.shared.getMatch(matchID: userMatch.id)
                             
                             // update the userMatch
                             self.userActiveMatches[index].canTakeTurn = GameBrain().determineGameState(
@@ -52,40 +53,18 @@ final class MatchesViewModel: ObservableObject {
                         }
                     }
                 }
+                 */
             }
             .store(in: &cancellables)
     }
     
-    /*
-    func getMatchStates(userID: String, userMatches: [UserMatch]) async throws -> [UserMatch] {
-        
-        var updatedUserMatches: [UserMatch] = []
-        
-        for userMatch in userMatches {
-            // modify each match
-            var updatedMatch = userMatch
-            
-            // retrieve Match so that we can determine if the local user can take their turn
-            
-            let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
-            
-            updatedMatch.canTakeTurn = GameBrain().determineGameState(localPlayerID: userID, match: match).canTakeAction
-            
-            updatedUserMatches.append(updatedMatch)
-            
-        }
-        
-        return updatedUserMatches
-        
-    }
-    */
-    
+  
     func addListenerForCompletedMatches() {
         
         guard let authDataResult = try? AuthenticationManager.shared
             .getAuthenticatedUser() else { return }
         
-        UserManager.shared.addListenerForAllUserMatches(userID: authDataResult.uid, isCompleted: true)
+        MatchesManager.shared.addListenerForMatches(userID: authDataResult.uid, isCompleted: true)
             .sink { completion in
                 
             } receiveValue: { [weak self] completedMatches in
@@ -96,32 +75,12 @@ final class MatchesViewModel: ObservableObject {
     
     func removeListenerForCompletedMatches() {
         
-        UserManager.shared.removeListenerForCompletedUserMatches()
+        MatchesManager.shared.removeListenerForCompletedMatches()
         
     }
     
 
-    func getMatchData(userMatch: UserMatch) {
-        
-        Task {
-            do {
-                
-                let match = try await MatchesManager.shared.getMatch(matchID: userMatch.matchID)
-                print(match.matchID)
-                                
-                MatchData.shared.onlineGame = true
-
-                
-                
-            } catch {
-                print(error)
-            }
-        }
-        
-        
-    }
-    
-    
+    /*
     func getMatches() {
         Task {
             
@@ -130,12 +89,13 @@ final class MatchesViewModel: ObservableObject {
             print("authDataResult: \(authDataResult)")
             
             
-            self.userActiveMatches = try await UserManager.shared.getAllUserMatches(userID: authDataResult.uid)
+            self.userActiveMatches = try await MatchesManager.shared.getAllMatches(forUser: authDataResult.uid)
             
             print("userActiveMatches: \(userActiveMatches)")
             
         }
     }
+     
     
     func getActiveMatches() {
         Task {
@@ -151,7 +111,7 @@ final class MatchesViewModel: ObservableObject {
             
         }
     }
-    
+    */
     
     
 }

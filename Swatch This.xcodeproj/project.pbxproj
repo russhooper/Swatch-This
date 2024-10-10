@@ -73,7 +73,6 @@
 		63AB777824BA9E49009BC9CE /* GameBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AB777724BA9E49009BC9CE /* GameBrain.swift */; };
 		63AB777C24BBE923009BC9CE /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AB777B24BBE923009BC9CE /* Palette.swift */; };
 		63C0565E2CAECDE80025F729 /* ActiveMatchCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C0565D2CAECDE80025F729 /* ActiveMatchCellView.swift */; };
-		63C056602CAF5AA70025F729 /* UserMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C0565F2CAF5AA70025F729 /* UserMatch.swift */; };
 		63C6D490265B4397000C3C7F /* Card Flip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 63C6D48F265B4397000C3C7F /* Card Flip.mp3 */; };
 		63C755F8268D35F8009C3AE1 /* Card Deal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 63C755F7268D35F8009C3AE1 /* Card Deal.mp3 */; };
 		63DA3A1024CB8F0000531B6F /* SwatchStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DA3A0F24CB8F0000531B6F /* SwatchStackView.swift */; };
@@ -193,7 +192,6 @@
 		63AB777724BA9E49009BC9CE /* GameBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBrain.swift; sourceTree = "<group>"; };
 		63AB777B24BBE923009BC9CE /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		63C0565D2CAECDE80025F729 /* ActiveMatchCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveMatchCellView.swift; sourceTree = "<group>"; };
-		63C0565F2CAF5AA70025F729 /* UserMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMatch.swift; sourceTree = "<group>"; };
 		63C6D48F265B4397000C3C7F /* Card Flip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Card Flip.mp3"; sourceTree = "<group>"; };
 		63C755F7268D35F8009C3AE1 /* Card Deal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Card Deal.mp3"; sourceTree = "<group>"; };
 		63DA3A0F24CB8F0000531B6F /* SwatchStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchStackView.swift; sourceTree = "<group>"; };
@@ -257,7 +255,6 @@
 			isa = PBXGroup;
 			children = (
 				6311C77C2C8667F100E70312 /* UserManager.swift */,
-				63C0565F2CAF5AA70025F729 /* UserMatch.swift */,
 			);
 			path = Firestore;
 			sourceTree = "<group>";
@@ -625,7 +622,6 @@
 				633C33972C8A346E00BBDA38 /* MatchesViewModel.swift in Sources */,
 				631B83C72516E78300FFB84D /* PenPaperView.swift in Sources */,
 				630CBDB12689331E002641BE /* HapticsHelper.swift in Sources */,
-				63C056602CAF5AA70025F729 /* UserMatch.swift in Sources */,
 				635DC55D25E5EDE800FB283F /* HowToTabletopView.swift in Sources */,
 				63AAE41824C3949100B36FAD /* GameEndView.swift in Sources */,
 				632CC90024B6B12500EBD566 /* AppDelegate.swift in Sources */,
