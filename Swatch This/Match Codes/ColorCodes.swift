@@ -5,6 +5,8 @@
 //  Created by Russ Hooper on 9/30/24.
 //  Copyright © 2024 Radio Silence. All rights reserved.
 //
+// https://meodai.github.io/color-names/
+// https://github.com/meodai/color-names/tree/master
 
 import Foundation
 

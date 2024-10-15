@@ -172,10 +172,12 @@ struct MatchesView: View {
                         
                         Button("Join") {
                             
+                            let lowerCaseCode = matchPassword.lowercased()
+                            
                             Task {
                                 do {
-                                    if let matchesForPassword = try await MatchesManager.shared.checkMatchCode(password: matchPassword) {
-                                        print("matchesForPassword: \(matchesForPassword)")
+                                    if let matchesForPassword = try await MatchesManager.shared.checkMatchCode(password: lowerCaseCode) {
+                                        print("matchesForPassword: \(lowerCaseCode)")
                                         
                                         //join the match
                                         self.incorrectPassword = 0

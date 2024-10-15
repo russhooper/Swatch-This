@@ -149,7 +149,7 @@ struct GameBrain {
         
     }
     
-    
+
     
     func considerShowingReviewPrompt() {
         
@@ -390,7 +390,114 @@ struct GameBrain {
     }
     
     
+    // get a random color index from a group, where that index does not equal excludedColor
+    func getRandomColor(colorGroup: String, excludeColor: String) -> String? {
+        
+        
+        // get the color group array
+        let colorsArrayForGroup = palette.masterPalette.filter{ $0.group == colorGroup }
+        
+        // remove excluded color from array
+        let filteredColorsArrayForGroup = colorsArrayForGroup.filter{ $0.name != excludeColor }
+        
+        // get a random index from the filtered color group
+        let colorName = filteredColorsArrayForGroup.randomElement()?.name
+        
+        return colorName
+        
+    }
     
+    
+    func setUpColorNameList(createdNames: [[String: String]]?, colorIndices: [Int], turn: Int, playerCount: Int) -> [String] {
+        
+        var nameList: [String] = []
+
+        if let nameDict = createdNames {
+            
+            // make an array from the dictionary of created names
+            nameList = Array(nameDict[turn].values).sorted()
+            
+            let realName = getColorName(turn: turn, indexArray: colorIndices)
+            
+            // add the real color name to the array
+            nameList.append(realName)
+            
+            if playerCount < 3 {
+                // Add a second real color name to the array as a red herring for small player counts. Pick this from the same color family.
+              
+                // get the color group for the color for this turn
+                let colorGroup = getColorGroup(index: colorIndices[turn])
+                
+                if let extraName = getRandomColor(colorGroup: colorGroup, excludeColor: realName) {
+                    nameList.append(extraName)
+                }
+                
+            }
+            
+            // sort the array alphabetically
+            nameList = nameList.sorted()
+        }
+        
+        
+        
+        return nameList
+    }
+    
+    func processGuess(guessedName: String, turn: Int, match: Match, guessingPlayer: String) -> Bool {
+        
+        let correctGuess = checkAnswer(turn: turn, colorGuessed: guessedName, colorIndices: match.colorIndices)
+        
+        if  correctGuess == true {
+            
+            let points = GameBrain().calculateCorrectGuessPoints(numberOfPlayers: match.playerCount)
+            
+            // give the local player points!
+            if var pointsByPlayer = match.pointsByPlayer {
+                if let currentPoints = pointsByPlayer[guessingPlayer] {
+                    pointsByPlayer[guessingPlayer] = currentPoints + points
+                } else {
+                    pointsByPlayer[guessingPlayer] = points
+                }
+                MatchData.shared.match.pointsByPlayer = pointsByPlayer
+            } else {
+                let pointsByPlayer: [String: Int] = [guessingPlayer: points]
+                MatchData.shared.match.pointsByPlayer = pointsByPlayer
+            }
+            
+            
+        } else {
+           
+            let points = 15
+            
+            // find the player who created this name
+            if let player = match.createdNames?[turn].first(where: { $0.value == guessedName })?.key {
+                print("The key for value \(guessedName) is: \(player)")
+                
+                // give points to the player that created that name
+                if var pointsByPlayer = match.pointsByPlayer {
+                    
+                    if let currentPoints = pointsByPlayer[player] {
+                        pointsByPlayer[player] = currentPoints + points
+                    } else {
+                        pointsByPlayer[player] = points
+                    }
+                    MatchData.shared.match.pointsByPlayer = pointsByPlayer
+
+                    
+                } else {
+                    let pointsByPlayer: [String: Int] = [player: points]
+                    MatchData.shared.match.pointsByPlayer = pointsByPlayer
+                }
+                
+                
+            } else {
+                print("Player not found for \(guessedName)")
+            }
+            
+        }
+        
+        return correctGuess
+    }
     
     
     func checkName(userColorName: String, turn: Int) -> String {

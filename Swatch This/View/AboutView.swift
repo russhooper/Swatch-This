@@ -15,8 +15,8 @@ struct AboutView: View {
     
     
     @State private var engine: CHHapticEngine?
-
-
+    
+    
     
     @State var userColorName: String = ""
     
@@ -27,9 +27,9 @@ struct AboutView: View {
     @State var rotation1: Double = 0.0
     @State var rotation2: Double = 0.0
     @State var rotation3: Double = 0.0
-
+    
     @State var showingCredits: Bool = false
-
+    
     let creditsArray = [
         
         "Special thanks to:",
@@ -46,12 +46,12 @@ struct AboutView: View {
         "Lora",
         "Sierra",
         "Nikki"
-    
+        
     ]
     
     var body: some View {
         
-  
+        
         GeometryReader(content: geometricView(with:))
             .onAppear(perform: {
                 GKAccessPoint.shared.isActive = false
@@ -60,8 +60,8 @@ struct AboutView: View {
             .onDisappear(perform: {
                 GKAccessPoint.shared.isActive = true
             })
-
-            
+        
+        
     }
     
     
@@ -71,28 +71,28 @@ struct AboutView: View {
         let geoHeight = geometry.size.height
         
         let swatchHeight: CGFloat = min(geoWidth * 0.55, 280)
-
+        
         /*
-        // Place the access point on the upper-left corner
-        GKAccessPoint.shared.location = .bottomLeading
-        GKAccessPoint.shared.isActive = true
-        GKAccessPoint.shared.showHighlights = true
-      //  GKAccessPoint.shared.parentWindow = AboutView.window
-        */
+         // Place the access point on the upper-left corner
+         GKAccessPoint.shared.location = .bottomLeading
+         GKAccessPoint.shared.isActive = true
+         GKAccessPoint.shared.showHighlights = true
+         //  GKAccessPoint.shared.parentWindow = AboutView.window
+         */
         
         
         return Group {
-
+            
             
             ZStack {
                 
-               
+                
                 
                 Color.darkTeal
                     .edgesIgnoringSafeArea(.all)
                 
                 
-                                
+                
                 
                 VStack(alignment: .center) {
                     
@@ -104,10 +104,10 @@ struct AboutView: View {
                         .foregroundColor(.white)
                         .padding(EdgeInsets(top: 50, leading: 20, bottom: 5, trailing: 20))
                     
-                                        
+                    
                     Text("\(UIApplication.officialAppVersion ?? "Error finding version") (\(UIApplication.officialAppBuild ?? "error finding build"))")
                         .font(.body)
-                        //  .fontWeight(.light)
+                    //  .fontWeight(.light)
                         .foregroundColor(.white)
                     //  .padding()
                     
@@ -125,10 +125,10 @@ struct AboutView: View {
                                         .font(.body)
                                         .foregroundColor(.white)
                                         .multilineTextAlignment(.leading)
-
+                                    
                                 }
                             }
-                          //  .background(Color.moonlight)
+                            //  .background(Color.moonlight)
                             .frame(width: swatchHeight+swatchHeight*0.13, height: swatchHeight, alignment: .center)
                         }
                         
@@ -142,19 +142,19 @@ struct AboutView: View {
                                         fontSize: 10,
                                         inGame: false,
                                         turnNumber: 0)
-                            .offset(x: self.showingCredits ? geoWidth * 0.5 : 5,
-                                    y: self.showingCredits ? geoHeight * -0.5 : -40)
-                            .rotationEffect(.degrees(self.rotation1))
-                            .animation(.easeOut)
-                            .onAppear {
-                                let baseAnimation = Animation.easeInOut(duration: 1)
-
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                            return withAnimation(baseAnimation) {
-                                                self.rotation1 = -5.0
-                                            }
-                                        }
+                        .offset(x: self.showingCredits ? geoWidth * 0.5 : 5,
+                                y: self.showingCredits ? geoHeight * -0.5 : -40)
+                        .rotationEffect(.degrees(self.rotation1))
+                        .animation(.easeOut)
+                        .onAppear {
+                            let baseAnimation = Animation.easeInOut(duration: 1)
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                return withAnimation(baseAnimation) {
+                                    self.rotation1 = -5.0
+                                }
                             }
+                        }
                         
                         SwatchStackView(swatchColor: Color.californiaBreeze,
                                         swatchHeight: swatchHeight,
@@ -164,19 +164,19 @@ struct AboutView: View {
                                         fontSize: 10,
                                         inGame: false,
                                         turnNumber: 0)
-                            .offset(x: self.showingCredits ? geoWidth * -0.5 : -15,
-                                    y: self.showingCredits ? geoHeight * -0.5 : -6)
-                            .rotationEffect(.degrees(self.rotation2))
-                            .animation(.easeOut)
-                            .onAppear {
-                                let baseAnimation = Animation.easeInOut(duration: 1)
-
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                            return withAnimation(baseAnimation) {
-                                                self.rotation2 = -11.0
-                                            }
-                                        }
+                        .offset(x: self.showingCredits ? geoWidth * -0.5 : -15,
+                                y: self.showingCredits ? geoHeight * -0.5 : -6)
+                        .rotationEffect(.degrees(self.rotation2))
+                        .animation(.easeOut)
+                        .onAppear {
+                            let baseAnimation = Animation.easeInOut(duration: 1)
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                return withAnimation(baseAnimation) {
+                                    self.rotation2 = -11.0
+                                }
                             }
+                        }
                         
                         SwatchStackView(swatchColor: Color.summerAfternoon,
                                         swatchHeight: swatchHeight,
@@ -186,19 +186,19 @@ struct AboutView: View {
                                         fontSize: 10,
                                         inGame: false,
                                         turnNumber: 0)
-                            .offset(x: self.showingCredits ? geoWidth * 0.5 : 12,
-                                    y: self.showingCredits ? geoHeight * -0.5 : -21)
-                            .rotationEffect(.degrees(self.rotation3))
-                            .animation(.easeOut)
-                            .onAppear {
-                                let baseAnimation = Animation.easeInOut(duration: 1)
-                               
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                            return withAnimation(baseAnimation) {
-                                                self.rotation3 = 15.0
-                                            }
-                                        }
+                        .offset(x: self.showingCredits ? geoWidth * 0.5 : 12,
+                                y: self.showingCredits ? geoHeight * -0.5 : -21)
+                        .rotationEffect(.degrees(self.rotation3))
+                        .animation(.easeOut)
+                        .onAppear {
+                            let baseAnimation = Animation.easeInOut(duration: 1)
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                return withAnimation(baseAnimation) {
+                                    self.rotation3 = 15.0
+                                }
                             }
+                        }
                         
                         SwatchStackView(swatchColor: Color.sage,
                                         swatchHeight: swatchHeight,
@@ -208,10 +208,10 @@ struct AboutView: View {
                                         fontSize: 10,
                                         inGame: false,
                                         turnNumber: 0)
-                            .offset(x: self.showingCredits ? geoWidth * 0.5 : 0,
-                                    y: self.showingCredits ? geoHeight * 0.5 : 0)
-                            .animation(.easeOut)
-
+                        .offset(x: self.showingCredits ? geoWidth * 0.5 : 0,
+                                y: self.showingCredits ? geoHeight * 0.5 : 0)
+                        .animation(.easeOut)
+                        
                     }
                     
                     
@@ -237,10 +237,17 @@ struct AboutView: View {
                                 .foregroundColor(.white)
                                 .font(.system(size: 18))
                         }
-   
+                        
                     }
                     .padding()
-            
+                    
+                    
+                    
+                    Link("View 30,000+ \(colorLocalized)s in 3D space", destination: URL(string: "https://codepen.io/meodai/full/zdgXJj/")!)
+                        .foregroundColor(.white)
+                        .font(.system(size: 18))
+                        .padding()
+                    
                     
                     
                 }
@@ -258,7 +265,7 @@ struct AboutView: View {
     
     func prepareHaptics() {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-
+        
         do {
             self.engine = try CHHapticEngine()
             try engine?.start()
@@ -271,12 +278,12 @@ struct AboutView: View {
         // make sure that the device supports haptics
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
         var events = [CHHapticEvent]()
-
+        
         let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.3)
         let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.4)
         let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0)
         events.append(event)
-
+        
         // convert those events into a pattern and play it immediately
         do {
             let pattern = try CHHapticPattern(events: events, parameters: [])

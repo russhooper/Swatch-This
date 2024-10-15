@@ -22,7 +22,7 @@ struct Match: Identifiable, Codable, Equatable {
     var colorIndices: [Int]
     var createdNames: [[String: String]]? // userid, color name
     var guessedNames: [[String: String]]? // userid, color name
-    
+    var pointsByPlayer: [String: Int]? // userid, point value
     let appVersion: Double?
     
   //  let colorIndices: [Int]?
@@ -43,6 +43,7 @@ struct Match: Identifiable, Codable, Equatable {
         case colorIndices
         case createdNames
         case guessedNames
+        case pointsByPlayer
         case appVersion
         case dateCreated
         case turnLastTakenDate
