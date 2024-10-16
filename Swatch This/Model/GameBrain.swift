@@ -11,9 +11,327 @@ import AudioToolbox
 import StoreKit
 
 struct GameBrain {
+        
     
-    let palette = Palette()
+    // MARK: - Palette & Colors
+
+    func getAvailablePalette(excludeRecentColors: Bool) -> [Int] {
+        
+        let palettePackUnlocked = UserDefaults.standard.bool(forKey: "swatchthis.IAP.palettepack1")
+        
+        let enableBaseGame = UserDefaults.standard.bool(forKey: "swatchthis.basegame.enabled")
+        let enablePalettePack = UserDefaults.standard.bool(forKey: "swatchthis.palettepack1.enabled")
+                
+        var enabled = [Int]()
+        
+        if enableBaseGame == true {
+            
+            enabled.append(0) // 0 is the base game's code
+        }
+        
+        if palettePackUnlocked == true && enablePalettePack == true {
+            
+            enabled.append(1)  // 1 is the Palette Pack's code
+        }
+        
+        // now check to make sure it's not an empty array
+        if enabled.isEmpty == true {
+            // if it's empty, put the base game in as a default
+            enabled.append(0)
+            
+        }
+        
+        
+        var availablePalette = [Int]()
+        
+        for index in 0...Palette().masterPalette.count-1 {
+            
+            for pack in enabled {
+                
+                if Palette().masterPalette[index].pack == pack {
+                    
+                    availablePalette.append(index)
+                }
+            }
+        }
+        
+        
+        if excludeRecentColors == true {
+            
+            // now we need to remove any swatches used in the last game
+            
+            // access Shared Defaults Object
+            let userDefaults = UserDefaults.standard
+            
+            let swatchHistoryArray = userDefaults.object(forKey: "swatchthis.swatchHistory") as? [Int]
+            
+            if swatchHistoryArray?.count ?? 0 > 3 { // if problem with stored history, defaults to a count of 0
+                
+                // let swatchHistorySet = Set(swatchHistoryArray)
+                let filteredAvailablePalette = availablePalette.filter { !swatchHistoryArray!.contains($0) }
+                
+                return filteredAvailablePalette
+                
+            } else {    // if no history, we'll return the full array
+                
+                return availablePalette
+                
+            }
+        } else {
+            
+            // return the full array
+            return availablePalette
+            
+        }
+        
+    }
     
+    
+    func getColorGroup(index: Int) -> String {
+        
+        let colorGroup = Palette().masterPalette[index].group
+        
+        return colorGroup
+    }
+    
+    
+    // get a random color index from a group, where that index does not equal excludedColor
+    func getRandomColor(colorGroup: String, excludeColor: String) -> String? {
+        
+        
+        // get the color group array
+        let colorsArrayForGroup = Palette().masterPalette.filter{ $0.group == colorGroup }
+        
+        // remove excluded color from array
+        let filteredColorsArrayForGroup = colorsArrayForGroup.filter{ $0.name != excludeColor }
+        
+        // get a random index from the filtered color group
+        let colorName = filteredColorsArrayForGroup.randomElement()?.name
+        
+        return colorName
+        
+    }
+    
+    
+    func getColorHex(turn: Int, indexArray: [Int]) -> UInt32 {
+        
+        var paletteColorIndex = 0
+        
+        if indexArray.count > turn {    // safety check
+            paletteColorIndex = indexArray[turn]
+        }
+        
+        
+        
+        //    print("getColorHex: paletteColorIndex: \(paletteColorIndex)")
+        
+        return Palette().masterPalette[paletteColorIndex].hex
+    }
+    
+    func getColorHexForScoreDetail(turn: Int, indexArray: [Int]) -> UInt32 {
+        
+        var paletteColorIndex = 0
+        
+        if indexArray.count > turn {    // safety check
+            paletteColorIndex = indexArray[turn]
+        }
+        
+        
+        let colorHex = Palette().masterPalette[paletteColorIndex].hex
+        
+        // determine if the color is too light to show over the white background
+        
+        /*
+         var c = colorHex.removeFirst();      // strip #
+         var rgb = parseInt(c, 16);   // convert rrggbb to decimal
+         var r = (rgb >> 16) & 0xff;  // extract red
+         var g = (rgb >>  8) & 0xff;  // extract green
+         var b = (rgb >>  0) & 0xff;  // extract blue
+         
+         var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+         
+         if (luma < 40) {
+         // pick a different colour
+         }
+         
+         */
+        
+        /*
+         // algorithm from: http://www.w3.org/WAI/ER/WD-AERT/#color-contrast
+         let brightness = ((r * 299) + (g * 587) + (b * 114)) / 1_000
+         
+         if brightness >= 0.5 {
+         
+         // use dark
+         } else {
+         
+         // use light
+         }
+         */
+        
+        /*
+         var red: CGFloat = 0
+         var green: CGFloat = 0
+         var blue: CGFloat = 0
+         var alpha: CGFloat = 0
+         */
+        // hexStringToUIColor(hex: String(colorHex)
+        
+        //   UIColor(hex: colorHex).getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        
+        
+        
+        //    print("getColorHex: paletteColorIndex: \(paletteColorIndex)")
+        
+        return colorHex
+    }
+    
+    /*
+     func UIColorFromHex(hex: UInt32, opacity:Double = 1.0) {
+     
+     let red = Double((hex & 0xff0000) >> 16) / 255.0
+     let green = Double((hex & 0xff00) >> 8) / 255.0
+     let blue = Double((hex & 0xff) >> 0) / 255.0
+     // self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
+     
+     
+     }
+     
+     
+     func hexStringToUIColor (hex:String) -> UIColor {
+     var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+     
+     if (cString.hasPrefix("#")) {
+     cString.remove(at: cString.startIndex)
+     }
+     
+     if ((cString.count) != 6) {
+     return UIColor.gray
+     }
+     
+     var rgbValue:UInt64 = 0
+     Scanner(string: cString).scanHexInt64(&rgbValue)
+     
+     return UIColor(
+     red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+     green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+     blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+     alpha: CGFloat(1.0)
+     )
+     }
+     */
+    
+    func getColorHexOfFullPalette(index: Int) -> UInt32 {
+        
+        return Palette().masterPalette[index].hex
+        
+    }
+    
+    
+    func getColorName(turn: Int, indexArray: [Int]) -> String {
+        
+        var paletteColorIndex = 0
+        
+        if indexArray.count > turn {    // safety check
+            paletteColorIndex = indexArray[turn]
+        }
+        
+        let colorName = getColorNameForIndex(index: paletteColorIndex)
+        
+        //   print("getColorName: \(colorName)")
+        
+        return colorName
+    }
+    
+    func getColorNameForIndex(index: Int) -> String {
+        
+        print("palette count: \(Palette().masterPalette.count), index: \(index)")
+
+        if index < Palette().masterPalette.count {
+            return Palette().masterPalette[index].name
+        } else {
+            return ""
+        }
+        
+    }
+    
+    
+    func getColorCompany(turn: Int, indexArray: [Int]) -> String {
+        
+        var paletteColorIndex = 0
+        
+        if indexArray.count > turn {    // safety check
+            paletteColorIndex = indexArray[turn]
+        }
+        
+        let companyName = Palette().masterPalette[paletteColorIndex].company
+        
+        //   print("getColorCompany: \(companyName)")
+        
+        return companyName
+    }
+    
+    
+    func getColorURL(turn: Int, indexArray: [Int]) -> String {
+        
+        var paletteColorIndex = 0
+        
+        if indexArray.count > turn {    // safety check
+            paletteColorIndex = indexArray[turn]
+        }
+        
+        let colorWebsite = Palette().masterPalette[paletteColorIndex].website
+        
+        //   print("getColorURL: \(colorWebsite)")
+        
+        return colorWebsite
+    }
+    
+    
+    
+    
+    // MARK: - Match Setup
+    
+    
+    // for the in-game swatch stacks. Only need 3 since the top will always have no rotation
+    func generate3Angles() -> [Double] {
+        
+        // set up returnArray of angles for swatch rotations
+        let returnArray = [
+            Double.random(in: -10 ..< 10),
+            Double.random(in: -10 ..< 10),
+            Double.random(in: -10 ..< 10)
+        ]
+        
+        return returnArray
+    }
+    
+    // for the Other Player's Turn swatch stacks
+    func generate4Angles() -> [Double] {
+        
+        // set up returnArray of angles for swatch rotations
+        let returnArray = [
+            Double.random(in: -10 ..< 10),
+            Double.random(in: -10 ..< 10),
+            Double.random(in: -10 ..< 10),
+            Double.random(in: -10 ..< 10)
+        ]
+        
+        return returnArray
+    }
+    
+    func generate4Offsets() -> [Float] {
+        
+        // set up returnArray of offsets for swatch stack. This can be used for X or Y.
+        let returnArray = [
+            Float.random(in: -15 ..< 15),
+            Float.random(in: -15 ..< 15),
+            Float.random(in: -15 ..< 15)
+        ]
+        
+        return returnArray
+    }
     
     
     func generateNIndices(count: Int) -> [Int] {
@@ -71,196 +389,6 @@ struct GameBrain {
         
         return returnArray
     }
-    
-    
-    
-    
-    
-    func getAvailablePalette(excludeRecentColors: Bool) -> [Int] {
-        
-        let palettePackUnlocked = UserDefaults.standard.bool(forKey: "swatchthis.IAP.palettepack1")
-        
-        let enableBaseGame = UserDefaults.standard.bool(forKey: "swatchthis.basegame.enabled")
-        let enablePalettePack = UserDefaults.standard.bool(forKey: "swatchthis.palettepack1.enabled")
-        
-        
-        
-        var enabled = [Int]()
-        
-        if enableBaseGame == true {
-            
-            enabled.append(0) // 0 is the base game's code
-        }
-        
-        if palettePackUnlocked == true && enablePalettePack == true {
-            
-            enabled.append(1)  // 1 is the Palette Pack's code
-        }
-        
-        // now check to make sure it's not an empty array
-        if enabled.isEmpty == true {
-            // if it's empty, put the base game in as a default
-            enabled.append(0)
-            
-        }
-        
-        
-        var availablePalette = [Int]()
-        
-        for index in 0...palette.masterPalette.count-1 {
-            
-            for pack in enabled {
-                
-                if palette.masterPalette[index].pack == pack {
-                    
-                    availablePalette.append(index)
-                }
-            }
-        }
-        
-        
-        if excludeRecentColors == true {
-            
-            // now we need to remove any swatches used in the last game
-            
-            // access Shared Defaults Object
-            let userDefaults = UserDefaults.standard
-            
-            let swatchHistoryArray = userDefaults.object(forKey: "swatchthis.swatchHistory") as? [Int]
-            
-            if swatchHistoryArray?.count ?? 0 > 3 { // if problem with stored history, defaults to a count of 0
-                
-                // let swatchHistorySet = Set(swatchHistoryArray)
-                let filteredAvailablePalette = availablePalette.filter { !swatchHistoryArray!.contains($0) }
-                
-                return filteredAvailablePalette
-                
-            } else {    // if no history, we'll return the full array
-                
-                return availablePalette
-                
-            }
-        } else {
-            
-            // return the full array
-            return availablePalette
-            
-        }
-        
-    }
-    
-
-    
-    func considerShowingReviewPrompt() {
-        
-        var gamesFinishedCount = UserDefaults.standard.integer(forKey: "swatchthis.gamesFinishedCount")
-        
-        gamesFinishedCount = gamesFinishedCount + 1
-        
-        
-        if gamesFinishedCount == 2 {
-            // we'll only bug the user for this after their second game end (note that there's no real way to know if Pen & Paper was actually played or just visited)
-            
-            // show Swatch This App Store rating prompt
-            if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
-                SKStoreReviewController.requestReview(in: scene)
-            }
-            
-        }
-        
-        // store the int
-        UserDefaults.standard.set(gamesFinishedCount, forKey: "swatchthis.gamesFinishedCount")
-        
-    }
-    
-    
-    // for the in-game swatch stacks. Only need 3 since the top will always have no rotation
-    func generate3Angles() -> [Double] {
-        
-        // set up returnArray of angles for swatch rotations
-        let returnArray = [
-            Double.random(in: -10 ..< 10),
-            Double.random(in: -10 ..< 10),
-            Double.random(in: -10 ..< 10)
-        ]
-        
-        return returnArray
-    }
-    
-    // for the Other Player's Turn swatch stacks
-    func generate4Angles() -> [Double] {
-        
-        // set up returnArray of angles for swatch rotations
-        let returnArray = [
-            Double.random(in: -10 ..< 10),
-            Double.random(in: -10 ..< 10),
-            Double.random(in: -10 ..< 10),
-            Double.random(in: -10 ..< 10)
-        ]
-        
-        return returnArray
-    }
-    
-    func generate4Offsets() -> [Float] {
-        
-        // set up returnArray of offsets for swatch stack. This can be used for X or Y.
-        let returnArray = [
-            Float.random(in: -15 ..< 15),
-            Float.random(in: -15 ..< 15),
-            Float.random(in: -15 ..< 15)
-        ]
-        
-        return returnArray
-    }
-    
-    
-    func playSlideSoundEffect() {
-        
-        playSoundEffect(title: "Card Flip", soundID: 0)
-        
-    }
-    
-    func playDealSoundEffect() {
-        
-        playSoundEffect(title: "Card Deal", soundID: 1)
-        
-    }
-    
-    func playCorrectSoundEffect() {
-        
-        playSoundEffect(title: "Correct Guess", soundID: 2)
-        
-    }
-    
-    func playWinSoundEffect() {
-        
-        playSoundEffect(title: "Master Colorsmith", soundID: 3)
-        
-    }
-    
-    func playSoundEffect(title: String, soundID: UInt32) {
-        
-        if let soundURL = Bundle.main.url(forResource: title, withExtension: "mp3") {
-            var mySound: SystemSoundID = soundID
-            AudioServicesCreateSystemSoundID(soundURL as CFURL, &mySound)
-            
-            // play
-            AudioServicesPlaySystemSound(mySound);
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // call after 2 seconds to give the sound time to play
-                AudioServicesDisposeSystemSoundID(mySound)  // clean up the memory
-                
-            }
-        }
-    }
-    
-    func getColorGroup(index: Int) -> String {
-        
-        let colorGroup = palette.masterPalette[index].group
-        
-        return colorGroup
-    }
-    
     
     
     
@@ -349,8 +477,177 @@ struct GameBrain {
     }
     
     
+    // At the start of GuessColorsView this will be called.
+    // This creates the list of real and created color names by turn, sorted alphabetically.
+    // For games with player count = 2, this contains an extra (red herring) name from the same color group (family)
+    // The Real and Red Herring names were added when the createdNames object was set up (setUpCreatedNames)
+    func setUpColorNameList(createdNames: [[String: String]]?, colorIndices: [Int], playerCount: Int) -> [[String]] {
+        
+        // create the array of arrays that we'll return at the end, as a placeholder
+        var nameListArray: [[String]] = []
+        
+        if let createdNamesDictArray = createdNames {
+            
+            // create the array of names that we'll combine for all turns, as a placeholder
+            var nameListForTurn: [String] = []
+            
+            // iterate through createdNames (which is an array of dicts)
+            for nameDict in createdNamesDictArray {
+                
+                // make an array from the dictionary of created names
+                nameListForTurn = Array(nameDict.values).sorted()
+                
+                // sort the array alphabetically
+                nameListForTurn = nameListForTurn.sorted()
+                nameListArray.append(nameListForTurn)
+                
+            }
+        }
+        
+        return nameListArray
+    }
+    
+  
+    
+    func setUpCreatedNames(colorIndices: [Int], playerCount: Int) -> [[String: String]] {
+        
+        var turnIndex = 0
+        var createdNames: [[String: String]] = []
+        
+        for colorIndex in colorIndices {
+                        
+            // get the real color name, which is the correct answer
+            let realName = getColorNameForIndex(index: colorIndex)
+            
+            if createdNames.isEmpty {
+                createdNames = [["Real": realName]] // create the createdNames array if empty
+                print("Real name stored into new array: \(realName)")
+                
+            } else {
+                // set this name to the key value for the turn index if not empty
+                
+                createdNames.append(["Real": realName])
+                print("Real name stored into new turn dict: \(realName) at turn: \(turnIndex)")
+                
+                
+                // array should have only realName for turnIndex at this point
+                
+            }
+            
+            if playerCount < 3 {
+                // add in an extra real name for small player counts to make the match more difficult
+                
+                // get the color group for the color for this turn
+                let colorGroup = getColorGroup(index: colorIndex)
+                
+                if let extraName = getRandomColor(colorGroup: colorGroup, excludeColor: realName) {
+                    
+                    // array should have realName and only realName for turnIndex at this point
+                    createdNames[turnIndex]["Red Herring"] = extraName
+                    print("Red Herring name stored into existing turn dict: \(extraName) at turn: \(turnIndex)")
+                    
+                }
+            }
+            
+            if turnIndex <= 3 {
+                turnIndex = turnIndex + 1
+            }
+        }
+        
+        return createdNames
+
+    }
     
     
+    func createFinalPoints(playersDict: [String : Int]) -> [Int] {
+        
+        //   let sortedPlayersDict = playersDict.sorted(by: <)
+        
+        let sortedPlayersDict = playersDict.sorted(by: { $0.value > $1.value })
+        
+        var finalPoints = [sortedPlayersDict[0].value]
+        
+        for index in 1...(sortedPlayersDict.count-1) {
+            
+            finalPoints.append(sortedPlayersDict[index].value)
+        }
+        
+        return finalPoints
+    }
+    
+    
+    // MARK: -
+
+    
+    func considerShowingReviewPrompt() {
+        
+        var gamesFinishedCount = UserDefaults.standard.integer(forKey: "swatchthis.gamesFinishedCount")
+        
+        gamesFinishedCount = gamesFinishedCount + 1
+        
+        
+        if gamesFinishedCount == 2 {
+            // we'll only bug the user for this after their second game end (note that there's no real way to know if Pen & Paper was actually played or just visited)
+            
+            // show Swatch This App Store rating prompt
+            if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+                SKStoreReviewController.requestReview(in: scene)
+            }
+            
+        }
+        
+        // store the int
+        UserDefaults.standard.set(gamesFinishedCount, forKey: "swatchthis.gamesFinishedCount")
+        
+    }
+    
+    
+    func playSlideSoundEffect() {
+        
+        playSoundEffect(title: "Card Flip", soundID: 0)
+        
+    }
+    
+    func playDealSoundEffect() {
+        
+        playSoundEffect(title: "Card Deal", soundID: 1)
+        
+    }
+    
+    func playCorrectSoundEffect() {
+        
+        playSoundEffect(title: "Correct Guess", soundID: 2)
+        
+    }
+    
+    func playWinSoundEffect() {
+        
+        playSoundEffect(title: "Master Colorsmith", soundID: 3)
+        
+    }
+    
+    func playSoundEffect(title: String, soundID: UInt32) {
+        
+        if let soundURL = Bundle.main.url(forResource: title, withExtension: "mp3") {
+            var mySound: SystemSoundID = soundID
+            AudioServicesCreateSystemSoundID(soundURL as CFURL, &mySound)
+            
+            // play
+            AudioServicesPlaySystemSound(mySound);
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // call after 2 seconds to give the sound time to play
+                AudioServicesDisposeSystemSoundID(mySound)  // clean up the memory
+                
+            }
+        }
+    }
+    
+   
+    
+    
+    
+    
+    // stores the name in the local createdNames array and advances the game (which will also upload to Firebase)
     func processTurn(userColorName: String, turnData: TurnData, playerCount: Int) -> [Int] {
         
         
@@ -390,58 +687,8 @@ struct GameBrain {
     }
     
     
-    // get a random color index from a group, where that index does not equal excludedColor
-    func getRandomColor(colorGroup: String, excludeColor: String) -> String? {
-        
-        
-        // get the color group array
-        let colorsArrayForGroup = palette.masterPalette.filter{ $0.group == colorGroup }
-        
-        // remove excluded color from array
-        let filteredColorsArrayForGroup = colorsArrayForGroup.filter{ $0.name != excludeColor }
-        
-        // get a random index from the filtered color group
-        let colorName = filteredColorsArrayForGroup.randomElement()?.name
-        
-        return colorName
-        
-    }
     
-    
-    func setUpColorNameList(createdNames: [[String: String]]?, colorIndices: [Int], turn: Int, playerCount: Int) -> [String] {
-        
-        var nameList: [String] = []
-
-        if let nameDict = createdNames {
-            
-            // make an array from the dictionary of created names
-            nameList = Array(nameDict[turn].values).sorted()
-            
-            let realName = getColorName(turn: turn, indexArray: colorIndices)
-            
-            // add the real color name to the array
-            nameList.append(realName)
-            
-            if playerCount < 3 {
-                // Add a second real color name to the array as a red herring for small player counts. Pick this from the same color family.
-              
-                // get the color group for the color for this turn
-                let colorGroup = getColorGroup(index: colorIndices[turn])
-                
-                if let extraName = getRandomColor(colorGroup: colorGroup, excludeColor: realName) {
-                    nameList.append(extraName)
-                }
-                
-            }
-            
-            // sort the array alphabetically
-            nameList = nameList.sorted()
-        }
-        
-        
-        
-        return nameList
-    }
+   
     
     func processGuess(guessedName: String, turn: Int, match: Match, guessingPlayer: String) -> Bool {
         
@@ -495,6 +742,9 @@ struct GameBrain {
             }
             
         }
+        
+        // upload to firebase
+        
         
         return correctGuess
     }
@@ -557,9 +807,7 @@ struct GameBrain {
         return trimmedName
     }
     
-    
-    
-    
+   
     func storeName(userColorName: String, turn: Int, playerCount: Int) -> [[String: String]]? {
         
         if var createdNames = MatchData.shared.match.createdNames {
@@ -599,7 +847,7 @@ struct GameBrain {
     
     
     
-    
+    // advances the game and uploads the Match data to Firebase
     func advanceGame(turnArray: [Int], indexArray: [Int], playerCount: Int) -> [Int] {
         
         print("advanceGame: \(turnArray)")
@@ -611,7 +859,7 @@ struct GameBrain {
         
         if turn >= 3 {  // we're at the end of a player's 4 submissions
             
-            if let playerID = MatchData.shared.localPlayerID {
+            if MatchData.shared.localPlayerID != nil {
                 
                 if let createdNames = MatchData.shared.match.createdNames {
                     
@@ -732,170 +980,6 @@ struct GameBrain {
     }
     
     
-    func getColorHex(turn: Int, indexArray: [Int]) -> UInt32 {
-        
-        var paletteColorIndex = 0
-        
-        if indexArray.count > turn {    // safety check
-            paletteColorIndex = indexArray[turn]
-        }
-        
-        
-        
-        //    print("getColorHex: paletteColorIndex: \(paletteColorIndex)")
-        
-        return palette.masterPalette[paletteColorIndex].hex
-    }
-    
-    func getColorHexForScoreDetail(turn: Int, indexArray: [Int]) -> UInt32 {
-        
-        var paletteColorIndex = 0
-        
-        if indexArray.count > turn {    // safety check
-            paletteColorIndex = indexArray[turn]
-        }
-        
-        
-        let colorHex = palette.masterPalette[paletteColorIndex].hex
-        
-        // determine if the color is too light to show over the white background
-        
-        /*
-         var c = colorHex.removeFirst();      // strip #
-         var rgb = parseInt(c, 16);   // convert rrggbb to decimal
-         var r = (rgb >> 16) & 0xff;  // extract red
-         var g = (rgb >>  8) & 0xff;  // extract green
-         var b = (rgb >>  0) & 0xff;  // extract blue
-         
-         var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-         
-         if (luma < 40) {
-         // pick a different colour
-         }
-         
-         */
-        
-        /*
-         // algorithm from: http://www.w3.org/WAI/ER/WD-AERT/#color-contrast
-         let brightness = ((r * 299) + (g * 587) + (b * 114)) / 1_000
-         
-         if brightness >= 0.5 {
-         
-         // use dark
-         } else {
-         
-         // use light
-         }
-         */
-        
-        /*
-         var red: CGFloat = 0
-         var green: CGFloat = 0
-         var blue: CGFloat = 0
-         var alpha: CGFloat = 0
-         */
-        // hexStringToUIColor(hex: String(colorHex)
-        
-        //   UIColor(hex: colorHex).getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        
-        
-        
-        
-        //    print("getColorHex: paletteColorIndex: \(paletteColorIndex)")
-        
-        return colorHex
-    }
-    
-    /*
-     func UIColorFromHex(hex: UInt32, opacity:Double = 1.0) {
-     
-     let red = Double((hex & 0xff0000) >> 16) / 255.0
-     let green = Double((hex & 0xff00) >> 8) / 255.0
-     let blue = Double((hex & 0xff) >> 0) / 255.0
-     // self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
-     
-     
-     }
-     
-     
-     func hexStringToUIColor (hex:String) -> UIColor {
-     var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-     
-     if (cString.hasPrefix("#")) {
-     cString.remove(at: cString.startIndex)
-     }
-     
-     if ((cString.count) != 6) {
-     return UIColor.gray
-     }
-     
-     var rgbValue:UInt64 = 0
-     Scanner(string: cString).scanHexInt64(&rgbValue)
-     
-     return UIColor(
-     red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-     green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-     blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-     alpha: CGFloat(1.0)
-     )
-     }
-     */
-    
-    func getColorHexOfFullPalette(index: Int) -> UInt32 {
-        
-        return palette.masterPalette[index].hex
-        
-    }
-    
-    
-    func getColorName(turn: Int, indexArray: [Int]) -> String {
-        
-        var paletteColorIndex = 0
-        
-        if indexArray.count > turn {    // safety check
-            paletteColorIndex = indexArray[turn]
-        }
-        
-        let colorName = palette.masterPalette[paletteColorIndex].name
-        
-        //   print("getColorName: \(colorName)")
-        
-        return colorName
-    }
-    
-    
-    func getColorCompany(turn: Int, indexArray: [Int]) -> String {
-        
-        var paletteColorIndex = 0
-        
-        if indexArray.count > turn {    // safety check
-            paletteColorIndex = indexArray[turn]
-        }
-        
-        let companyName = palette.masterPalette[paletteColorIndex].company
-        
-        //   print("getColorCompany: \(companyName)")
-        
-        return companyName
-    }
-    
-    
-    func getColorURL(turn: Int, indexArray: [Int]) -> String {
-        
-        var paletteColorIndex = 0
-        
-        if indexArray.count > turn {    // safety check
-            paletteColorIndex = indexArray[turn]
-        }
-        
-        let colorWebsite = palette.masterPalette[paletteColorIndex].website
-        
-        //   print("getColorURL: \(colorWebsite)")
-        
-        return colorWebsite
-    }
-    
-    
     
     func storeUserColorName(turnArray: [Int], userColor: String, indexArray: [Int], submittedColors: [[String]]) -> [[String]] {
         
@@ -931,6 +1015,7 @@ struct GameBrain {
         
         // first check if the user has submitted colors
         // for now, users must submit all 4 colors before the game will update Firebase
+        // the createdNames array will also have the real color names and possibly have red herring names
         
         // will return:
         // (0, false) if error
@@ -941,6 +1026,8 @@ struct GameBrain {
         // (3, false) if game end
         
      //   var matchState: (Int, Bool) = (0, false)
+        
+        
                 
         if let createdNames = match.createdNames {
             for colorNameDict in createdNames {
@@ -951,11 +1038,32 @@ struct GameBrain {
             
             // if we've gotten to this point, then there must be color names for the user
             // next check if every other player has submitted their names
-            for colorNameDict in createdNames {
-                if colorNameDict.count < match.playerCount {
-                    return (1, false)
+            
+            var keyCount: [String: Int] = [:]
+            
+            for playerId in match.playerIDs {
+                var count = 0
+                for colorNameDict in createdNames {
+                    if colorNameDict.keys.contains(playerId) {
+                        count += 1
+                    }
+                }
+                keyCount[playerId] = count
+            }
+            
+            print("keyCount: \(keyCount)")
+            
+            if keyCount[localPlayerID] ?? 0 < 4 {
+                return (1, true) // user can submit colors
+            }
+            
+            // find the smallest value from keyCount
+            if let minCount = keyCount.values.min() {
+                if minCount < 4 {
+                    return (1, false) // user has submitted colors but not every player has
                 }
             }
+           
         } else {
             return (1, true) // if no createdNames array, then user can submit colors
         }
@@ -1091,6 +1199,9 @@ struct GameBrain {
         
         //
     }
+    
+    
+    // MARK: - Match History
     
     func saveMatchToHistory(gameData: GameData) {
         
@@ -1618,21 +1729,7 @@ struct GameBrain {
     
     
     
-    func createFinalPoints(playersDict: [String : Int]) -> [Int] {
-        
-        //   let sortedPlayersDict = playersDict.sorted(by: <)
-        
-        let sortedPlayersDict = playersDict.sorted(by: { $0.value > $1.value })
-        
-        var finalPoints = [sortedPlayersDict[0].value]
-        
-        for index in 1...(sortedPlayersDict.count-1) {
-            
-            finalPoints.append(sortedPlayersDict[index].value)
-        }
-        
-        return finalPoints
-    }
+   
     
     
     
@@ -1711,7 +1808,7 @@ struct GameBrain {
     func getIAPColors() -> [UInt32] {
         
         
-        let filteredPalette = palette.masterPalette.filter { color in
+        let filteredPalette = Palette().masterPalette.filter { color in
             return color.pack == 1
         }
         
@@ -1731,7 +1828,7 @@ struct GameBrain {
     func getBaseGameColors() -> [UInt32] {
         
         
-        let filteredPalette = palette.masterPalette.filter { color in
+        let filteredPalette = Palette().masterPalette.filter { color in
             return color.pack == 0
         }
         

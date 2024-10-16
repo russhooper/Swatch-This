@@ -27,6 +27,8 @@ class MatchData {   // should this be a struct?
     
     var match: Match // contains id, matchID, matchPassword?, playerIDs, colorIndices, createdNames?, guessedNames?, appVersion?, dateCreated?, phase?, playerDisplayNames?
     
+    var colorNamesForList: [[String]]?
+    
     // should this still be done? Maybe just used for local match?
     private init() { // initialize with defaults
         
@@ -89,6 +91,8 @@ class MatchData {   // should this be a struct?
                            playerDisplayNames: nil,
                            playerCount: 2,
                            isCompleted: false)
+        
+        self.colorNamesForList = nil
         
     }
     

@@ -60,7 +60,7 @@ struct SwatchStackView: View {
                     
                     if inGame == true {
                         
-                        TextField("Title this \(colorLocalized)", text: self.textField!)
+                        TextField("Name this \(colorLocalized)", text: self.textField!)
                             .frame(width: self.swatchHeight, alignment: .leading)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             

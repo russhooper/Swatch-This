@@ -56,6 +56,8 @@ final class MatchesManager {
                 }
             }
             
+            MatchData.shared.match.playerIDs.append(playerID)
+            
             // determine what to show player (color submission, guess colors, other player's turn, game end)
             let gameState = GameBrain().determineGameState(localPlayerID: playerID, match: MatchData.shared.match)
 
@@ -91,6 +93,10 @@ final class MatchesManager {
             displayNameArray = nil
         }
         
+        
+        // set up the createdNames array of dicts with the real name and possible extra (red herring)
+        let createdNames = GameBrain().setUpCreatedNames(colorIndices: MatchData.shared.match.colorIndices, playerCount: playerCount)
+        
         Task {
             do {
                 /*
@@ -122,12 +128,13 @@ final class MatchesManager {
                 
 
                 
+                
                 let match: Match = await Match(id: matchID,
                                                matchID: matchID, // try to get rid of this bc it's redundant
                                                matchPassword: code,
                                                playerIDs: [userID],
                                                colorIndices: MatchData.shared.match.colorIndices,
-                                               createdNames: nil,
+                                               createdNames: createdNames,
                                                guessedNames: nil,
                                                appVersion: Double(UIApplication.appVersion ?? "0"),
                                                dateCreated: dateCreated,
@@ -153,7 +160,7 @@ final class MatchesManager {
         try matchDocument(id: String(match.id)).setData(from: match, merge: false)
     }
     
-    
+    // updates the match in Firebase. Any matching existing data will be merged and not updated.
     func updateMatch(match: Match) async throws {
                         
         // use Firestore.Encoder to encode the Match object

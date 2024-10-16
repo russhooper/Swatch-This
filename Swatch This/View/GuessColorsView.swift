@@ -269,7 +269,15 @@ struct GuessColorsView: View {
             //  Color(red: 221/255, green: 217/255, blue: 211/255, opacity: 1.0)
             Color.primaryTeal
                 .edgesIgnoringSafeArea(.all)
-                .onAppear(perform: prepareHaptics)
+                .onFirstAppear(perform: {
+                    
+                    MatchData.shared.colorNamesForList = GameBrain().setUpColorNameList(createdNames: matchData.match.createdNames, colorIndices: matchData.match.colorIndices, playerCount: matchData.match.playerCount)
+                    
+                    prepareHaptics()
+                    
+                    
+                })
+              //  .onAppear(perform: prepareHaptics)
             
             
             GeometryReader(content: geometricView(with:))
@@ -729,10 +737,8 @@ struct GuessColorsView: View {
             vStackSpacingLocal = 0  // no space between "next" ribbon and colors list
             viewWidth = 500
         }
-        
-       
-        let nameList = GameBrain().setUpColorNameList(createdNames: matchData.match.createdNames, colorIndices: matchData.match.colorIndices, turn: self.turnData.turnArray[0], playerCount: matchData.match.playerCount)
-        
+                
+        let turn = self.turnData.turnArray[0]
         
         return Group {
             
@@ -742,60 +748,64 @@ struct GuessColorsView: View {
                     
                     nextView(geoWidth: geoWidth, viewWidth: viewWidth, geoHeight: geoHeight, largeScreen: largeScreen)
                     
-                    //  present a list of the submitted color names, including the real one, in alphabetical order
-                    List(nameList, id: \.self) { colorName in
-                        
-                        if matchData.match.createdNames?[self.turnData.turnArray[0]][LocalUser.shared.userID] == colorName {
-                            // the player's own submission
-                            
-                            Text(colorName)
-                            
-                        } else {
-                            
-                            
-                            Button(action: {
+                    if let nameList = MatchData.shared.colorNamesForList {
+                        if nameList.count >= turn {
+                            //  present a list of the submitted color names, including the real one, in alphabetical order
+                            List(nameList[turn], id: \.self) { colorName in
                                 
-                                
-                                if  self.hasGuessed == false {
+                                if matchData.match.createdNames?[turn][LocalUser.shared.userID] == colorName {
+                                    // the player's own submission
                                     
-                                    let correctGuess = GameBrain().processGuess(guessedName: colorName, turn: self.turnData.turnArray[0], match: matchData.match, guessingPlayer: LocalUser.shared.userID)
+                                    Text(colorName)
                                     
-                                    if correctGuess == true {
-                                        self.correctGuessHaptics()
-                                        GameBrain().playCorrectSoundEffect()
-                                        self.showConfetti = true
-
-                                    } else {
-                                        self.incorrectGuessHaptics()
-                                        self.showConfetti = false
-                                    }
-                                    /*
-                                     // playersByRound[what turn are we on?][what player is this? (considering arrays start at 0)][get "Guessed" key] = set to guessed color name
-                                     matchData.match.playersByRound[self.turnData.turnArray[0]][matchData.match.currentPlayer-1]["Guessed"] = string
-                                     */
+                                } else {
                                     
-                                    self.hasGuessed = true
                                     
-                                    /*
-                                     // sort the players to have an up-to-date list
-                                     matchData.match.sortedPlayersArray = GameBrain().orderPlayersByPoints(playersDict: matchData.match.players)
-                                     
-                                     
-                                     // create the ordered points list
-                                     matchData.match.finalPointsArray = GameBrain().createFinalPoints(playersDict: matchData.match.players)
-                                     */
+                                    Button(action: {
+                                        
+                                        
+                                        if  self.hasGuessed == false {
+                                            
+                                            let correctGuess = GameBrain().processGuess(guessedName: colorName, turn: turn, match: matchData.match, guessingPlayer: LocalUser.shared.userID)
+                                            
+                                            if correctGuess == true {
+                                                self.correctGuessHaptics()
+                                                GameBrain().playCorrectSoundEffect()
+                                                self.showConfetti = true
+                                                
+                                            } else {
+                                                self.incorrectGuessHaptics()
+                                                self.showConfetti = false
+                                            }
+                                            /*
+                                             // playersByRound[what turn are we on?][what player is this? (considering arrays start at 0)][get "Guessed" key] = set to guessed color name
+                                             matchData.match.playersByRound[self.turnData.turnArray[0]][matchData.match.currentPlayer-1]["Guessed"] = string
+                                             */
+                                            
+                                            self.hasGuessed = true
+                                            
+                                            /*
+                                             // sort the players to have an up-to-date list
+                                             matchData.match.sortedPlayersArray = GameBrain().orderPlayersByPoints(playersDict: matchData.match.players)
+                                             
+                                             
+                                             // create the ordered points list
+                                             matchData.match.finalPointsArray = GameBrain().createFinalPoints(playersDict: matchData.match.players)
+                                             */
+                                        }
+                                        
+                                        
+                                    }) {
+                                        
+                                        Text(colorName)
+                                            .accentColor(Color.tangerineText)
+                                    }.disabled(self.hasGuessed)
                                 }
-                                
-                                
-                            }) {
-                                
-                                Text(colorName)
-                                    .accentColor(Color.tangerineText)
-                            }.disabled(self.hasGuessed)
+                            }
+                            
                         }
+                       
                     }
-                    
-                    
                     
                 }
                 
@@ -804,7 +814,7 @@ struct GuessColorsView: View {
                     .foregroundColor(Color.primaryTeal)
                     .edgesIgnoringSafeArea(.all)
                     .opacity(self.hudOpacity == 0 ? 1 : 0) // reverse of HUD opacity
-                    .animation(.linear(duration: 0.5).delay(self.turnData.turnArray[0] == 3 ? 0 : 0.5)) // no delay if we're animating out, only for animating in
+                    .animation(.linear(duration: 0.5).delay(turn == 3 ? 0 : 0.5)) // no delay if we're animating out, only for animating in
                 
                 
             }

@@ -17,7 +17,7 @@ struct Match: Identifiable, Codable, Equatable {
     
     let matchID: String
     let matchPassword: String?
-    let playerIDs: [String]
+    var playerIDs: [String]
     
     var colorIndices: [Int]
     var createdNames: [[String: String]]? // userid, color name

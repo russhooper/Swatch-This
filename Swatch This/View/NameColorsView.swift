@@ -908,6 +908,7 @@ struct NameColorsView: View {
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .fontWeight(.heavy)
                                 .disabled(tag == self.turnData.turnArray[0] ? false : true)
+                                .background(Color.white)
                                 .introspectTextField { textField in
                                     if tag == self.turnData.turnArray[0] && tag > 0 {  // the swatch views have "tag" values that match their turn
                                         textField.becomeFirstResponder()    // make the textField active

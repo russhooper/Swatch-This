@@ -134,6 +134,9 @@ struct AboutView: View {
                         
                         
                         
+                        
+                        
+                        
                         SwatchStackView(swatchColor: Color.roseWine,
                                         swatchHeight: swatchHeight,
                                         text: "",
