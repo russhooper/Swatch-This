@@ -43,29 +43,33 @@ final class MatchesManager {
             .getAuthenticatedUser() else { return }
         
         // store appropriate stuff from retrieved Match into MatchData and LocalUser
-        MatchData.shared.localPlayerID = authDataResult.uid
+        let playerID = authDataResult.uid
         MatchData.shared.onlineGame = true
         MatchData.shared.match = match
         
-        if let playerID = MatchData.shared.localPlayerID {
-            if let localDisplayName = LocalUser.shared.displayName {
-                if let displayNames = MatchData.shared.match.playerDisplayNames {
-                    MatchData.shared.match.playerDisplayNames?[playerID] = localDisplayName
-                } else {
-                    MatchData.shared.match.playerDisplayNames = [playerID: localDisplayName]
-                }
+        if let localDisplayName = LocalUser.shared.displayName {
+            if let displayNames = MatchData.shared.match.playerDisplayNames {
+                MatchData.shared.match.playerDisplayNames?[playerID] = localDisplayName
+            } else {
+                MatchData.shared.match.playerDisplayNames = [playerID: localDisplayName]
             }
             
-            MatchData.shared.match.playerIDs.append(playerID)
+            // append the playerIDs array with the local player's ID if it doesn't already exist in the array
+            if MatchData.shared.match.playerIDs.contains(playerID) {
+                
+            } else {
+                MatchData.shared.match.playerIDs.append(playerID)
+            }
+            
             
             // determine what to show player (color submission, guess colors, other player's turn, game end)
             let gameState = GameBrain().determineGameState(localPlayerID: playerID, match: MatchData.shared.match)
-
+            
             print("gameState: \(gameState.phase) \(gameState.canTakeAction)")
         }
         
-      
     }
+
     
     func createMatch() { // should differentiate between online and local and not upload online at this point
         
@@ -80,7 +84,7 @@ final class MatchesManager {
         let dateCreated = Date()
         
         let userID = LocalUser.shared.userID
-        MatchData.shared.localPlayerID = userID
+
         
         let phaseByPlayer: [String: Int]? = [userID: 1] // 1 for name creation, 2 for color guessing, 3 for completed
         

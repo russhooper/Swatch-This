@@ -47,9 +47,14 @@ struct ActiveMatchCellView: View {
         let userNamesArray: [String] = match.playerDisplayNames?.values.map { $0 } ?? []
         
         var actionText: String = ""
-        let canTakeTurn = GameBrain().determineGameState(localPlayerID: LocalUser.shared.userID, match: match).canTakeAction
-        if canTakeTurn == true {
-            actionText = "Your turn!"
+        
+        let gameState: (phase: Int, canTakeAction: Bool) = GameBrain().determineGameState(localPlayerID: LocalUser.shared.userID, match: match)
+        if gameState.canTakeAction == true {
+            if gameState.phase == 3 {
+                actionText = "View results!"
+            } else {
+                actionText = "Your turn!"
+            }
         } else {
             actionText = "Another player's turn"
         }

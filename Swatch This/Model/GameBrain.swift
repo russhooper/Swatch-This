@@ -289,9 +289,50 @@ struct GameBrain {
     }
     
     
+    func getIAPColors() -> [UInt32] {
+        
+        
+        let filteredPalette = Palette().masterPalette.filter { color in
+            return color.pack == 1
+        }
+        
+        
+        var filteredColors = [UInt32]()
+        
+        for color in filteredPalette {
+            
+            filteredColors.append(color.hex)
+        }
+        
+        return filteredColors
+        
+    }
     
     
-    // MARK: - Match Setup
+    func getBaseGameColors() -> [UInt32] {
+        
+        
+        let filteredPalette = Palette().masterPalette.filter { color in
+            return color.pack == 0
+        }
+        
+        
+        var filteredColors = [UInt32]()
+        
+        for color in filteredPalette {
+            
+            filteredColors.append(color.hex)
+        }
+        
+        
+        
+        return filteredColors
+        
+    }
+    
+    
+    
+    // MARK: - Match Setup & Adjustments
     
     
     // for the in-game swatch stacks. Only need 3 since the top will always have no rotation
@@ -576,71 +617,45 @@ struct GameBrain {
     }
     
     
-    // MARK: -
+    // the names are now alphabetized within GuessColorsView's List using .sorted()
+    // for some reason this would sometimes not get called or work -- seems like after a few rematches
+    func alphabetizeSubmittedColors(gameData: GameData) -> GameData {
+        
+        let sortedGameData = gameData
+        
+        for round in (0...3) {
+            
+            sortedGameData.submittedColorNames[round] = gameData.submittedColorNames[round].sorted()
+            
+        }
+        
+        return sortedGameData
+        
+    }
+    
+    
+    func updateDisplayName(round: Int, userName: String, displayNames: [String: String]?) -> [String: String] {
+        
+        if var newDisplayNames = displayNames {
+            // display names previously created
+            
+            newDisplayNames["Player \(round+1)"] = userName
+            
+            return newDisplayNames
+            
+        } else {
+            // set up display names with new dictionary
+            return ["Player \(round+1)": userName]
+        }
+        
+        
+    }
+    
+    
+    
+    
+    // MARK: - Turn Logic
 
-    
-    func considerShowingReviewPrompt() {
-        
-        var gamesFinishedCount = UserDefaults.standard.integer(forKey: "swatchthis.gamesFinishedCount")
-        
-        gamesFinishedCount = gamesFinishedCount + 1
-        
-        
-        if gamesFinishedCount == 2 {
-            // we'll only bug the user for this after their second game end (note that there's no real way to know if Pen & Paper was actually played or just visited)
-            
-            // show Swatch This App Store rating prompt
-            if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
-                SKStoreReviewController.requestReview(in: scene)
-            }
-            
-        }
-        
-        // store the int
-        UserDefaults.standard.set(gamesFinishedCount, forKey: "swatchthis.gamesFinishedCount")
-        
-    }
-    
-    
-    func playSlideSoundEffect() {
-        
-        playSoundEffect(title: "Card Flip", soundID: 0)
-        
-    }
-    
-    func playDealSoundEffect() {
-        
-        playSoundEffect(title: "Card Deal", soundID: 1)
-        
-    }
-    
-    func playCorrectSoundEffect() {
-        
-        playSoundEffect(title: "Correct Guess", soundID: 2)
-        
-    }
-    
-    func playWinSoundEffect() {
-        
-        playSoundEffect(title: "Master Colorsmith", soundID: 3)
-        
-    }
-    
-    func playSoundEffect(title: String, soundID: UInt32) {
-        
-        if let soundURL = Bundle.main.url(forResource: title, withExtension: "mp3") {
-            var mySound: SystemSoundID = soundID
-            AudioServicesCreateSystemSoundID(soundURL as CFURL, &mySound)
-            
-            // play
-            AudioServicesPlaySystemSound(mySound);
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // call after 2 seconds to give the sound time to play
-                AudioServicesDisposeSystemSoundID(mySound)  // clean up the memory
-                
-            }
-        }
-    }
     
    
     
@@ -654,7 +669,7 @@ struct GameBrain {
         let turn = turnData.turnArray[0]
         let trimmedName = checkName(userColorName: userColorName, turn: turn)
         
-        MatchData.shared.match.createdNames = storeName(userColorName: trimmedName, turn: turn, playerCount: playerCount)
+        MatchData.shared.match.createdNames = storeUserCreatedName(userCreatedName: trimmedName, turn: turn, playerCount: playerCount)
         
         print("MatchData: \(MatchData.shared.match)")
         
@@ -687,10 +702,11 @@ struct GameBrain {
     }
     
     
-    
    
     
     func processGuess(guessedName: String, turn: Int, match: Match, guessingPlayer: String) -> Bool {
+        
+        // MARK: determine and award points
         
         let correctGuess = checkAnswer(turn: turn, colorGuessed: guessedName, colorIndices: match.colorIndices)
         
@@ -743,8 +759,21 @@ struct GameBrain {
             
         }
         
-        // upload to firebase
+        // MARK: store the guessed name
+        MatchData.shared.match.guessedNames = storeUserGuessedName(userGuessedName: guessedName, turn: turn, playerCount: MatchData.shared.match.playerCount)
+
         
+        
+        // MARK: upload to firebase
+        Task {
+            do {
+                MatchData.shared.match.turnLastTakenDate = Date()
+                try await MatchesManager.shared.updateMatch(match: MatchData.shared.match)
+                    
+            } catch {
+                print("update match error in processGuess(): \(error)")
+            }
+        }
         
         return correctGuess
     }
@@ -808,41 +837,45 @@ struct GameBrain {
     }
     
    
-    func storeName(userColorName: String, turn: Int, playerCount: Int) -> [[String: String]]? {
+    func storeUserCreatedName(userCreatedName: String, turn: Int, playerCount: Int) -> [[String: String]]? {
         
-        if var createdNames = MatchData.shared.match.createdNames {
-            // If createdNames is not nil, modify it
-            if let playerID = MatchData.shared.localPlayerID {
-                
-                if createdNames.count > turn {
-                    createdNames[turn][playerID] = userColorName // store userColorName for this playerID at this turn's slot in the createdNames array
-                    print("name stored into existing turn dict: \(userColorName)")
+        return storeName(colorName: userCreatedName, turn: turn, playerCount: playerCount, namesArrayOptional: MatchData.shared.match.createdNames)
+    }
+    
+    func storeUserGuessedName(userGuessedName: String, turn: Int, playerCount: Int) -> [[String: String]]? {
+        
+        return storeName(colorName: userGuessedName, turn: turn, playerCount: playerCount, namesArrayOptional: MatchData.shared.match.guessedNames)
+    }
+    
+    // storeName() won't be directly called in the turn processing logic.
+    // Instead, this will be called by either storeUserCreatedName() or storeUserGuessedName(), since the data logic is similar between the two
+    func storeName(colorName: String, turn: Int, playerCount: Int, namesArrayOptional: [[String: String]]?) -> [[String: String]]? {
+                     
+        let playerID = LocalUser.shared.userID
 
-                } else {
-                    createdNames.append([playerID: userColorName])
-                    print("name stored into new turn dict: \(userColorName)")
-                }
+        if var namesArray = namesArrayOptional {
+            // If namesArray is not nil, modify it
+            
+            if namesArray.count > turn {
+                namesArray[turn][playerID] = colorName // store userColorName for this playerID at this turn's slot in the createdNames array
+                print("name stored into existing turn dict: \(colorName)")
                 
-                return createdNames // Assign the updated dictionary back to MatchData
+            } else {
+                namesArray.append([playerID: colorName])
+                print("name stored into new turn dict: \(colorName)")
             }
+            
+            return namesArray // Assign the updated dictionary back to MatchData
             
             
         } else {
-            // If createdNames is nil, create a new dictionary and assign the value
+            // If namesArray is nil, create a new dictionary and assign the value
             
-            if let playerID = MatchData.shared.localPlayerID {
-                print("name stored into new array: \(userColorName)")
-                return [[playerID: userColorName]]
-            } else {
-                
-                print("error with localPlayerID")
-                return nil
-            }
-            
+            print("name stored into new array: \(colorName)")
+            return [[playerID: colorName]]
         }
         
-        print("error with either localPlayerID or createdNames")
-        return nil
+        
     }
     
     
@@ -859,25 +892,23 @@ struct GameBrain {
         
         if turn >= 3 {  // we're at the end of a player's 4 submissions
             
-            if MatchData.shared.localPlayerID != nil {
+            
+            if let createdNames = MatchData.shared.match.createdNames {
                 
-                if let createdNames = MatchData.shared.match.createdNames {
+                if createdNames.count >= 4 { // should never be > 4, but putting in for protection
                     
-                    if createdNames.count >= 4 { // should never be > 4, but putting in for protection
-                        
-                        //  let match: Match = Match(id: MatchData.shared.matchID, matchID: MatchData.shared.matchID, playerIDs: ["123"], colors: MatchData.shared.colors)
-                        
-                        Task {
-                            do {
-                                MatchData.shared.match.turnLastTakenDate = Date()
-                                try await MatchesManager.shared.updateMatch(match: MatchData.shared.match)
-                                    
-                            } catch {
-                                print("update match error: \(error)")
-                            }
+                    //  let match: Match = Match(id: MatchData.shared.matchID, matchID: MatchData.shared.matchID, playerIDs: ["123"], colors: MatchData.shared.colors)
+                    
+                    Task {
+                        do {
+                            MatchData.shared.match.turnLastTakenDate = Date()
+                            try await MatchesManager.shared.updateMatch(match: MatchData.shared.match)
+                            
+                        } catch {
+                            print("update match error in advanceGame(): \(error)")
                         }
-                        
                     }
+                    
                 }
                 
                 
@@ -919,23 +950,6 @@ struct GameBrain {
     }
     
     
-    func updateDisplayName(round: Int, userName: String, displayNames: [String: String]?) -> [String: String] {
-        
-        if var newDisplayNames = displayNames {
-            // display names previously created
-            
-            newDisplayNames["Player \(round+1)"] = userName
-            
-            return newDisplayNames
-            
-        } else {
-            // set up display names with new dictionary
-            return ["Player \(round+1)": userName]
-        }
-        
-        
-    }
-    
     
     func isPlayerEnd(turnArray: [Int]) -> Bool {
         
@@ -963,21 +977,6 @@ struct GameBrain {
     }
     
     
-    // the names are now alphabetized within GuessColorsView's List using .sorted()
-    // for some reason this would sometimes not get called or work -- seems like after a few rematches
-    func alphabetizeSubmittedColors(gameData: GameData) -> GameData {
-        
-        let sortedGameData = gameData
-        
-        for round in (0...3) {
-            
-            sortedGameData.submittedColorNames[round] = gameData.submittedColorNames[round].sorted()
-            
-        }
-        
-        return sortedGameData
-        
-    }
     
     
     
@@ -1023,12 +1022,12 @@ struct GameBrain {
         // (1, false) if user has submitted colors but not every player has
         // (2, true) if user can guess colors
         // (2, false) if user has guess colors but not every player has
-        // (3, false) if game end
+        // (3, true) if game end
         
      //   var matchState: (Int, Bool) = (0, false)
         
+        // MARK: check created names
         
-                
         if let createdNames = match.createdNames {
             for colorNameDict in createdNames {
                 guard let colorName = colorNameDict[localPlayerID] else {
@@ -1037,21 +1036,8 @@ struct GameBrain {
             }
             
             // if we've gotten to this point, then there must be color names for the user
-            // next check if every other player has submitted their names
             
-            var keyCount: [String: Int] = [:]
-            
-            for playerId in match.playerIDs {
-                var count = 0
-                for colorNameDict in createdNames {
-                    if colorNameDict.keys.contains(playerId) {
-                        count += 1
-                    }
-                }
-                keyCount[playerId] = count
-            }
-            
-            print("keyCount: \(keyCount)")
+            let keyCount = keyCount(playerIDs: match.playerIDs, localPlayerID: localPlayerID, namesArray: createdNames)
             
             if keyCount[localPlayerID] ?? 0 < 4 {
                 return (1, true) // user can submit colors
@@ -1063,14 +1049,65 @@ struct GameBrain {
                     return (1, false) // user has submitted colors but not every player has
                 }
             }
-           
+            
         } else {
             return (1, true) // if no createdNames array, then user can submit colors
         }
         
-        // if we've gotten to this point, then there must be color names for all players
+        // If we've gotten to this point, then there must be color names created by all players
+        // Now we need to determine the state of the name guessing
+        
+        // MARK: check guessed names
+
+        
+        if let guessedNames = match.guessedNames {
+            for colorNameDict in guessedNames {
+                guard let colorName = colorNameDict[localPlayerID] else {
+                    return (2, true) // if no color name, then user can guess colors
+                }
+            }
+            
+            // if we've gotten to this point, then there must be color names for the user
+            
+            let keyCount = keyCount(playerIDs: match.playerIDs, localPlayerID: localPlayerID, namesArray: guessedNames)
+            
+            if keyCount[localPlayerID] ?? 0 < 4 {
+                return (2, true) // user can guess colors
+            }
+            
+            // find the smallest value from keyCount
+            if let minCount = keyCount.values.min() {
+                if minCount < 4 {
+                    return (2, false) // user has guessed colors but not every player has
+                }
+            }
+            
+        } else {
+            return (2, true) // if no guessedNames array, then user can guess colors
+        }
+        
+        return (3, true) // game end
+        
+    }
+    
+    
+    func keyCount(playerIDs: [String], localPlayerID: String, namesArray: [[String: String]]) -> [String: Int] {
+        
+        // check if every other player has submitted their names
+        
+        var keyCount: [String: Int] = [:]
+        
+        for playerId in playerIDs {
+            var count = 0
+            for colorNameDict in namesArray {
+                if colorNameDict.keys.contains(playerId) {
+                    count += 1
+                }
+            }
+            keyCount[playerId] = count
+        }
                 
-        return (2, true) // user can guess colors
+        return keyCount
         
     }
     
@@ -1199,6 +1236,101 @@ struct GameBrain {
         
         //
     }
+    
+    
+    // called when in GuessColors
+    func isGameEnd(roundsFinished: Int, playerCount: Int) -> Bool {
+        
+        let returnBool = roundsFinished >= playerCount*2
+        print("isGameEnd: \(returnBool)")
+        
+        return returnBool
+        
+    }
+    
+    
+    
+    func orderPlayersByPoints(playersDict: [String : Int]) -> [String] {
+        
+        
+        //   let sortedPlayersDict = playersDict.sorted(by: <)
+        
+        let sortedPlayersDict = playersDict.sorted(by: { $0.value > $1.value })
+        
+        var sortedPlayersArray = [sortedPlayersDict[0].key]
+        
+        for index in 1...(sortedPlayersDict.count-1) {
+            
+            sortedPlayersArray.append(sortedPlayersDict[index].key)
+        }
+        
+        return sortedPlayersArray
+    }
+    
+    
+    
+    
+    func getScoreDetailList(created: String, guessed: String, actual: String, playersThisRound: [[String: String]], userNames: [String: String]) -> [String] {
+        
+        var scoreDetailList = [String]()
+        
+        var createdVar = created
+        if created == "Created color" {
+            // then the game was ended prematurely, so we'll say "Created nothing"
+            createdVar = "nothing"
+        }
+        
+        
+        var guessedVar = guessed
+        if guessed == "Guessed color" {
+            // then the game was ended prematurely, so we'll say "Guessed nothing"
+            guessedVar = "nothing"
+        }
+        
+        // every player should have a created and guessed for each color
+        scoreDetailList.append("Created \(createdVar) and guessed \(guessedVar)")
+        
+        var counter = 0
+        
+        // if the player's created color was guessed by any other players, we'll add that to the score detail list
+        for data in playersThisRound {
+            
+            if created == data["Guessed"] {
+                
+                let userName = userNames["Player \(counter+1)"] ?? "Player \(counter+1)"
+                
+                scoreDetailList.append("Fooled \(userName)")
+                
+            }
+            
+            counter = counter + 1
+        }
+        
+        
+        // eat the end of the list show the points that this color earned this player
+        
+        var colorPoints = 0
+        
+        // if correct color guessed: 5 * playerCount + 5 points
+        if guessed == actual {
+            colorPoints += userNames.count*5+5
+        }
+        
+        // 15 points per player fooled
+        if scoreDetailList.count > 1 {
+            colorPoints += (scoreDetailList.count-1)*15
+        }
+        
+        // make it cheery if they earned points; don't rub it in if they didn't
+        if colorPoints > 0 {
+            scoreDetailList.append("+\(colorPoints) points!")
+        }
+        
+        return scoreDetailList
+        
+        
+    }
+    
     
     
     // MARK: - Match History
@@ -1694,42 +1826,10 @@ struct GameBrain {
     
     
     
-    // called when in GuessColors
-    func isGameEnd(roundsFinished: Int, playerCount: Int) -> Bool {
-        
-        let returnBool = roundsFinished >= playerCount*2
-        print("isGameEnd: \(returnBool)")
-        
-        return returnBool
-        
-    }
     
     
+    // MARK: - Utilities
     
-    func orderPlayersByPoints(playersDict: [String : Int]) -> [String] {
-        
-        
-        //   let sortedPlayersDict = playersDict.sorted(by: <)
-        
-        let sortedPlayersDict = playersDict.sorted(by: { $0.value > $1.value })
-        
-        var sortedPlayersArray = [sortedPlayersDict[0].key]
-        
-        for index in 1...(sortedPlayersDict.count-1) {
-            
-            sortedPlayersArray.append(sortedPlayersDict[index].key)
-        }
-        
-        return sortedPlayersArray
-    }
-    
-    
-    
-    
-    
-    
-    
-   
     
     
     
@@ -1743,111 +1843,68 @@ struct GameBrain {
     }
     
     
-    func getScoreDetailList(created: String, guessed: String, actual: String, playersThisRound: [[String: String]], userNames: [String: String]) -> [String] {
+    func considerShowingReviewPrompt() {
         
-        var scoreDetailList = [String]()
+        var gamesFinishedCount = UserDefaults.standard.integer(forKey: "swatchthis.gamesFinishedCount")
         
-        var createdVar = created
-        if created == "Created color" {
-            // then the game was ended prematurely, so we'll say "Created nothing"
-            createdVar = "nothing"
-        }
+        gamesFinishedCount = gamesFinishedCount + 1
         
         
-        var guessedVar = guessed
-        if guessed == "Guessed color" {
-            // then the game was ended prematurely, so we'll say "Guessed nothing"
-            guessedVar = "nothing"
-        }
-        
-        // every player should have a created and guessed for each color
-        scoreDetailList.append("Created \(createdVar) and guessed \(guessedVar)")
-        
-        var counter = 0
-        
-        // if the player's created color was guessed by any other players, we'll add that to the score detail list
-        for data in playersThisRound {
+        if gamesFinishedCount == 2 {
+            // we'll only bug the user for this after their second game end (note that there's no real way to know if Pen & Paper was actually played or just visited)
             
-            if created == data["Guessed"] {
-                
-                let userName = userNames["Player \(counter+1)"] ?? "Player \(counter+1)"
-                
-                scoreDetailList.append("Fooled \(userName)")
-                
+            // show Swatch This App Store rating prompt
+            if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+                SKStoreReviewController.requestReview(in: scene)
             }
             
-            counter = counter + 1
         }
         
-        
-        // eat the end of the list show the points that this color earned this player
-        
-        var colorPoints = 0
-        
-        // if correct color guessed: 5 * playerCount + 5 points
-        if guessed == actual {
-            colorPoints += userNames.count*5+5
-        }
-        
-        // 15 points per player fooled
-        if scoreDetailList.count > 1 {
-            colorPoints += (scoreDetailList.count-1)*15
-        }
-        
-        // make it cheery if they earned points; don't rub it in if they didn't
-        if colorPoints > 0 {
-            scoreDetailList.append("+\(colorPoints) points!")
-        }
-        
-        return scoreDetailList
-        
+        // store the int
+        UserDefaults.standard.set(gamesFinishedCount, forKey: "swatchthis.gamesFinishedCount")
         
     }
     
     
-    func getIAPColors() -> [UInt32] {
+    func playSlideSoundEffect() {
         
+        playSoundEffect(title: "Card Flip", soundID: 0)
         
-        let filteredPalette = Palette().masterPalette.filter { color in
-            return color.pack == 1
-        }
+    }
+    
+    func playDealSoundEffect() {
         
+        playSoundEffect(title: "Card Deal", soundID: 1)
         
-        var filteredColors = [UInt32]()
+    }
+    
+    func playCorrectSoundEffect() {
         
-        for color in filteredPalette {
+        playSoundEffect(title: "Correct Guess", soundID: 2)
+        
+    }
+    
+    func playWinSoundEffect() {
+        
+        playSoundEffect(title: "Master Colorsmith", soundID: 3)
+        
+    }
+    
+    func playSoundEffect(title: String, soundID: UInt32) {
+        
+        if let soundURL = Bundle.main.url(forResource: title, withExtension: "mp3") {
+            var mySound: SystemSoundID = soundID
+            AudioServicesCreateSystemSoundID(soundURL as CFURL, &mySound)
             
-            filteredColors.append(color.hex)
-        }
-        
-        return filteredColors
-        
-    }
-    
-    
-    func getBaseGameColors() -> [UInt32] {
-        
-        
-        let filteredPalette = Palette().masterPalette.filter { color in
-            return color.pack == 0
-        }
-        
-        
-        var filteredColors = [UInt32]()
-        
-        for color in filteredPalette {
+            // play
+            AudioServicesPlaySystemSound(mySound);
             
-            filteredColors.append(color.hex)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // call after 2 seconds to give the sound time to play
+                AudioServicesDisposeSystemSoundID(mySound)  // clean up the memory
+                
+            }
         }
-        
-        
-        
-        return filteredColors
-        
     }
-    
-    
-    
     
     
     /* // if using this need to import AVFoundation at top of file

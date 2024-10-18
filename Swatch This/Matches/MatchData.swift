@@ -17,7 +17,6 @@ class MatchData {   // should this be a struct?
     // should make some of these optional
     
     var turnArray: [Int]
-    var localPlayerID: String?
     var players: [String: Int]? // dictionary of player, score
     var sortedPlayersArray: [String]?
     var finalPointsArray: [Int]?
@@ -33,9 +32,7 @@ class MatchData {   // should this be a struct?
     private init() { // initialize with defaults
         
         self.turnArray = [0, 0]    // turn, roundsFinished
-        
-      //  self.localPlayerID = nil
-        
+                
         /*
         self.colors = [
             Round(colorIndex: 0)

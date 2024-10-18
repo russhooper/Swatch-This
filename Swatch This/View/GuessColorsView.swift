@@ -852,7 +852,7 @@ struct GuessColorsView: View {
                 
                 if self.hasGuessed == false {
                     
-                    Text("Swatch ya think? Which is the actual name?")
+                    Text("Swatch ya think? Which is the real name?")
                         .font(.system(size: 18))
                     //  .fontWeight(.bold)
                     // .foregroundColor(.white)
